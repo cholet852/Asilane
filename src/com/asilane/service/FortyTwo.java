@@ -9,7 +9,7 @@ import com.asilane.recognition.Language;
  * @author walane
  * 
  */
-public class Hello implements IService {
+public class FortyTwo implements IService {
 
 	/*
 	 * (non-Javadoc)
@@ -18,11 +18,7 @@ public class Hello implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Language language) {
-		if (language == Language.french) {
-			return "Bonjour !";
-		}
-
-		return "Hello !";
+		return "42";
 	}
 
 	@Override
@@ -30,13 +26,11 @@ public class Hello implements IService {
 		final Set<String> set = new HashSet<String>();
 
 		if (lang == Language.french) {
-			set.add("bonjour");
-			set.add("salut");
-			set.add("hey");
+			set.add("quel.* est la réponse à l'univers");
+			set.add("quel.* est le nombre ultime");
 		} else {
-			set.add("hello");
-			set.add("hi");
-			set.add("hey");
+			set.add("what is the answer of the universe");
+			set.add("what is the ultimate number");
 		}
 
 		return set;
