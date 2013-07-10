@@ -5,8 +5,9 @@ import java.util.Set;
 import com.asilane.recognition.Language;
 
 /**
- * @author walane
+ * Each Service have to implemente this interface to be used on the application
  * 
+ * @author walane
  */
 public interface IService {
 	/**

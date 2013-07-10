@@ -7,7 +7,7 @@ import com.asilane.facade.Facade;
  * 
  * @author walane
  */
-public class Recognition {
+public class Asilane {
 
 	// For the moment this is the role of terminal
 

@@ -21,6 +21,11 @@ public class FortyTwo implements IService {
 		return "42";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 */
 	@Override
 	public Set<String> getCommands(final Language lang) {
 		final Set<String> set = new HashSet<String>();

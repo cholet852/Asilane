@@ -1,13 +1,16 @@
-package com.asilane.recognition;
+package com.asilane.facade;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.asilane.recognition.Language;
 import com.asilane.service.AsilaneIdentity;
 import com.asilane.service.FortyTwo;
 import com.asilane.service.Hello;
 import com.asilane.service.IService;
+import com.asilane.service.WeatherForecast;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -33,14 +36,10 @@ public class ServiceDispatcher {
 
 	private void initMaps(final Language lang) {
 		commandsMap = new HashMap<IService, Set<String>>();
-		final IService hello = new Hello();
-		final IService asilaneIdentity = new AsilaneIdentity();
-		final IService fortyTwo = new FortyTwo();
 
-		// for each language in each service, translations are added in the global map
-		commandsMap.put(hello, hello.getCommands(lang));
-		commandsMap.put(asilaneIdentity, asilaneIdentity.getCommands(lang));
-		commandsMap.put(fortyTwo, fortyTwo.getCommands(lang));
+		for (final IService service : getAllServices()) {
+			commandsMap.put(service, service.getCommands(lang));
+		}
 	}
 
 	/**
@@ -61,5 +60,21 @@ public class ServiceDispatcher {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get all services
+	 * 
+	 * @return All services
+	 */
+	public Set<IService> getAllServices() {
+		final Set<IService> allServices = new HashSet<IService>();
+
+		allServices.add(new Hello());
+		allServices.add(new AsilaneIdentity());
+		allServices.add(new FortyTwo());
+		allServices.add(new WeatherForecast());
+
+		return allServices;
 	}
 }

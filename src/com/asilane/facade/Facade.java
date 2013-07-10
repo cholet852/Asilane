@@ -1,6 +1,5 @@
 package com.asilane.facade;
 
-import com.asilane.recognition.ServiceDispatcher;
 import com.asilane.recognition.Language;
 import com.asilane.service.IService;
 
