@@ -1,8 +1,8 @@
 package com.asilane.facade;
 
+import com.asilane.recognition.Command;
 import com.asilane.recognition.Language;
-import com.asilane.recognition.Translation;
-import com.asilane.service.Hello;
+import com.asilane.service.Service;
 
 /**
  * @author walane
@@ -13,23 +13,21 @@ public class Facade {
 
 	/**
 	 * @param sentence
-	 * @param language
+	 * @param lang
 	 * @return
 	 */
-	public static String handleSentence(final String sentence, final Language language) {
+	public static String handleSentence(final String sentence, final Language lang) {
 		// Preparation of sentence
-		String preparedSentence = sentence.trim().toLowerCase();
+		final String preparedSentence = sentence.trim().toLowerCase();
 
-		// Translate it if necessary
-		if (language != Language.english) {
-			preparedSentence = Translation.getInstance().getTranslation(preparedSentence, language);
+		// Try to get the service corresponding to the sentence
+		final Service askedService = Command.getInstance(lang).getService(preparedSentence);
+
+		// Return the response of the service if this one is found
+		if (askedService != null) {
+			return askedService.handleService(preparedSentence, lang);
 		}
 
-		// Call the good service
-		if ("hello".equals(preparedSentence)) {
-			return new Hello().handleService(preparedSentence, language);
-		}
-
-		return null;
+		return "The sentence \"" + sentence + "\" not corresponding on any service in " + lang;
 	}
 }

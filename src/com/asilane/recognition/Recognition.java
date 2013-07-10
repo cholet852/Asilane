@@ -12,8 +12,8 @@ public class Recognition {
 	// For the moment this is the role of terminal
 
 	public static void main(final String[] args) {
-		final Language language = (args[1].equals("french")) ? Language.french : Language.english;
+		final Language language = (args[0].equals("french")) ? Language.french : Language.english;
 
-		System.out.println(Facade.handleSentence(args[0], language));
+		System.out.println(Facade.handleSentence(args[1], language));
 	}
 }
