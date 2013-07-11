@@ -17,7 +17,7 @@ public class FortyTwo implements IService {
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language language) {
+	public String handleService(final String sentence, final Language lang) {
 		return "42";
 	}
 

@@ -14,7 +14,6 @@ public class Asilane {
 	public static void main(final String[] args) {
 		if (args.length < 2 || args[0] == null || args[0].trim().isEmpty() || args[1] == null
 				|| args[1].trim().isEmpty()) {
-			System.out.println("Usage : Recognition french sentence");
 			return;
 		}
 

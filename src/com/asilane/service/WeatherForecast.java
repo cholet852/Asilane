@@ -1,5 +1,6 @@
 package com.asilane.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import org.json.simple.JSONValue;
 
 import com.asilane.facade.AsilaneUtils;
 import com.asilane.recognition.Language;
+import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
  * @author walane
@@ -33,9 +35,9 @@ public class WeatherForecast implements IService {
 			} else if (sentence.contains("à")) {
 				cityIndex = sentence.lastIndexOf('à') + 1;
 			}
-			city = sentence.substring(cityIndex).trim().replace(' ', '-').replace('\'', '-');
+			city = sentence.substring(cityIndex).trim();
 		} else {
-			city = sentence.substring(sentence.lastIndexOf("in") + 1).trim().replace(' ', '-');
+			city = sentence.substring(sentence.lastIndexOf("in") + 1).trim();
 		}
 
 		// The city must no be empty to get the weather forecast
@@ -74,8 +76,13 @@ public class WeatherForecast implements IService {
 		final StringBuilder out = new StringBuilder();
 
 		// Using openweathermap.org api
-		final String response = AsilaneUtils.curl("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&lang="
-				+ lang.toString().substring(0, 2));
+		String response;
+		try {
+			response = AsilaneUtils.curl("http://api.openweathermap.org/data/2.5/weather?q="
+					+ UrlUtil.encode(city, "UTF-8") + "&lang=" + lang.toString().substring(0, 2));
+		} catch (final UnsupportedEncodingException e) {
+			return handleErrorMessage(lang);
+		}
 		if (response == null) {
 			return handleErrorMessage(lang);
 		}
@@ -90,6 +97,7 @@ public class WeatherForecast implements IService {
 			return "The city \"" + city + "\" could not be found";
 		}
 
+		// Parse weather proper
 		final JSONObject parsedWeather = (JSONObject) JSONValue.parse(parsedResponse.get("weather").toString()
 				.substring(1, parsedResponse.get("weather").toString().length() - 1));
 		final JSONObject parsedMain = (JSONObject) JSONValue.parse(parsedResponse.get("main").toString());

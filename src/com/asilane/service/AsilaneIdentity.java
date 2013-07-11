@@ -24,8 +24,8 @@ public class AsilaneIdentity implements IService {
 	 * @see com.asilane.service.IService#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language language) {
-		if (language == Language.french) {
+	public String handleService(final String sentence, final Language lang) {
+		if (lang == Language.french) {
 			if (sentence.matches(ASILANE)) {
 				return "Oui ?";
 			}

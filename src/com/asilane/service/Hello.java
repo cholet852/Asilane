@@ -19,7 +19,8 @@ public class Hello implements IService {
 	private static final String DIS_AU_REVOIR_A = "di.* au.*revoir à.*";
 	private static final String HOW_ARE_YOU = "how are you";
 	private static final String TU_VA_BIEN = "tu va.* bien";
-	private static final String COMMENT_VAS_TU = "comment va.*tu";
+	private static final String COMMENT_VAS_TU = ".*comment va.*tu";
+	private static final String COMMENT_ALLEZ_VOUS = ".*comment allez.*vous";
 
 	/*
 	 * (non-Javadoc)
@@ -27,9 +28,11 @@ public class Hello implements IService {
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language language) {
-		if (language == Language.french) {
-			if (sentence.matches(COMMENT_VAS_TU) || sentence.matches(TU_VA_BIEN)) {
+	public String handleService(final String sentence, final Language lang) {
+		// TODO : Use regular expressions to extract vars
+		if (lang == Language.french) {
+			if (sentence.matches(COMMENT_VAS_TU) || sentence.matches(TU_VA_BIEN)
+					|| sentence.matches(COMMENT_ALLEZ_VOUS)) {
 				return "Je vais toujours bien.";
 			} else if (sentence.matches(DIS_BONJOUR_A)) {
 				return "Bonjour " + sentence.substring(sentence.lastIndexOf("à") + 1).trim() + ", comment allez-vous ?";
@@ -70,6 +73,7 @@ public class Hello implements IService {
 			set.add("hey");
 
 			set.add(COMMENT_VAS_TU);
+			set.add(COMMENT_ALLEZ_VOUS);
 			set.add(TU_VA_BIEN);
 			set.add(DIS_BONJOUR_A);
 			set.add(DIS_AU_REVOIR_A);

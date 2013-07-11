@@ -29,6 +29,9 @@ public class Facade {
 		}
 
 		// No any command valid, error message
-		return "The sentence \"" + sentence + "\" not corresponding on any service in " + lang;
+		if (lang == Language.french) {
+			return "Je n'ai pas bien compris, pouvez-vous répéter ?";
+		}
+		return "I don't understand, can you repeat?";
 	}
 }

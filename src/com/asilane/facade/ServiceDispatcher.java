@@ -11,6 +11,7 @@ import com.asilane.service.FortyTwo;
 import com.asilane.service.Hello;
 import com.asilane.service.IService;
 import com.asilane.service.WeatherForecast;
+import com.asilane.service.WebBrowser;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -74,6 +75,7 @@ public class ServiceDispatcher {
 		allServices.add(new AsilaneIdentity());
 		allServices.add(new FortyTwo());
 		allServices.add(new WeatherForecast());
+		allServices.add(new WebBrowser());
 
 		return allServices;
 	}
