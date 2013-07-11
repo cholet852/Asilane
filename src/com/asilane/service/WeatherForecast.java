@@ -22,8 +22,21 @@ public class WeatherForecast implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Language lang) {
-		// Get and clean the city from the sentence
-		final String city = sentence.substring("quel est la météo à".length()).trim().replace(' ', '-');
+		// TODO : Use regular expressions to get the city
+		final String city;
+		if (lang == Language.french) {
+			int cityIndex = 0;
+			if (sentence.contains("aux")) {
+				cityIndex = sentence.lastIndexOf("aux") + 3;
+			} else if (sentence.contains("au")) {
+				cityIndex = sentence.lastIndexOf("au") + 2;
+			} else if (sentence.contains("à")) {
+				cityIndex = sentence.lastIndexOf('à') + 1;
+			}
+			city = sentence.substring(cityIndex).trim().replace(' ', '-').replace('\'', '-');
+		} else {
+			city = sentence.substring(sentence.lastIndexOf("in") + 1).trim().replace(' ', '-');
+		}
 
 		// The city must no be empty to get the weather forecast
 		if (city.isEmpty()) {
@@ -46,11 +59,12 @@ public class WeatherForecast implements IService {
 		final Set<String> set = new HashSet<String>();
 
 		if (lang == Language.french) {
-			set.add("quel.*météo à.*");
-			set.add("quel.*temps fait.*il à.*");
-			set.add("quel.*le temps à");
+			set.add("quel.* météo à .*");
+			set.add("quel.* météo au.* .*");
+			set.add("quel.* temps fait.*il à .*");
+			set.add("quel.* le temps à.*");
 		} else {
-			set.add("what.* the weather like at.*");
+			set.add("what.* the weather like in .*");
 		}
 
 		return set;
@@ -62,13 +76,20 @@ public class WeatherForecast implements IService {
 		// Using openweathermap.org api
 		final String response = AsilaneUtils.curl("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&lang="
 				+ lang.toString().substring(0, 2));
-
 		if (response == null) {
 			return handleErrorMessage(lang);
 		}
 
 		// Parsing api response
 		final JSONObject parsedResponse = (JSONObject) JSONValue.parse(response);
+		// If the city is not found
+		if (parsedResponse.get("weather") == null) {
+			if (lang == Language.french) {
+				return "La ville \"" + city + "\" n'a pas pu être trouvée.";
+			}
+			return "The city \"" + city + "\" could not be found";
+		}
+
 		final JSONObject parsedWeather = (JSONObject) JSONValue.parse(parsedResponse.get("weather").toString()
 				.substring(1, parsedResponse.get("weather").toString().length() - 1));
 		final JSONObject parsedMain = (JSONObject) JSONValue.parse(parsedResponse.get("main").toString());

@@ -12,7 +12,7 @@ import com.asilane.recognition.Language;
 public class AsilaneIdentity implements IService {
 
 	private static final String WHO_IS_YOUR_CREATOR = "who is your creator";
-	private static final String QUEL_EST_TON_CREATEUR = "quel.* est ton créateur";
+	private static final String QUEL_EST_TON_CREATEUR = "qu.* est ton créateur";
 	private static final String WHAT_IS_YOUR_GOAL = "what is your goal";
 	private static final String QUELLE_EST_TA_MISSION = "quel.* est ta mission";
 	private static final String QUEL_EST_TON_BUT = "quel.* est ton but";
