@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
+import java.net.InetAddress;
 import java.net.URL;
 
 /**
@@ -14,6 +14,12 @@ import java.net.URL;
  */
 public class AsilaneUtils {
 
+	/**
+	 * This will return the content of a web page
+	 * 
+	 * @param address
+	 * @return the content of the web page given by the address param
+	 */
 	public static String curl(final String address) {
 		InputStream is = null;
 		String line;
@@ -28,9 +34,7 @@ public class AsilaneUtils {
 			while ((line = reader.readLine()) != null) {
 				builder.append(line);
 			}
-		} catch (final MalformedURLException mue) {
-			return null;
-		} catch (final IOException ioe) {
+		} catch (final IOException e) {
 			return null;
 		} finally {
 			try {
@@ -43,5 +47,19 @@ public class AsilaneUtils {
 		}
 
 		return builder.toString();
+	}
+
+	/**
+	 * This will return true if the application is connect to the Internet, false not.
+	 * 
+	 * @return true if the application is connect to the Internet, false not.
+	 */
+	public static boolean isConnectedToInternet() {
+		try {
+			// Test with cloudfare.net
+			return InetAddress.getByName("69.43.161.171").isReachable(4000);
+		} catch (final IOException e) {
+			return false;
+		}
 	}
 }

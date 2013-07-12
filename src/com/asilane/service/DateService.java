@@ -16,6 +16,7 @@ public class DateService implements IService {
 
 	private static final String QUEL_JOUR_SOMME_NOUS = "quel.* jour somme.*nous";
 	private static final String ON_EST_QUEL_JOUR = "on.* es.* quel.* jour";
+	private static final String QUEL_JOUR_ON_EST = "quel.* jour on.* es.*";
 	private static final String QUEL_EST_LA_DATE = "quel.* es.* la date.*";
 
 	/*
@@ -27,12 +28,12 @@ public class DateService implements IService {
 	public String handleService(final String sentence, final Language lang) {
 		final Date date = new Date();
 		final DateFormat dateFormat = new SimpleDateFormat("EEEE d MMMM YYYY");
-		final DateFormat timeFormat = new SimpleDateFormat("HH:MM");
+		final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 		if (lang == Language.french) {
 			if (sentence.matches(QUEL_JOUR_SOMME_NOUS) || sentence.matches(ON_EST_QUEL_JOUR)
-					|| sentence.matches(QUEL_EST_LA_DATE)) {
-				return "Nous sommes le " + dateFormat.format(date);
+					|| sentence.matches(QUEL_EST_LA_DATE) || sentence.matches(QUEL_JOUR_ON_EST)) {
+				return "Nous sommes le " + dateFormat.format(date) + ".";
 			}
 
 			return "Il est " + timeFormat.format(date) + ".";
@@ -56,6 +57,7 @@ public class DateService implements IService {
 
 			set.add(QUEL_JOUR_SOMME_NOUS);
 			set.add(ON_EST_QUEL_JOUR);
+			set.add(QUEL_JOUR_ON_EST);
 			set.add(QUEL_EST_LA_DATE);
 		} else {
 			set.add("what.* time is it");

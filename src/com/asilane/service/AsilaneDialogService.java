@@ -22,6 +22,8 @@ public class AsilaneDialogService implements IService {
 			return "Ok.";
 		} else if (sentence.matches("non")) {
 			return "Pourquoi non ?";
+		} else if (sentence.matches(".*merci")) {
+			return "Derien, c'est un plaisir de vous aider.";
 		}
 
 		return "Good.";
@@ -39,6 +41,7 @@ public class AsilaneDialogService implements IService {
 		if (lang == Language.french) {
 			set.add("oui");
 			set.add("non");
+			set.add(".*merci");
 		} else {
 			set.add("yes");
 			set.add("no");

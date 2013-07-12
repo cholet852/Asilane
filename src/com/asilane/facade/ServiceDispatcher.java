@@ -17,6 +17,7 @@ import com.asilane.service.IService;
 import com.asilane.service.MediaPlayerService;
 import com.asilane.service.WeatherForecastService;
 import com.asilane.service.WebBrowserService;
+import com.asilane.service.WikipediaService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -86,6 +87,7 @@ public class ServiceDispatcher {
 		allServices.add(new DateService());
 		allServices.add(new IPService());
 		allServices.add(new CalculatorService());
+		allServices.add(new WikipediaService());
 
 		return allServices;
 	}

@@ -1,5 +1,8 @@
 package com.asilane.service;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +19,10 @@ public class AsilaneIdentityService implements IService {
 	private static final String WHAT_IS_YOUR_GOAL = "what is your goal";
 	private static final String QUELLE_EST_TA_MISSION = "quel.* est ta mission";
 	private static final String QUEL_EST_TON_BUT = "quel.* est ton but";
+	private static final String QUEL_AGE_AS_TU = "quel.* âge a.*tu";
 	private static final String ASILANE = "asilane";
+
+	final long MILISECOND_PER_DAY = 24 * 60 * 60 * 1000;
 
 	/*
 	 * (non-Javadoc)
@@ -34,6 +40,16 @@ public class AsilaneIdentityService implements IService {
 			}
 			if (sentence.matches(QUEL_EST_TON_CREATEUR)) {
 				return "Walane est mon créateur, je lui dois amour, honneur et respect.";
+			}
+			if (sentence.matches(QUEL_AGE_AS_TU)) {
+				final GregorianCalendar calendar = new GregorianCalendar();
+				calendar.clear();
+				calendar.set(2013, Calendar.JULY, 10, 00, 42);
+				final Date bornDate = calendar.getTime();
+				final Date todayDate = new Date();
+				final int age = Math.round(Math.abs((todayDate.getTime() - bornDate.getTime()) / MILISECOND_PER_DAY));
+
+				return "J'ai exactement " + age + " jours.";
 			}
 
 			return "Je suis Asilane, un assistant intelligent, j'ai été créé par Walane.";
@@ -72,6 +88,7 @@ public class AsilaneIdentityService implements IService {
 			set.add(QUELLE_EST_TA_MISSION);
 			set.add(ASILANE);
 			set.add(QUEL_EST_TON_CREATEUR);
+			set.add(QUEL_AGE_AS_TU);
 		} else {
 			set.add("who are you");
 
