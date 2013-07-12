@@ -4,17 +4,16 @@ import com.asilane.recognition.Language;
 import com.asilane.service.IService;
 
 /**
- * Intercept speech to text, prepare the sentence and call the good service
- * 
  * @author walane
- * 
  */
 public class Facade {
 
 	/**
+	 * Intercept speech to text, prepare the sentence and call the good service
+	 * 
 	 * @param sentence
 	 * @param lang
-	 * @return
+	 * @return the response
 	 */
 	public static String handleSentence(final String sentence, final Language lang) {
 		// Preparation of sentence

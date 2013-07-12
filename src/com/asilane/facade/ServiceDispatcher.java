@@ -6,12 +6,17 @@ import java.util.Map;
 import java.util.Set;
 
 import com.asilane.recognition.Language;
-import com.asilane.service.AsilaneIdentity;
-import com.asilane.service.FortyTwo;
-import com.asilane.service.Hello;
+import com.asilane.service.AsilaneDialogService;
+import com.asilane.service.AsilaneIdentityService;
+import com.asilane.service.CalculatorService;
+import com.asilane.service.DateService;
+import com.asilane.service.FortyTwoService;
+import com.asilane.service.HelloService;
+import com.asilane.service.IPService;
 import com.asilane.service.IService;
-import com.asilane.service.WeatherForecast;
-import com.asilane.service.WebBrowser;
+import com.asilane.service.MediaPlayerService;
+import com.asilane.service.WeatherForecastService;
+import com.asilane.service.WebBrowserService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -71,11 +76,16 @@ public class ServiceDispatcher {
 	public Set<IService> getAllServices() {
 		final Set<IService> allServices = new HashSet<IService>();
 
-		allServices.add(new Hello());
-		allServices.add(new AsilaneIdentity());
-		allServices.add(new FortyTwo());
-		allServices.add(new WeatherForecast());
-		allServices.add(new WebBrowser());
+		allServices.add(new HelloService());
+		allServices.add(new AsilaneIdentityService());
+		allServices.add(new FortyTwoService());
+		allServices.add(new WeatherForecastService());
+		allServices.add(new WebBrowserService());
+		allServices.add(new MediaPlayerService());
+		allServices.add(new AsilaneDialogService());
+		allServices.add(new DateService());
+		allServices.add(new IPService());
+		allServices.add(new CalculatorService());
 
 		return allServices;
 	}

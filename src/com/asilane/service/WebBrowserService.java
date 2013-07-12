@@ -13,7 +13,14 @@ import com.sun.jndi.toolkit.url.UrlUtil;
  * @author walane
  * 
  */
-public class WebBrowser implements IService {
+public class WebBrowserService implements IService {
+
+	private static final String GO_ON = "go on.*";
+	private static final String VA_SUR = "va sur.*";
+	private static final String GIVE_ME_INFO_ON = "give me info.* on.*";
+	private static final String SEARCH_INFO_ON = "search info.* on.*";
+	private static final String DONNE_MOI_DES_INFO_SUR = "donne.*moi des info.* sur.*";
+	private static final String CHERCHE_DES_INFO_SUR = "cherche des info.* sur.*";
 
 	/*
 	 * (non-Javadoc)
@@ -53,7 +60,11 @@ public class WebBrowser implements IService {
 			if (desktop.isSupported(Desktop.Action.BROWSE)) {
 				try {
 					// Duck duck go is used to get the website for more anonymous
-					desktop.browse(URI.create("https://duckduckgo.com/?q=!%20" + UrlUtil.encode(term, "UTF-8")));
+					final String directBrowsing = sentence.matches(VA_SUR) || sentence.matches(GO_ON)
+							|| sentence.matches(DONNE_MOI_DES_INFO_SUR) || sentence.matches(GIVE_ME_INFO_ON) ? "!%20"
+							: "";
+					desktop.browse(URI.create("https://duckduckgo.com/?q=" + directBrowsing
+							+ UrlUtil.encode(term, "UTF-8")));
 
 					if (lang == Language.french) {
 						return "Ok, je cherche des informations sur " + term + ".";
@@ -64,7 +75,6 @@ public class WebBrowser implements IService {
 				}
 			}
 		}
-
 		return handleErrorMessage(lang);
 	}
 
@@ -85,12 +95,13 @@ public class WebBrowser implements IService {
 		final Set<String> set = new HashSet<String>();
 
 		if (lang == Language.french) {
-			set.add("va sur.*");
-			set.add("cherche des info.* sur.*");
-			set.add("donne.*moi des info.* sur.*");
+			set.add(VA_SUR);
+			set.add(CHERCHE_DES_INFO_SUR);
+			set.add(DONNE_MOI_DES_INFO_SUR);
 		} else {
-			set.add("go on.*");
-			set.add("search info.* on.*");
+			set.add(GO_ON);
+			set.add(SEARCH_INFO_ON);
+			set.add(GIVE_ME_INFO_ON);
 		}
 
 		return set;

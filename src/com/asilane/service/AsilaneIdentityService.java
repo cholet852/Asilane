@@ -9,7 +9,7 @@ import com.asilane.recognition.Language;
  * @author walane
  * 
  */
-public class AsilaneIdentity implements IService {
+public class AsilaneIdentityService implements IService {
 
 	private static final String WHO_IS_YOUR_CREATOR = "who is your creator";
 	private static final String QUEL_EST_TON_CREATEUR = "qu.* est ton créateur";

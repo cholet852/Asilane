@@ -15,7 +15,7 @@ import com.sun.jndi.toolkit.url.UrlUtil;
  * @author walane
  * 
  */
-public class WeatherForecast implements IService {
+public class WeatherForecastService implements IService {
 
 	/*
 	 * (non-Javadoc)
