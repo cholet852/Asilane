@@ -1,8 +1,11 @@
 package com.asilane.facade;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.asilane.recognition.Language;
@@ -24,11 +27,10 @@ import com.asilane.service.WikipediaService;
  * It implements Singleton pattern for better performances
  * 
  * @author walane
- * 
  */
 public class ServiceDispatcher {
 	private static ServiceDispatcher INSTANCE;
-	private static Map<IService, Set<String>> commandsMap;
+	private static Map<List<String>, IService> wordMap;
 
 	private ServiceDispatcher(final Language lang) {
 		initMaps(lang);
@@ -42,10 +44,13 @@ public class ServiceDispatcher {
 	}
 
 	private void initMaps(final Language lang) {
-		commandsMap = new HashMap<IService, Set<String>>();
+		wordMap = new HashMap<List<String>, IService>();
 
+		// Adding each word of each sentence of each service in the wordMap
 		for (final IService service : getAllServices()) {
-			commandsMap.put(service, service.getCommands(lang));
+			for (final String sentence : service.getCommands(lang)) {
+				wordMap.put(Arrays.asList(sentence.split(" ")), service);
+			}
 		}
 	}
 
@@ -58,15 +63,38 @@ public class ServiceDispatcher {
 	 * 
 	 */
 	public IService getService(final String sentence) {
-		for (final IService service : commandsMap.keySet()) {
-			for (final String sentenceService : commandsMap.get(service)) {
-				if (sentence.matches(sentenceService)) {
-					return service;
+		// Map of occurencies
+		final Map<IService, Integer> occurenciesMap = new HashMap<IService, Integer>();
+
+		// Getting all words of the sentence
+		final String[] words = sentence.split(" ");
+
+		// The service which have the most occurencies of words in the sentence win
+		for (final String word : words) {
+			System.out.println(">>" + word);
+			for (final Entry<List<String>, IService> wordList : wordMap.entrySet()) {
+				for (final String mapWord : wordList.getKey()) {
+					if (word.equals(mapWord)) {
+						System.out.println(word + "<" + wordList.getValue());
+						Integer currentOccurence = occurenciesMap.get(wordList.getValue());
+						currentOccurence = currentOccurence == null ? 0 : currentOccurence;
+						occurenciesMap.put(wordList.getValue(), currentOccurence + 1);
+					}
 				}
 			}
 		}
 
-		return null;
+		IService pertinentService = null;
+		int maximum = 0;
+		for (final Entry<IService, Integer> entry : occurenciesMap.entrySet()) {
+			if (entry.getValue() > maximum) {
+				maximum = entry.getValue();
+				pertinentService = entry.getKey();
+			}
+		}
+		System.out.println(pertinentService);
+
+		return pertinentService;
 	}
 
 	/**
@@ -90,5 +118,9 @@ public class ServiceDispatcher {
 		allServices.add(new WikipediaService());
 
 		return allServices;
+	}
+
+	public static void main(final String[] args) {
+		ServiceDispatcher.getInstance(Language.french).getService("quel est la météo à vendome");
 	}
 }

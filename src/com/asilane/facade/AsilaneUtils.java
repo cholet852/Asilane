@@ -6,6 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Some good things used in the application
@@ -45,7 +49,6 @@ public class AsilaneUtils {
 				return null;
 			}
 		}
-
 		return builder.toString();
 	}
 
@@ -61,5 +64,31 @@ public class AsilaneUtils {
 		} catch (final IOException e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Extract all variables which are in the regex
+	 * 
+	 * @param regex
+	 * @param sentence
+	 * @return a list which contains all variables which are in the regex
+	 */
+	public static List<String> extractRegexVars(final String regex, final String sentence) {
+		final Pattern pattern = Pattern.compile(regex.replace("*", "(.*)"), Pattern.CASE_INSENSITIVE);
+		final Matcher matcher = pattern.matcher(sentence);
+
+		// If there is no any match
+		if (!matcher.matches()) {
+			return null;
+		}
+
+		// If not, adding extract all variables in a List
+		final List<String> results = new ArrayList<String>();
+		matcher.find();
+		for (int i = 1; i <= matcher.groupCount(); i++) {
+			results.add(matcher.group(i));
+		}
+
+		return results;
 	}
 }
