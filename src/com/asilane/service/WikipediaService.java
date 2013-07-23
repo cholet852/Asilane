@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,8 +17,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.asilane.core.Language;
 import com.asilane.facade.AsilaneUtils;
-import com.asilane.recognition.Language;
 import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
@@ -27,11 +28,9 @@ import com.sun.jndi.toolkit.url.UrlUtil;
 public class WikipediaService implements IService {
 
 	private static final String WHAT_IS_A = "what is a.*";
-	private static final String QU_EST_CE_QUE = "qu.*ce.*que .*";
-	private static final String QU_EST_CE_QU = "qu.*ce.*qu'.*";
-	private static final String QU_EST_CE_QU_UN = "qu.*ce.*qu'un .*";
-	private static final String QU_EST_CE_QU_UNE = "qu.*ce.*qu'une .*";
-	private static final String CEST_QUOI = "c'est quoi .*";
+	private static final String QU_EST_CE_QUE = "qu.*ce.*que.* .*";
+	private static final String QU_EST_CE_QU = "qu.*ce.*qu'.* .*";
+	private static final String CEST_QUOI = "c'est quoi.* .*";
 
 	/*
 	 * (non-Javadoc)
@@ -40,45 +39,35 @@ public class WikipediaService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Language lang) {
-		// TODO : Use regular expressions to extract vars
-		String info = null;
+		List<String> regexVars = null;
+		String wikipediaResult = null;
+
+		// FRENCH
 		if (lang == Language.french) {
-			if (sentence.matches(QU_EST_CE_QUE + "le.*")) {
-				info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("que le") + 6).trim(), lang);
-			} else if (sentence.matches(QU_EST_CE_QUE + "la.*")) {
-				info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("que la") + 6).trim(), lang);
-			} else if (sentence.matches(QU_EST_CE_QUE)) {
-				info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("que") + 3).trim(), lang);
-			} else if (sentence.matches(QU_EST_CE_QU_UN)) {
-				info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("qu'un") + 5).trim(), lang);
-			} else if (sentence.matches(QU_EST_CE_QU_UNE)) {
-				info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("qu'une") + 6).trim(), lang);
-			} else if (sentence.matches(QU_EST_CE_QU)) {
-				info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("qu'") + 3), lang);
-			} else if (sentence.matches(CEST_QUOI)) {
-				if (sentence.matches("c'est quoi le.*")) {
-					info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("le") + 2), lang);
-				} else if (sentence.matches("c'est quoi la.*")) {
-					info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("la") + 2), lang);
-				} else if (sentence.matches("c'est quoi une.*")) {
-					info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("une") + 3), lang);
-				} else if (sentence.matches("c'est quoi un.*")) {
-					info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("un") + 2), lang);
-				} else {
-					info = getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("c'est quoi") + 10), lang);
-				}
+			if ((regexVars = AsilaneUtils.extractRegexVars(QU_EST_CE_QU, sentence)) != null) {
+				wikipediaResult = getInfosFromWikipedia(regexVars.get(3), lang);
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(QU_EST_CE_QUE, sentence)) != null) {
+				final String var = (regexVars.get(1) == null || regexVars.get(3).isEmpty()) ? regexVars.get(2)
+						: regexVars.get(3);
+				wikipediaResult = getInfosFromWikipedia(var, lang);
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(CEST_QUOI, sentence)) != null) {
+				final String var = (regexVars.get(1) == null || regexVars.get(1).isEmpty()) ? regexVars.get(0)
+						: regexVars.get(1);
+				wikipediaResult = getInfosFromWikipedia(var, lang);
 			}
-			if (info == null) {
+
+			if (wikipediaResult == null) {
 				if (!AsilaneUtils.isConnectedToInternet()) {
 					return "Désolé mais j'ai besoin d'Internet pour savoir ce que cela signifie.";
 				}
 				return "Désolé mais je ne connais pas ce mot.";
 			}
-			return info;
+			return wikipediaResult;
 		}
 
-		if (sentence.matches(WHAT_IS_A)) {
-			return getInfosFromWikipedia(sentence.substring(sentence.lastIndexOf("is a") + 4), lang);
+		// ENGLISH
+		if ((regexVars = AsilaneUtils.extractRegexVars(WHAT_IS_A, sentence)) != null) {
+			return getInfosFromWikipedia(regexVars.get(0), lang);
 		}
 		return null;
 	}
@@ -94,8 +83,6 @@ public class WikipediaService implements IService {
 
 		if (lang == Language.french) {
 			set.add(QU_EST_CE_QUE);
-			set.add(QU_EST_CE_QU_UN);
-			set.add(QU_EST_CE_QU_UNE);
 			set.add(QU_EST_CE_QU);
 			set.add(CEST_QUOI);
 		} else {
@@ -111,7 +98,7 @@ public class WikipediaService implements IService {
 		try {
 			// We use amazon to get external IP
 			final URL ipService = new URL("http://" + lang.toString().substring(0, 2)
-					+ ".wikipedia.org/w/api.php?action=opensearch&search=" + UrlUtil.encode(info, "UTF-8")
+					+ ".wikipedia.org/w/api.php?action=opensearch&search=" + UrlUtil.encode(info.trim(), "UTF-8")
 					+ "&format=xml&limit=1");
 			in = new BufferedReader(new InputStreamReader(ipService.openStream()));
 			xmlResponse = in.readLine();

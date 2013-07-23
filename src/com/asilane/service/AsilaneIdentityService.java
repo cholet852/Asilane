@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.asilane.recognition.Language;
+import com.asilane.core.Language;
 
 /**
  * @author walane

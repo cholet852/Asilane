@@ -1,12 +1,21 @@
 package com.asilane.facade;
 
-import com.asilane.recognition.Language;
+import com.asilane.core.Language;
+import com.asilane.facade.history.HistoryTree;
 import com.asilane.service.IService;
 
 /**
  * @author walane
  */
 public class Facade {
+	/**
+	 * The tree which save every question asked during the session in binary tree
+	 */
+	private final HistoryTree historyTree;
+
+	public Facade() {
+		historyTree = new HistoryTree();
+	}
 
 	/**
 	 * Intercept speech to text, prepare the sentence and call the good service
@@ -15,16 +24,19 @@ public class Facade {
 	 * @param lang
 	 * @return the response
 	 */
-	public static String handleSentence(final String sentence, final Language lang) {
+	public String handleSentence(final String sentence, final Language lang) {
 		// Preparation of sentence
 		final String preparedSentence = sentence.trim().toLowerCase();
+		System.out.println(sentence);
 
 		// Try to get the service corresponding to the sentence
 		final IService askedService = ServiceDispatcher.getInstance(lang).getService(preparedSentence);
 
 		// Return the response of the service if this one is found
 		if (askedService != null) {
-			return askedService.handleService(preparedSentence, lang);
+			final String answer = askedService.handleService(preparedSentence, lang);
+			historyTree.addNode(sentence, answer, askedService);
+			return answer;
 		}
 
 		// No any command valid, error message

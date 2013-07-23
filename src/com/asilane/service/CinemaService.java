@@ -9,7 +9,7 @@ import com.asilane.core.Language;
  * @author walane
  * 
  */
-public class FortyTwoService implements IService {
+public class CinemaService implements IService {
 
 	/*
 	 * (non-Javadoc)

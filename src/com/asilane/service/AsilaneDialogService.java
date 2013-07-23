@@ -3,7 +3,7 @@ package com.asilane.service;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.asilane.recognition.Language;
+import com.asilane.core.Language;
 
 /**
  * @author walane

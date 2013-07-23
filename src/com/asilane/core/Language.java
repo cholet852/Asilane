@@ -1,4 +1,4 @@
-package com.asilane.recognition;
+package com.asilane.core;
 
 /**
  * List of avaible languages in the application

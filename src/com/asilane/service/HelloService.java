@@ -3,7 +3,7 @@ package com.asilane.service;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.asilane.recognition.Language;
+import com.asilane.core.Language;
 
 /**
  * @author walane
@@ -14,6 +14,7 @@ public class HelloService implements IService {
 	private static final String GOODBYE = "good.*bye.*";
 	private static final String SAY_GOOD_BYE_TO = "say good.*bye to.*";
 	private static final String SAY_HELLO_TO = "say hello to.*";
+
 	private static final String AU_REVOIR = "au revoir.*";
 	private static final String DIS_BONJOUR_A = "di.* bonjour à.*";
 	private static final String DIS_AU_REVOIR_A = "di.* au.*revoir à.*";

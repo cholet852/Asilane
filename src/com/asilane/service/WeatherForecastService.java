@@ -7,8 +7,8 @@ import java.util.Set;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import com.asilane.core.Language;
 import com.asilane.facade.AsilaneUtils;
-import com.asilane.recognition.Language;
 import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**

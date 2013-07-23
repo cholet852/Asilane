@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.asilane.recognition.Language;
+import com.asilane.core.Language;
 
 /**
  * @author walane
@@ -18,19 +18,16 @@ import com.asilane.recognition.Language;
 public class IPService implements IService {
 
 	private static final String WHAT_IS_MY_IP = "what is my ip.*";
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
-	 */
-	private static final String QUELLE_EST_MON_IP = "quel.* es.* mon .*ip.*";
+	private static final String QUELLE_EST_MON_IP = "quel.* es.* mon .*ip";
 
 	@Override
 	public String handleService(final String sentence, final Language lang) {
+		// External IP
 		if (sentence.matches(QUELLE_EST_MON_IP) || sentence.matches(WHAT_IS_MY_IP)) {
 			return getExternalIP();
 		}
 
+		// Local IP
 		try {
 			return Inet4Address.getLocalHost().getHostAddress();
 		} catch (final UnknownHostException e) {

@@ -2,7 +2,7 @@ package com.asilane.service;
 
 import java.util.Set;
 
-import com.asilane.recognition.Language;
+import com.asilane.core.Language;
 
 /**
  * Each Service have to implemente this interface to be used on the application

@@ -74,7 +74,7 @@ public class AsilaneUtils {
 	 * @return a list which contains all variables which are in the regex
 	 */
 	public static List<String> extractRegexVars(final String regex, final String sentence) {
-		final Pattern pattern = Pattern.compile(regex.replace("*", "(.*)"), Pattern.CASE_INSENSITIVE);
+		final Pattern pattern = Pattern.compile(regex.replace(".*", "(.*)"));
 		final Matcher matcher = pattern.matcher(sentence);
 
 		// If there is no any match
@@ -84,7 +84,6 @@ public class AsilaneUtils {
 
 		// If not, adding extract all variables in a List
 		final List<String> results = new ArrayList<String>();
-		matcher.find();
 		for (int i = 1; i <= matcher.groupCount(); i++) {
 			results.add(matcher.group(i));
 		}

@@ -1,0 +1,48 @@
+package com.asilane.gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import com.asilane.core.Language;
+import com.darkprograms.speech.microphone.Microphone.CaptureState;
+
+/**
+ * @author walane
+ * 
+ */
+public class Controller implements ActionListener {
+	private final GUI gui;
+
+	/**
+	 * @param gui
+	 */
+	public Controller(final GUI gui) {
+		this.gui = gui;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		final String textLang = gui.getLanguageComboBox().getModel().getSelectedItem().toString();
+		Language lang;
+		if (textLang.equals("French")) {
+			lang = Language.french;
+		} else {
+			lang = Language.english;
+		}
+		gui.getAsilane().setLanguage(lang);
+
+		if (CaptureState.PROCESSING_AUDIO.equals(gui.getAsilane().getRecordingState())) {
+			final String iaResponse = gui.getAsilane().closeRecordAndHandleSentence();
+			gui.getBtnRecord().setText("Record");
+			gui.getTextFieldResponse().setText(iaResponse);
+		} else {
+			gui.getBtnRecord().setText("Recording...");
+			gui.getAsilane().beginRecord();
+		}
+	}
+}
