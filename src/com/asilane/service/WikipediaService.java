@@ -92,6 +92,17 @@ public class WikipediaService implements IService {
 		return set;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 */
+	@Override
+	public String handleRecoveryService(final String sentence, final Language language) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private String getInfosFromWikipedia(final String info, final Language lang) {
 		final String xmlResponse;
 		BufferedReader in = null;
@@ -127,4 +138,5 @@ public class WikipediaService implements IService {
 			return null;
 		}
 	}
+
 }

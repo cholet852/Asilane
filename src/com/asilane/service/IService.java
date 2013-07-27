@@ -26,4 +26,13 @@ public interface IService {
 	 * @return all sentences which the service can be called
 	 */
 	Set<String> getCommands(final Language lang);
+
+	/**
+	 * This will return an appropriate answer if there is no answer given
+	 * 
+	 * @param sentence
+	 * @param language
+	 * @return an appropriate answer if there is no answer given
+	 */
+	String handleRecoveryService(final String sentence, final Language language);
 }

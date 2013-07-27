@@ -27,6 +27,11 @@ public class Controller implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent e) {
+		if (!gui.getTextField().getText().isEmpty()) {
+			gui.getTextFieldResponse().setText(gui.getAsilane().handleSentence(gui.getTextField().getText()));
+			return;
+		}
+
 		final String textLang = gui.getLanguageComboBox().getModel().getSelectedItem().toString();
 		Language lang;
 		if (textLang.equals("French")) {

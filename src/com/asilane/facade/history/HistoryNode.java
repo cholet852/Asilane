@@ -130,4 +130,17 @@ public class HistoryNode {
 	public boolean isLeaf() {
 		return (rightSon == null && leftSon == null);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		if (isLeaf()) {
+			return sentence;
+		}
+		return "<" + leftSon + ", " + rightSon + ">";
+	}
 }

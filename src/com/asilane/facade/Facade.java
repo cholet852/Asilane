@@ -1,6 +1,7 @@
 package com.asilane.facade;
 
 import com.asilane.core.Language;
+import com.asilane.facade.history.HistoryNode;
 import com.asilane.facade.history.HistoryTree;
 import com.asilane.service.IService;
 
@@ -27,7 +28,6 @@ public class Facade {
 	public String handleSentence(final String sentence, final Language lang) {
 		// Preparation of sentence
 		final String preparedSentence = sentence.trim().toLowerCase();
-		System.out.println(sentence);
 
 		// Try to get the service corresponding to the sentence
 		final IService askedService = ServiceDispatcher.getInstance(lang).getService(preparedSentence);
@@ -36,7 +36,16 @@ public class Facade {
 		if (askedService != null) {
 			final String answer = askedService.handleService(preparedSentence, lang);
 			historyTree.addNode(sentence, answer, askedService);
+			System.out.println(historyTree);
 			return answer;
+		}
+
+		final HistoryNode lastNode = historyTree.getLastNode();
+		final String recoveryAnswer = historyTree.getFirstNode().isLeaf() ? null : lastNode.getService()
+				.handleRecoveryService(preparedSentence, lang);
+		if (recoveryAnswer != null) {
+			historyTree.addNode(sentence, recoveryAnswer, lastNode.getService());
+			return recoveryAnswer;
 		}
 
 		// No any command valid, error message

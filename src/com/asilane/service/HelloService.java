@@ -96,4 +96,9 @@ public class HelloService implements IService {
 
 		return set;
 	}
+
+	@Override
+	public String handleRecoveryService(final String sentence, final Language language) {
+		return "Je vais toujours bien";
+	}
 }

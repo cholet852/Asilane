@@ -8,6 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.asilane.core.Asilane;
@@ -23,6 +24,7 @@ public class GUI {
 	private JComboBox<String> languageComboBox;
 	private JTextArea textArea;
 	private JButton btnRecord;
+	private JTextField textField;
 
 	/**
 	 * Create the application.
@@ -66,6 +68,12 @@ public class GUI {
 		textArea.setLineWrap(true);
 		frmAsilane.getContentPane().add(textArea);
 		textArea.setColumns(10);
+
+		textField = new JTextField();
+		textField.setBounds(23, 423, 174, 19);
+		textField.addActionListener(new Controller(this));
+		frmAsilane.getContentPane().add(textField);
+		textField.setColumns(10);
 	}
 
 	/**
@@ -95,4 +103,12 @@ public class GUI {
 	public JButton getBtnRecord() {
 		return btnRecord;
 	}
+
+	/**
+	 * @return the textField
+	 */
+	public JTextField getTextField() {
+		return textField;
+	}
+
 }
