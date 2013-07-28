@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.asilane.core.Language;
+import com.asilane.facade.history.HistoryTree;
 
 /**
  * @author walane
@@ -31,7 +32,7 @@ public class HelloService implements IService {
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang) {
+	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
 		// TODO : Use regular expressions to extract vars
 		if (lang == Language.french) {
 			if (sentence.matches(CA_VA) || sentence.matches(COMMENT_CA_VA) || sentence.matches(COMMENT_VAS_TU)

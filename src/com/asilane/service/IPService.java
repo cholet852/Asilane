@@ -3,13 +3,14 @@ package com.asilane.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.asilane.core.Language;
+import com.asilane.facade.history.HistoryTree;
 
 /**
  * @author walane
@@ -21,7 +22,7 @@ public class IPService implements IService {
 	private static final String QUELLE_EST_MON_IP = "quel.* es.* mon .*ip";
 
 	@Override
-	public String handleService(final String sentence, final Language lang) {
+	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
 		// External IP
 		if (sentence.matches(QUELLE_EST_MON_IP) || sentence.matches(WHAT_IS_MY_IP)) {
 			return getExternalIP();
@@ -29,7 +30,7 @@ public class IPService implements IService {
 
 		// Local IP
 		try {
-			return Inet4Address.getLocalHost().getHostAddress();
+			return InetAddress.getLocalHost().getHostAddress();
 		} catch (final UnknownHostException e) {
 			if (lang == Language.french) {
 				return "Impossible de trouver votre adresse IP locale.";

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import com.asilane.core.Language;
 import com.asilane.facade.AsilaneUtils;
+import com.asilane.facade.history.HistoryTree;
 import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
@@ -29,7 +30,7 @@ public class WebBrowserService implements IService {
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang) {
+	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
 		if (Desktop.isDesktopSupported()) {
 			// Extract the website we are looking for
 			List<String> regexVars = null;

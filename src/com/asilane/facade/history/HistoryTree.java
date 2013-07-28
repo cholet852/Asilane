@@ -68,24 +68,4 @@ public class HistoryTree {
 			lastNode.setRightSon(new HistoryNode(sentence, answer, service));
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		final StringBuilder buider = new StringBuilder();
-
-		HistoryNode tempNode = firstNode;
-		while (!tempNode.isLeaf()) {
-			tempNode = (tempNode.getLeftSon() == null) ? tempNode.getRightSon() : tempNode.getLeftSon();
-			buider.append(tempNode);
-			if (tempNode.isLeaf()) {
-				break;
-			}
-		}
-		return buider.toString();
-	}
 }

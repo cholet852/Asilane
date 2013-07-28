@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.asilane.core.Language;
+import com.asilane.facade.history.HistoryTree;
 
 /**
  * @author walane
@@ -17,7 +18,7 @@ public class CinemaService implements IService {
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang) {
+	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
 		return "42";
 	}
 

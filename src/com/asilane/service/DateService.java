@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.asilane.core.Language;
+import com.asilane.facade.history.HistoryTree;
 
 /**
  * @author walane
@@ -25,7 +26,7 @@ public class DateService implements IService {
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang) {
+	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
 		final Date date = new Date();
 		final DateFormat dateFormat = new SimpleDateFormat("EEEE d MMMM YYYY");
 		final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -75,11 +76,11 @@ public class DateService implements IService {
 	public String handleRecoveryService(final String sentence, final Language lang) {
 		if (lang == Language.french) {
 			if (sentence.contains("et maintenant")) {
-				return handleService("", lang);
+				return handleService("", lang, null);
 			}
 		}
 		if (sentence.contains("and now")) {
-			return handleService("", lang);
+			return handleService("", lang, null);
 		}
 
 		return null;

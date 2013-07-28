@@ -36,18 +36,18 @@ public class JSONValue {
 	 * 	null
 	 * 
 	 */
-	public static Object parse(Reader in){
+	public static Object parse(final Reader in){
 		try{
-			JSONParser parser=new JSONParser();
+			final JSONParser parser=new JSONParser();
 			return parser.parse(in);
 		}
-		catch(Exception e){
+		catch(final Exception e){
 			return null;
 		}
 	}
 	
-	public static Object parse(String s){
-		StringReader in=new StringReader(s);
+	public static Object parse(final String s){
+		final StringReader in=new StringReader(s);
 		return parse(in);
 	}
 	
@@ -68,13 +68,13 @@ public class JSONValue {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static Object parseWithException(Reader in) throws IOException, ParseException{
-		JSONParser parser=new JSONParser();
+	public static Object parseWithException(final Reader in) throws IOException, ParseException{
+		final JSONParser parser=new JSONParser();
 		return parser.parse(in);
 	}
 	
-	public static Object parseWithException(String s) throws ParseException{
-		JSONParser parser=new JSONParser();
+	public static Object parseWithException(final String s) throws ParseException{
+		final JSONParser parser=new JSONParser();
 		return parser.parse(s);
 	}
 	
@@ -92,7 +92,7 @@ public class JSONValue {
      * @param value
      * @param writer
      */
-	public static void writeJSONString(Object value, Writer out) throws IOException {
+	public static void writeJSONString(final Object value, final Writer out) throws IOException {
 		if(value == null){
 			out.write("null");
 			return;
@@ -168,7 +168,7 @@ public class JSONValue {
 	 * @param value
 	 * @return JSON text, or "null" if value is null or it's an NaN or an INF number.
 	 */
-	public static String toJSONString(Object value){
+	public static String toJSONString(final Object value){
 		if(value == null)
 			return "null";
 		
@@ -212,10 +212,10 @@ public class JSONValue {
 	 * @param s
 	 * @return
 	 */
-	public static String escape(String s){
+	public static String escape(final String s){
 		if(s==null)
 			return null;
-        StringBuffer sb = new StringBuffer();
+        final StringBuffer sb = new StringBuffer();
         escape(s, sb);
         return sb.toString();
     }
@@ -224,9 +224,9 @@ public class JSONValue {
      * @param s - Must not be null.
      * @param sb
      */
-    static void escape(String s, StringBuffer sb) {
+    static void escape(final String s, final StringBuffer sb) {
 		for(int i=0;i<s.length();i++){
-			char ch=s.charAt(i);
+			final char ch=s.charAt(i);
 			switch(ch){
 			case '"':
 				sb.append("\\\"");
@@ -255,7 +255,7 @@ public class JSONValue {
 			default:
                 //Reference: http://www.unicode.org/versions/Unicode5.1.0/
 				if((ch>='\u0000' && ch<='\u001F') || (ch>='\u007F' && ch<='\u009F') || (ch>='\u2000' && ch<='\u20FF')){
-					String ss=Integer.toHexString(ch);
+					final String ss=Integer.toHexString(ch);
 					sb.append("\\u");
 					for(int k=0;k<4-ss.length();k++){
 						sb.append('0');

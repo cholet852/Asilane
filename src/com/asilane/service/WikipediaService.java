@@ -19,6 +19,7 @@ import org.xml.sax.InputSource;
 
 import com.asilane.core.Language;
 import com.asilane.facade.AsilaneUtils;
+import com.asilane.facade.history.HistoryTree;
 import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
@@ -38,7 +39,7 @@ public class WikipediaService implements IService {
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang) {
+	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
 		List<String> regexVars = null;
 		String wikipediaResult = null;
 

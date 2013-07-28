@@ -15,7 +15,7 @@ import java.util.List;
  * 
  * @author FangYidong<fangyidong@yahoo.com.cn>
  */
-public class JSONArray extends ArrayList implements List, JSONAware, JSONStreamAware {
+public class JSONArray extends ArrayList<Object> implements List<Object>, JSONAware, JSONStreamAware {
 	private static final long serialVersionUID = 3957988303675231981L;
 
 	/**
@@ -27,14 +27,14 @@ public class JSONArray extends ArrayList implements List, JSONAware, JSONStreamA
 	 * @param list
 	 * @param out
 	 */
-	public static void writeJSONString(final List list, final Writer out) throws IOException {
+	public static void writeJSONString(final List<Object> list, final Writer out) throws IOException {
 		if (list == null) {
 			out.write("null");
 			return;
 		}
 
 		boolean first = true;
-		final Iterator iter = list.iterator();
+		final Iterator<Object> iter = list.iterator();
 
 		out.write('[');
 		while (iter.hasNext()) {
@@ -69,14 +69,14 @@ public class JSONArray extends ArrayList implements List, JSONAware, JSONStreamA
 	 * @param list
 	 * @return JSON text, or "null" if list is null.
 	 */
-	public static String toJSONString(final List list) {
+	public static String toJSONString(final List<Object> list) {
 		if (list == null) {
 			return "null";
 		}
 
 		boolean first = true;
 		final StringBuffer sb = new StringBuffer();
-		final Iterator iter = list.iterator();
+		final Iterator<Object> iter = list.iterator();
 
 		sb.append('[');
 		while (iter.hasNext()) {
@@ -106,5 +106,4 @@ public class JSONArray extends ArrayList implements List, JSONAware, JSONStreamA
 	public String toString() {
 		return toJSONString();
 	}
-
 }

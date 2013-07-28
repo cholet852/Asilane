@@ -10,6 +10,7 @@ import org.json.simple.JSONValue;
 
 import com.asilane.core.Language;
 import com.asilane.facade.AsilaneUtils;
+import com.asilane.facade.history.HistoryTree;
 import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
@@ -18,7 +19,7 @@ import com.sun.jndi.toolkit.url.UrlUtil;
  */
 public class WeatherForecastService implements IService {
 
-	private static final String WHAT_THE_WEATHER_LIKE_IN = "what.* the weather like in .*";
+	private static final String WHAT_THE_WEATHER_LIKE_IN = "what.* the weather like .. .*";
 	private static final String QUEL_LE_TEMPS_A = "quel.* le temps à.*";
 	private static final String QUEL_TEMPS_FAIT_IL_A = "quel.* temps fait.*il à .*";
 	private static final String QUEL_METEO_AU = "quel.* météo au. .*";
@@ -30,7 +31,7 @@ public class WeatherForecastService implements IService {
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang) {
+	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
 		String city = "";
 		List<String> regexVars = null;
 
@@ -133,7 +134,7 @@ public class WeatherForecastService implements IService {
 				.toString();
 
 		// Convert Kelvin temperature to Celsius
-		final int temperature = (int) Math.round((double) parsedMain.get("temp") - 273.15);
+		final int temperature = (int) Math.round(Double.valueOf(parsedMain.get("temp").toString()) - 273.15);
 
 		// Saying the weather in the appropriate language
 		if (lang == Language.french) {

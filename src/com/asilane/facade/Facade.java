@@ -34,9 +34,8 @@ public class Facade {
 
 		// Return the response of the service if this one is found
 		if (askedService != null) {
-			final String answer = askedService.handleService(preparedSentence, lang);
+			final String answer = askedService.handleService(preparedSentence, lang, historyTree);
 			historyTree.addNode(sentence, answer, askedService);
-			System.out.println(historyTree);
 			return answer;
 		}
 

@@ -3,6 +3,7 @@ package com.asilane.service;
 import java.util.Set;
 
 import com.asilane.core.Language;
+import com.asilane.facade.history.HistoryTree;
 
 /**
  * Each Service have to implemente this interface to be used on the application
@@ -14,10 +15,11 @@ public interface IService {
 	 * This will return an appropriate answer to the question in the good language
 	 * 
 	 * @param sentence
+	 * @param historyTree
 	 * @param language
 	 * @return an appropriate answer to the question in the good language
 	 */
-	String handleService(final String sentence, final Language lang);
+	String handleService(final String sentence, final Language lang, final HistoryTree historyTree);
 
 	/**
 	 * This will returns all sentences which the service can be called
