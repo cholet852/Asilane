@@ -1,7 +1,7 @@
-#Java-Speech API Credits
+#Asilane Credits
 
 ##Credits
-The following people/organizations have helped provide functionality for the API,
+The following people/organizations have helped provide functionality for Asilane,
 
 * Java Speech Api by The-Shadow
 	* JavaFlacEncoder Project
@@ -17,5 +17,5 @@ The following people/organizations have helped provide functionality for the API
 		    * Allows for text to speech translation
 	    * Homepage: http://google.com
 
-I would like to thank the above so much for your work, this wrapper/API could not have been
+I would like to thank the above so much for your work, Asilane could not have been
 created without it.
