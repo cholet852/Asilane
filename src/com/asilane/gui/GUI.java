@@ -25,6 +25,7 @@ public class GUI {
 	private JTextArea textArea;
 	private JButton btnRecord;
 	private JTextField textField;
+	private JLabel lblPosezUneQuestion;
 
 	/**
 	 * Create the application.
@@ -53,11 +54,12 @@ public class GUI {
 		frmAsilane.getContentPane().add(lblAsilane);
 
 		btnRecord = new JButton("Record");
-		btnRecord.setBounds(227, 101, 147, 36);
+		btnRecord.setBounds(224, 51, 147, 36);
 		btnRecord.addActionListener(new Controller(this));
 		frmAsilane.getContentPane().add(btnRecord);
 
 		languageComboBox = new JComboBox<String>();
+		languageComboBox.addActionListener(new ComboBoxController(this));
 		languageComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "French", "English" }));
 		languageComboBox.setBounds(443, 420, 125, 24);
 		frmAsilane.getContentPane().add(languageComboBox);
@@ -70,10 +72,14 @@ public class GUI {
 		textArea.setColumns(10);
 
 		textField = new JTextField();
-		textField.setBounds(23, 423, 174, 19);
+		textField.setBounds(393, 113, 193, 19);
 		textField.addActionListener(new Controller(this));
 		frmAsilane.getContentPane().add(textField);
 		textField.setColumns(10);
+
+		lblPosezUneQuestion = new JLabel("Posez une question à l'écrit ou appuyez sur Record :");
+		lblPosezUneQuestion.setBounds(12, 115, 375, 15);
+		frmAsilane.getContentPane().add(lblPosezUneQuestion);
 	}
 
 	/**
@@ -111,4 +117,10 @@ public class GUI {
 		return textField;
 	}
 
+	/**
+	 * @return the lblPosezUneQuestion
+	 */
+	public JLabel getManualTypeLabel() {
+		return lblPosezUneQuestion;
+	}
 }

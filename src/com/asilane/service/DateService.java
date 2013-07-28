@@ -73,7 +73,12 @@ public class DateService implements IService {
 	 */
 	@Override
 	public String handleRecoveryService(final String sentence, final Language lang) {
-		if (sentence.contains("et maintenant")) {
+		if (lang == Language.french) {
+			if (sentence.contains("et maintenant")) {
+				return handleService("", lang);
+			}
+		}
+		if (sentence.contains("and now")) {
 			return handleService("", lang);
 		}
 

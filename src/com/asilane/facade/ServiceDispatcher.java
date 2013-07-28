@@ -28,13 +28,16 @@ import com.asilane.service.WikipediaService;
 public class ServiceDispatcher {
 	private static ServiceDispatcher INSTANCE;
 	private static Map<IService, Set<String>> commandsMap;
+	private final Language lang;
 
 	private ServiceDispatcher(final Language lang) {
 		initMaps(lang);
+		this.lang = lang;
 	}
 
 	public static ServiceDispatcher getInstance(final Language lang) {
-		if (INSTANCE == null) {
+		// If there is no instance or if the lang is not the same than the local instance
+		if (INSTANCE == null || INSTANCE.lang != lang) {
 			INSTANCE = new ServiceDispatcher(lang);
 		}
 		return INSTANCE;

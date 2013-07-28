@@ -27,6 +27,7 @@ public class Asilane {
 	 */
 	public Asilane() {
 		facade = new Facade();
+		lang = Language.french;
 	}
 
 	/**
