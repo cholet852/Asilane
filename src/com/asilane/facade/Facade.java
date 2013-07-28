@@ -40,6 +40,7 @@ public class Facade {
 			return answer;
 		}
 
+		// If no any service has been found trying to call recovery handling in the previous service
 		final HistoryNode lastNode = historyTree.getLastNode();
 		final String recoveryAnswer = historyTree.getFirstNode().isLeaf() ? null : lastNode.getService()
 				.handleRecoveryService(preparedSentence, lang);
@@ -48,7 +49,7 @@ public class Facade {
 			return recoveryAnswer;
 		}
 
-		// No any command valid, error message
+		// If normal handling and recovery hangling don't work, error message
 		if (lang == Language.french) {
 			return "Je n'ai pas bien compris, pouvez-vous répéter ?";
 		}

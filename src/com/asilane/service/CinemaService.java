@@ -40,4 +40,14 @@ public class CinemaService implements IService {
 
 		return set;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 */
+	@Override
+	public String handleRecoveryService(final String sentence, final Language lang) {
+		return null;
+	}
 }

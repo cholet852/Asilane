@@ -1,17 +1,15 @@
 package com.asilane.service;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 import com.asilane.core.Language;
+import com.asilane.core.PlayerThread;
 
 /**
  * @author walane
@@ -26,21 +24,15 @@ public class MediaPlayerService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Language lang) {
-		// from a wave File
-		final File soundFile = new File("/home/walane/Bureau/test.wav");
-		final Clip clip;
-		AudioInputStream audioIn;
 		try {
-			audioIn = AudioSystem.getAudioInputStream(soundFile);
-			clip = AudioSystem.getClip();
-			clip.open(audioIn);
-			clip.start();
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-			// TODO Auto-generated catch block
+			final Player player = new Player(new FileInputStream(
+					"/home/walane/Musique/Red Hot Chili Peppers/Unknown Album/Snow [Hey Oh].mp3"));
+			new PlayerThread(player).start();
+		} catch (FileNotFoundException | JavaLayerException e) {
 			e.printStackTrace();
 		}
 
-		return "42";
+		return "C'est parti !";
 	}
 
 	/*
@@ -58,5 +50,11 @@ public class MediaPlayerService implements IService {
 		}
 
 		return set;
+	}
+
+	@Override
+	public String handleRecoveryService(final String sentence, final Language lang) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

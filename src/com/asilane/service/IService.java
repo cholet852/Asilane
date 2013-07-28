@@ -17,7 +17,7 @@ public interface IService {
 	 * @param language
 	 * @return an appropriate answer to the question in the good language
 	 */
-	String handleService(final String sentence, final Language language);
+	String handleService(final String sentence, final Language lang);
 
 	/**
 	 * This will returns all sentences which the service can be called
@@ -34,5 +34,5 @@ public interface IService {
 	 * @param language
 	 * @return an appropriate answer if there is no answer given
 	 */
-	String handleRecoveryService(final String sentence, final Language language);
+	String handleRecoveryService(final String sentence, final Language lang);
 }

@@ -106,7 +106,7 @@ public class Asilane {
 	}
 
 	public String handleSentence(final String sentence) {
-		return facade.handleSentence(sentence, Language.french);
+		return facade.handleSentence(sentence, lang);
 	}
 
 	/**

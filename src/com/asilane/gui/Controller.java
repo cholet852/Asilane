@@ -27,11 +27,6 @@ public class Controller implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		if (!gui.getTextField().getText().isEmpty()) {
-			gui.getTextFieldResponse().setText(gui.getAsilane().handleSentence(gui.getTextField().getText()));
-			return;
-		}
-
 		final String textLang = gui.getLanguageComboBox().getModel().getSelectedItem().toString();
 		Language lang;
 		if (textLang.equals("French")) {
@@ -41,6 +36,13 @@ public class Controller implements ActionListener {
 		}
 		gui.getAsilane().setLanguage(lang);
 
+		// Manual call
+		if (!gui.getTextField().getText().isEmpty()) {
+			gui.getTextFieldResponse().setText(gui.getAsilane().handleSentence(gui.getTextField().getText()));
+			return;
+		}
+
+		// Voice call
 		if (CaptureState.PROCESSING_AUDIO.equals(gui.getAsilane().getRecordingState())) {
 			final String iaResponse = gui.getAsilane().closeRecordAndHandleSentence();
 			gui.getBtnRecord().setText("Record");

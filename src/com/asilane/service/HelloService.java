@@ -98,7 +98,17 @@ public class HelloService implements IService {
 	}
 
 	@Override
-	public String handleRecoveryService(final String sentence, final Language language) {
-		return "Je vais toujours bien";
+	public String handleRecoveryService(final String sentence, final Language lang) {
+		if (lang == Language.french) {
+			if (sentence.contains("et toi")) {
+				return "Je vais toujours bien";
+			}
+		}
+
+		if (sentence.contains("what about you") || sentence.contains("and you")) {
+			return "I'm always good";
+		}
+
+		return null;
 	}
 }

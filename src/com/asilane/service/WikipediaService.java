@@ -27,7 +27,7 @@ import com.sun.jndi.toolkit.url.UrlUtil;
  */
 public class WikipediaService implements IService {
 
-	private static final String WHAT_IS_A = "what is a.*";
+	private static final String WHAT_IS_A = "what.* a.*";
 	private static final String QU_EST_CE_QUE = "qu.*ce.*que.* .*";
 	private static final String QU_EST_CE_QU = "qu.*ce.*qu'.* .*";
 	private static final String CEST_QUOI = "c'est quoi.* .*";
@@ -67,7 +67,7 @@ public class WikipediaService implements IService {
 
 		// ENGLISH
 		if ((regexVars = AsilaneUtils.extractRegexVars(WHAT_IS_A, sentence)) != null) {
-			return getInfosFromWikipedia(regexVars.get(0), lang);
+			return getInfosFromWikipedia(regexVars.get(1), lang);
 		}
 		return null;
 	}
@@ -98,8 +98,22 @@ public class WikipediaService implements IService {
 	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Language language) {
-		// TODO Auto-generated method stub
+	public String handleRecoveryService(final String sentence, final Language lang) {
+		List<String> regexVars = null;
+
+		if (lang == Language.french) {
+			if ((regexVars = AsilaneUtils.extractRegexVars("et un.* .*", sentence)) != null) {
+				final String var = (regexVars.get(1) == null || regexVars.get(1).isEmpty()) ? regexVars.get(0)
+						: regexVars.get(1);
+				return getInfosFromWikipedia(var, lang);
+			}
+		}
+
+		if ((regexVars = AsilaneUtils.extractRegexVars("and.* .*", sentence)) != null) {
+			final String var = (regexVars.get(1) == null || regexVars.get(1).isEmpty()) ? regexVars.get(0) : regexVars
+					.get(1);
+			return getInfosFromWikipedia(var, lang);
+		}
 		return null;
 	}
 

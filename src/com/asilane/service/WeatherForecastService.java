@@ -2,6 +2,7 @@ package com.asilane.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
@@ -17,6 +18,12 @@ import com.sun.jndi.toolkit.url.UrlUtil;
  */
 public class WeatherForecastService implements IService {
 
+	private static final String WHAT_THE_WEATHER_LIKE_IN = "what.* the weather like in .*";
+	private static final String QUEL_LE_TEMPS_A = "quel.* le temps à.*";
+	private static final String QUEL_TEMPS_FAIT_IL_A = "quel.* temps fait.*il à .*";
+	private static final String QUEL_METEO_AU = "quel.* météo au. .*";
+	private static final String QUEL_METEO_A = "quel.* météo à .*";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -24,20 +31,23 @@ public class WeatherForecastService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Language lang) {
-		// TODO : Use regular expressions to get the city
-		final String city;
+		String city = "";
+		List<String> regexVars = null;
+
+		// FRENCH
 		if (lang == Language.french) {
-			int cityIndex = 0;
-			if (sentence.contains("aux")) {
-				cityIndex = sentence.lastIndexOf("aux") + 3;
-			} else if (sentence.contains("au")) {
-				cityIndex = sentence.lastIndexOf("au") + 2;
-			} else if (sentence.contains("à")) {
-				cityIndex = sentence.lastIndexOf('à') + 1;
+			if ((regexVars = AsilaneUtils.extractRegexVars(QUEL_LE_TEMPS_A, sentence)) != null) {
+				city = regexVars.get(1);
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(QUEL_TEMPS_FAIT_IL_A, sentence)) != null) {
+				city = regexVars.get(2);
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(QUEL_METEO_AU, sentence)) != null) {
+				city = regexVars.get(1);
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(QUEL_METEO_A, sentence)) != null) {
+				city = regexVars.get(1);
 			}
-			city = sentence.substring(cityIndex).trim();
 		} else {
-			city = sentence.substring(sentence.lastIndexOf("in") + 1).trim();
+			regexVars = AsilaneUtils.extractRegexVars(WHAT_THE_WEATHER_LIKE_IN, sentence);
+			city = regexVars.get(1);
 		}
 
 		// The city must no be empty to get the weather forecast
@@ -61,15 +71,33 @@ public class WeatherForecastService implements IService {
 		final Set<String> set = new HashSet<String>();
 
 		if (lang == Language.french) {
-			set.add("quel.* météo à .*");
-			set.add("quel.* météo au.* .*");
-			set.add("quel.* temps fait.*il à .*");
-			set.add("quel.* le temps à.*");
+			set.add(QUEL_METEO_A);
+			set.add(QUEL_METEO_AU);
+			set.add(QUEL_TEMPS_FAIT_IL_A);
+			set.add(QUEL_LE_TEMPS_A);
 		} else {
-			set.add("what.* the weather like in .*");
+			set.add(WHAT_THE_WEATHER_LIKE_IN);
 		}
 
 		return set;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 */
+	@Override
+	public String handleRecoveryService(final String sentence, final Language lang) {
+		List<String> regexVars = null;
+
+		if (lang == Language.french) {
+			if ((regexVars = AsilaneUtils.extractRegexVars("et .* .*", sentence)) != null) {
+				return getWeatherForecast(regexVars.get(1), lang);
+			}
+		}
+
+		return null;
 	}
 
 	private String getWeatherForecast(final String city, final Language lang) {
@@ -129,4 +157,5 @@ public class WeatherForecastService implements IService {
 		}
 		return "Cannot get the weather forecast.";
 	}
+
 }

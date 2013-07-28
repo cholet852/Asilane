@@ -8,7 +8,6 @@ import java.util.Set;
 import com.asilane.core.Language;
 import com.asilane.service.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentityService;
-import com.asilane.service.CalculatorService;
 import com.asilane.service.DateService;
 import com.asilane.service.FortyTwoService;
 import com.asilane.service.HelloService;
@@ -87,7 +86,6 @@ public class ServiceDispatcher {
 		allServices.add(new AsilaneDialogService());
 		allServices.add(new DateService());
 		allServices.add(new IPService());
-		allServices.add(new CalculatorService());
 		allServices.add(new WikipediaService());
 
 		return allServices;

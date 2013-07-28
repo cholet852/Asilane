@@ -4,9 +4,11 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.asilane.core.Language;
+import com.asilane.facade.AsilaneUtils;
 import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
@@ -19,8 +21,7 @@ public class WebBrowserService implements IService {
 	private static final String VA_SUR = "va sur.*";
 	private static final String GIVE_ME_INFO_ON = "give me info.* on.*";
 	private static final String SEARCH_INFO_ON = "search info.* on.*";
-	private static final String DONNE_MOI_DES_INFO_SUR = "donne.*moi des info.* sur.*";
-	private static final String CHERCHE_DES_INFO_SUR = "cherche des info.* sur.*";
+	private static final String INFO_SUR = ".*info.* sur .*";
 
 	/*
 	 * (non-Javadoc)
@@ -30,21 +31,20 @@ public class WebBrowserService implements IService {
 	@Override
 	public String handleService(final String sentence, final Language lang) {
 		if (Desktop.isDesktopSupported()) {
-			// TODO : Use regular expressions to extract vars
 			// Extract the website we are looking for
-			String term = "";
+			List<String> regexVars = null;
+			final String term = "";
 			if (lang == Language.french) {
-				if (sentence.contains("sur le")) {
-					term = sentence.substring(sentence.lastIndexOf("sur le") + 6).trim();
-				} else if (sentence.contains("sur les")) {
-					term = sentence.substring(sentence.lastIndexOf("sur les") + 7).trim();
-				} else if (sentence.contains("sur la")) {
-					term = sentence.substring(sentence.lastIndexOf("sur la") + 6).trim();
-				} else {
-					term = sentence.substring(sentence.lastIndexOf("sur") + 3).trim();
+				if ((regexVars = AsilaneUtils.extractRegexVars(VA_SUR, sentence)) != null) {
+					return handleSearch(regexVars.get(0), lang, true);
+				} else if ((regexVars = AsilaneUtils.extractRegexVars(INFO_SUR, sentence)) != null) {
+					return handleSearch(regexVars.get(2), lang, false);
 				}
-			} else {
-				term = sentence.substring(sentence.lastIndexOf("on") + 2).trim();
+			}
+			if ((regexVars = AsilaneUtils.extractRegexVars(GO_ON, sentence)) != null) {
+				return handleSearch(regexVars.get(0), lang, true);
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(SEARCH_INFO_ON, sentence)) != null) {
+				return handleSearch(regexVars.get(1), lang, false);
 			}
 
 			// If no website provided
@@ -54,25 +54,28 @@ public class WebBrowserService implements IService {
 				}
 				return "Please specify a website.";
 			}
+		}
 
-			// Find website, go to this website, say a confirmation
-			final Desktop desktop = Desktop.getDesktop();
-			if (desktop.isSupported(Desktop.Action.BROWSE)) {
-				try {
-					// Duck duck go is used to get the website for more anonymous
-					final String directBrowsing = sentence.matches(VA_SUR) || sentence.matches(GO_ON)
-							|| sentence.matches(DONNE_MOI_DES_INFO_SUR) || sentence.matches(GIVE_ME_INFO_ON) ? "!%20"
-							: "";
-					desktop.browse(URI.create("https://duckduckgo.com/?q=" + directBrowsing
-							+ UrlUtil.encode(term, "UTF-8")));
+		return handleErrorMessage(lang);
+	}
 
-					if (lang == Language.french) {
-						return "Ok, je cherche des informations sur " + term + ".";
-					}
-					return "Ok, i'm looking for informations on " + term + ".";
-				} catch (final IOException e) {
-					return handleErrorMessage(lang);
+	private String handleSearch(final String term, final Language lang, final boolean directBrowsing) {
+		// Find website, go to this website, say a confirmation
+		final Desktop desktop = Desktop.getDesktop();
+		if (desktop.isSupported(Desktop.Action.BROWSE)) {
+			try {
+				// Duck duck go is used to get the website for more anonymous
+				final String directBrowsingString = directBrowsing ? "!%20" : "";
+				desktop.browse(URI.create("https://duckduckgo.com/?q=" + directBrowsingString
+						+ UrlUtil.encode(term, "UTF-8")));
+
+				if (lang == Language.french) {
+					return directBrowsing ? "Ok, je vais sur " + term : "Ok, je cherche des informations sur " + term
+							+ ".";
 				}
+				return directBrowsing ? "Ok i'm going on " + term : "Ok, i'm looking for informations on " + term + ".";
+			} catch (final IOException e) {
+				return handleErrorMessage(lang);
 			}
 		}
 		return handleErrorMessage(lang);
@@ -96,8 +99,7 @@ public class WebBrowserService implements IService {
 
 		if (lang == Language.french) {
 			set.add(VA_SUR);
-			set.add(CHERCHE_DES_INFO_SUR);
-			set.add(DONNE_MOI_DES_INFO_SUR);
+			set.add(INFO_SUR);
 		} else {
 			set.add(GO_ON);
 			set.add(SEARCH_INFO_ON);
@@ -105,5 +107,15 @@ public class WebBrowserService implements IService {
 		}
 
 		return set;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 */
+	@Override
+	public String handleRecoveryService(final String sentence, final Language lang) {
+		return null;
 	}
 }
