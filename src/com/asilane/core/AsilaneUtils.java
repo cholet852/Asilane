@@ -19,6 +19,41 @@ import java.util.regex.Pattern;
 public class AsilaneUtils {
 
 	/**
+	 * Extract all variables which are in the regex
+	 * 
+	 * @param regex
+	 * @param sentence
+	 * @return a list which contains all variables which are in the regex
+	 */
+	public static List<String> extractRegexVars(final String regex, final String sentence) {
+		String regexCleaned = regex.replace(".*", "(.*)");
+
+		// Enlarge regex to expand performances
+		if (!regex.startsWith(".*")) {
+			regexCleaned = ".*" + regexCleaned;
+		}
+		if (!regex.endsWith(".*")) {
+			regexCleaned = regexCleaned + ".*";
+		}
+
+		final Pattern pattern = Pattern.compile(regexCleaned);
+		final Matcher matcher = pattern.matcher(sentence);
+
+		// If there is no any match
+		if (!matcher.matches()) {
+			return null;
+		}
+
+		// If not, adding extract all variables in a List
+		final List<String> results = new ArrayList<String>();
+		for (int i = 1; i <= matcher.groupCount(); i++) {
+			results.add(matcher.group(i));
+		}
+
+		return results;
+	}
+
+	/**
 	 * This will return the content of a web page
 	 * 
 	 * @param address
@@ -64,40 +99,5 @@ public class AsilaneUtils {
 		} catch (final IOException e) {
 			return false;
 		}
-	}
-
-	/**
-	 * Extract all variables which are in the regex
-	 * 
-	 * @param regex
-	 * @param sentence
-	 * @return a list which contains all variables which are in the regex
-	 */
-	public static List<String> extractRegexVars(final String regex, final String sentence) {
-		String regexCleaned = regex.replace(".*", "(.*)");
-
-		// Enlarge regex to expand performances
-		if (!regex.startsWith(".*")) {
-			regexCleaned = ".*" + regexCleaned;
-		}
-		if (!regex.endsWith(".*")) {
-			regexCleaned = regexCleaned + ".*";
-		}
-
-		final Pattern pattern = Pattern.compile(regexCleaned);
-		final Matcher matcher = pattern.matcher(sentence);
-
-		// If there is no any match
-		if (!matcher.matches()) {
-			return null;
-		}
-
-		// If not, adding extract all variables in a List
-		final List<String> results = new ArrayList<String>();
-		for (int i = 1; i <= matcher.groupCount(); i++) {
-			results.add(matcher.group(i));
-		}
-
-		return results;
 	}
 }

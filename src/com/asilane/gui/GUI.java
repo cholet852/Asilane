@@ -7,9 +7,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.text.DefaultCaret;
 
 import com.asilane.core.Asilane;
 
@@ -66,10 +68,17 @@ public class GUI {
 
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setBounds(12, 171, 574, 212);
 		textArea.setLineWrap(true);
-		frmAsilane.getContentPane().add(textArea);
 		textArea.setColumns(10);
+
+		// Disable auto scrolling
+		final DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+
+		final JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(12, 171, 574, 212);
+		frmAsilane.getContentPane().add(scrollPane);
 
 		textField = new JTextField();
 		textField.setBounds(393, 113, 193, 19);

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.asilane.core.Language;
+import com.asilane.core.facade.ServiceDispatcher;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -12,6 +13,14 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class AsilaneDialogService implements IService {
 
+	private static final String TEST = "test";
+	private static final String NO = "no";
+	private static final String YES = "yes";
+	private static final String QUE_SAIS_TU_FAIRE = ".*sais.* faire";
+	private static final String MERCI = ".*merci";
+	private static final String NON = "non";
+	private static final String OUI = "oui";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -19,12 +28,26 @@ public class AsilaneDialogService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
-		if (sentence.matches("oui")) {
+		if (sentence.matches(OUI)) {
 			return "Ok.";
-		} else if (sentence.matches("non")) {
+		} else if (sentence.matches(NON)) {
 			return "Pourquoi non ?";
-		} else if (sentence.matches(".*merci")) {
+		} else if (sentence.matches(MERCI)) {
 			return "Derien, c'est un plaisir de vous aider.";
+		} else if (sentence.matches(TEST)) {
+			return "Ça marche !";
+		} else if (sentence.matches(QUE_SAIS_TU_FAIRE)) {
+			final StringBuilder builder = new StringBuilder("Voici tout ce que je sais faire :\n\n");
+
+			// Scan all services commands
+			for (final IService service : ServiceDispatcher.getInstance(lang).getAllServices()) {
+				builder.append("[" + service.getClass().getSimpleName() + "]\n");
+				for (final String regex : service.getCommands(lang)) {
+					builder.append(regex + "\n");
+				}
+				builder.append("\n");
+			}
+			return builder.toString();
 		}
 
 		return "Ok.";
@@ -40,12 +63,14 @@ public class AsilaneDialogService implements IService {
 		final Set<String> set = new HashSet<String>();
 
 		if (lang == Language.french) {
-			set.add("oui");
-			set.add("non");
-			set.add(".*merci");
+			set.add(OUI);
+			set.add(NON);
+			set.add(MERCI);
+			set.add(QUE_SAIS_TU_FAIRE);
+			set.add(TEST);
 		} else {
-			set.add("yes");
-			set.add("no");
+			set.add(YES);
+			set.add(NO);
 		}
 
 		return set;
