@@ -22,7 +22,6 @@ public class Synthesiser {
 	 * Constructor
 	 */
 	public Synthesiser() {
-
 	}
 
 	/**

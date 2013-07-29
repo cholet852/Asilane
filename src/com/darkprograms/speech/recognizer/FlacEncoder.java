@@ -82,7 +82,7 @@ public class FlacEncoder {
 			audioInputStream.close();
 			flacOutputStream.close();
 			flacEncoder.clear();
-
+			inputFile.delete();
 		} catch (final Exception ex) {
 			ex.printStackTrace();
 		}

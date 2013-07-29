@@ -9,6 +9,7 @@ import com.asilane.gui.GUI;
 import com.darkprograms.speech.microphone.Microphone;
 import com.darkprograms.speech.microphone.Microphone.CaptureState;
 import com.darkprograms.speech.recognizer.Recognizer;
+import com.darkprograms.speech.synthesiser.PlayerThread;
 import com.darkprograms.speech.synthesiser.Synthesiser;
 
 /**

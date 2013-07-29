@@ -28,7 +28,7 @@ import com.sun.jndi.toolkit.url.UrlUtil;
  */
 public class WikipediaService implements IService {
 
-	private static final String WHAT_IS_A = "what.* a.*";
+	private static final String WHAT_IS_A = "what.* .*";
 	private static final String QU_EST_CE_QUE = "qu.*ce.*que.* .*";
 	private static final String QU_EST_CE_QU = "qu.*ce.*qu'.* .*";
 	private static final String CEST_QUOI = "c'est quoi.* .*";

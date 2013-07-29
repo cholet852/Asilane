@@ -1,4 +1,4 @@
-package com.asilane.core;
+package com.darkprograms.speech.synthesiser;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;

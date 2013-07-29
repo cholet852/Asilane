@@ -50,8 +50,8 @@ public class Facade {
 
 		// If normal handling and recovery hangling don't work, error message
 		if (lang == Language.french) {
-			return "Je n'ai pas bien compris, pouvez-vous répéter ?";
+			return "Je n'ai pas bien compris, pouvez-vous répéter ?\n" + sentence;
 		}
-		return "I don't understand, can you repeat?";
+		return "I don't understand, can you repeat?\n" + sentence;
 	}
 }
