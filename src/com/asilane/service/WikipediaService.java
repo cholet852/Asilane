@@ -19,7 +19,7 @@ import org.xml.sax.InputSource;
 
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
-import com.asilane.facade.history.HistoryTree;
+import com.asilane.core.facade.history.HistoryTree;
 import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
@@ -102,6 +102,7 @@ public class WikipediaService implements IService {
 	public String handleRecoveryService(final String sentence, final Language lang) {
 		List<String> regexVars = null;
 
+		// FRENCH
 		if (lang == Language.french) {
 			if ((regexVars = AsilaneUtils.extractRegexVars("et un.* .*", sentence)) != null) {
 				final String var = (regexVars.get(1) == null || regexVars.get(1).isEmpty()) ? regexVars.get(0)
@@ -110,6 +111,7 @@ public class WikipediaService implements IService {
 			}
 		}
 
+		// ENGLISH
 		if ((regexVars = AsilaneUtils.extractRegexVars("and.* .*", sentence)) != null) {
 			final String var = (regexVars.get(1) == null || regexVars.get(1).isEmpty()) ? regexVars.get(0) : regexVars
 					.get(1);
@@ -153,5 +155,4 @@ public class WikipediaService implements IService {
 			return null;
 		}
 	}
-
 }

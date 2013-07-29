@@ -9,6 +9,7 @@ import com.asilane.core.Language;
 import com.asilane.service.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentityService;
 import com.asilane.service.DateService;
+import com.asilane.service.FindPlaceService;
 import com.asilane.service.FortyTwoService;
 import com.asilane.service.HelloService;
 import com.asilane.service.IPService;
@@ -62,8 +63,8 @@ public class ServiceDispatcher {
 	public IService getService(final String sentence) {
 		// TODO : improve performances
 		for (final IService service : commandsMap.keySet()) {
-			for (final String sentenceService : commandsMap.get(service)) {
-				if (sentence.matches(sentenceService)) {
+			for (final String regexService : commandsMap.get(service)) {
+				if (sentence.matches(".*" + regexService + ".*")) {
 					return service;
 				}
 			}
@@ -90,6 +91,7 @@ public class ServiceDispatcher {
 		allServices.add(new DateService());
 		allServices.add(new IPService());
 		allServices.add(new WikipediaService());
+		allServices.add(new FindPlaceService());
 
 		return allServices;
 	}

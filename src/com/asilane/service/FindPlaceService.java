@@ -16,13 +16,11 @@ import com.sun.jndi.toolkit.url.UrlUtil;
  * @author walane
  * 
  */
-public class WebBrowserService implements IService {
+public class FindPlaceService implements IService {
 
-	private static final String GO_ON = "go on.*";
-	private static final String VA_SUR = "va sur.*";
-	private static final String GIVE_ME_INFO_ON = "give me info.* on.*";
-	private static final String SEARCH_INFO_ON = "search info.* on.*";
-	private static final String INFO_SUR = ".*info.* sur .*";
+	private static final String OU_SE_TROUVE = "o. se trouve .*";
+	private static final String OU_SE_SITUE = "o. se situe .*";
+	private static final String WHERE_IS = "where is .*";
 
 	/*
 	 * (non-Javadoc)
@@ -32,53 +30,50 @@ public class WebBrowserService implements IService {
 	@Override
 	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
 		if (Desktop.isDesktopSupported()) {
-			// Extract the website we are looking for
+			// Extract the place we are looking for
 			List<String> regexVars = null;
-			final String term = "";
+			String place = "";
 
 			// FRENCH
 			if (lang == Language.french) {
-				if ((regexVars = AsilaneUtils.extractRegexVars(VA_SUR, sentence)) != null) {
-					return handleSearch(regexVars.get(0), lang, true);
-				} else if ((regexVars = AsilaneUtils.extractRegexVars(INFO_SUR, sentence)) != null) {
-					return handleSearch(regexVars.get(2), lang, false);
+				if ((regexVars = AsilaneUtils.extractRegexVars(OU_SE_TROUVE, sentence)) != null
+						|| (regexVars = AsilaneUtils.extractRegexVars(OU_SE_SITUE, sentence)) != null) {
+					place = handleSearch(regexVars.get(0), lang);
 				}
 			}
 
 			// ENGLISH
-			if ((regexVars = AsilaneUtils.extractRegexVars(GO_ON, sentence)) != null) {
-				return handleSearch(regexVars.get(0), lang, true);
-			} else if ((regexVars = AsilaneUtils.extractRegexVars(SEARCH_INFO_ON, sentence)) != null) {
-				return handleSearch(regexVars.get(1), lang, false);
+			if ((regexVars = AsilaneUtils.extractRegexVars(WHERE_IS, sentence)) != null) {
+				place = handleSearch(regexVars.get(0), lang);
 			}
 
 			// If no website provided
-			if (term.isEmpty()) {
+			if (place.isEmpty()) {
 				if (lang == Language.french) {
-					return "Merci de spécifier un site Web";
+					return "Merci de spécifier un lieu.";
 				}
-				return "Please specify a website.";
+				return "Please specify a place.";
 			}
+			return place;
 		}
 
 		return handleErrorMessage(lang);
 	}
 
-	private String handleSearch(final String term, final Language lang, final boolean directBrowsing) {
+	private String handleSearch(final String place, final Language lang) {
 		// Find website, go to this website, say a confirmation
 		final Desktop desktop = Desktop.getDesktop();
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
 				// Duck duck go is used to get the website for more anonymous
-				final String directBrowsingString = directBrowsing ? "!%20" : "";
-				desktop.browse(URI.create("https://duckduckgo.com/?q=" + directBrowsingString
-						+ UrlUtil.encode(term, "UTF-8")));
+				desktop.browse(URI.create("https://maps.google.fr/maps?q=" + UrlUtil.encode(place, "UTF-8") + "&hl="
+						+ lang.toString().substring(0, 2)));
 
 				if (lang == Language.french) {
-					return directBrowsing ? "Ok, je vais sur " + term : "Ok, je cherche des informations sur " + term
-							+ ".";
+					return "Voici où se situe " + place + ".";
 				}
-				return directBrowsing ? "Ok i'm going on " + term : "Ok, i'm looking for informations on " + term + ".";
+
+				return "This is where " + place + " is.";
 			} catch (final IOException e) {
 				return handleErrorMessage(lang);
 			}
@@ -103,12 +98,10 @@ public class WebBrowserService implements IService {
 		final Set<String> set = new HashSet<String>();
 
 		if (lang == Language.french) {
-			set.add(VA_SUR);
-			set.add(INFO_SUR);
+			set.add(OU_SE_TROUVE);
+			set.add(OU_SE_SITUE);
 		} else {
-			set.add(GO_ON);
-			set.add(SEARCH_INFO_ON);
-			set.add(GIVE_ME_INFO_ON);
+			set.add(WHERE_IS);
 		}
 
 		return set;
@@ -121,6 +114,20 @@ public class WebBrowserService implements IService {
 	 */
 	@Override
 	public String handleRecoveryService(final String sentence, final Language lang) {
+		List<String> regexVars = null;
+
+		// FRENCH
+		if (lang == Language.french) {
+			if ((regexVars = AsilaneUtils.extractRegexVars("et .*", sentence)) != null) {
+				return handleSearch(regexVars.get(0), lang);
+			}
+		}
+
+		// ENGLISH
+		if ((regexVars = AsilaneUtils.extractRegexVars("and .*", sentence)) != null) {
+			return handleSearch(regexVars.get(0), lang);
+		}
+
 		return null;
 	}
 }

@@ -3,7 +3,7 @@ package com.asilane.service;
 import java.util.Set;
 
 import com.asilane.core.Language;
-import com.asilane.facade.history.HistoryTree;
+import com.asilane.core.facade.history.HistoryTree;
 
 /**
  * Each Service have to implemente this interface to be used on the application

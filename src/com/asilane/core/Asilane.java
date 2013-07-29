@@ -107,8 +107,16 @@ public class Asilane {
 		return true;
 	}
 
+	/**
+	 * Direct sentence handling without voice recognition
+	 * 
+	 * @param sentence
+	 * @return The response of the IA corresponding to the sentence
+	 */
 	public String handleSentence(final String sentence) {
-		return facade.handleSentence(sentence, lang);
+		final String iaRespone = facade.handleSentence(sentence, lang);
+		textToSpeech(iaRespone);
+		return iaRespone;
 	}
 
 	/**

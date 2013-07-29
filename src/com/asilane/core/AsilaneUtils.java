@@ -74,7 +74,17 @@ public class AsilaneUtils {
 	 * @return a list which contains all variables which are in the regex
 	 */
 	public static List<String> extractRegexVars(final String regex, final String sentence) {
-		final Pattern pattern = Pattern.compile(regex.replace(".*", "(.*)"));
+		String regexCleaned = regex.replace(".*", "(.*)");
+
+		// Enlarge regex to expand performances
+		if (!regex.startsWith(".*")) {
+			regexCleaned = ".*" + regexCleaned;
+		}
+		if (!regex.endsWith(".*")) {
+			regexCleaned = regexCleaned + ".*";
+		}
+
+		final Pattern pattern = Pattern.compile(regexCleaned);
 		final Matcher matcher = pattern.matcher(sentence);
 
 		// If there is no any match

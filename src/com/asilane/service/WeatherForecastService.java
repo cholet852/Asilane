@@ -10,7 +10,7 @@ import org.json.simple.JSONValue;
 
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
-import com.asilane.facade.history.HistoryTree;
+import com.asilane.core.facade.history.HistoryTree;
 import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
@@ -46,7 +46,9 @@ public class WeatherForecastService implements IService {
 			} else if ((regexVars = AsilaneUtils.extractRegexVars(QUEL_METEO_A, sentence)) != null) {
 				city = regexVars.get(1);
 			}
-		} else {
+		}
+		// ENGLISH
+		else {
 			regexVars = AsilaneUtils.extractRegexVars(WHAT_THE_WEATHER_LIKE_IN, sentence);
 			city = regexVars.get(1);
 		}

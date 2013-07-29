@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.asilane.core.Language;
-import com.asilane.facade.history.HistoryTree;
+import com.asilane.core.facade.history.HistoryTree;
 
 /**
  * @author walane

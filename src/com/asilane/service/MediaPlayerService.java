@@ -11,8 +11,8 @@ import java.util.Set;
 import javazoom.jl.player.Player;
 
 import com.asilane.core.Language;
-import com.asilane.facade.history.HistoryNode;
-import com.asilane.facade.history.HistoryTree;
+import com.asilane.core.facade.history.HistoryNode;
+import com.asilane.core.facade.history.HistoryTree;
 import com.darkprograms.speech.synthesiser.PlayerThread;
 
 /**
