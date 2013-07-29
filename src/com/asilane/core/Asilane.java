@@ -4,7 +4,7 @@ import javax.sound.sampled.AudioFileFormat;
 
 import javazoom.jl.player.Player;
 
-import com.asilane.facade.Facade;
+import com.asilane.core.facade.Facade;
 import com.asilane.gui.GUI;
 import com.darkprograms.speech.microphone.Microphone;
 import com.darkprograms.speech.microphone.Microphone.CaptureState;

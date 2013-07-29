@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
-import com.asilane.facade.AsilaneUtils;
 import com.asilane.facade.history.HistoryTree;
 import com.sun.jndi.toolkit.url.UrlUtil;
 

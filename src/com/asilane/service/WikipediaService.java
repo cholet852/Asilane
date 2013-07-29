@@ -17,8 +17,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
-import com.asilane.facade.AsilaneUtils;
 import com.asilane.facade.history.HistoryTree;
 import com.sun.jndi.toolkit.url.UrlUtil;
 

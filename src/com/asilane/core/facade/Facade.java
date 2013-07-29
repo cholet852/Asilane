@@ -1,4 +1,4 @@
-package com.asilane.facade;
+package com.asilane.core.facade;
 
 import com.asilane.core.Language;
 import com.asilane.facade.history.HistoryNode;

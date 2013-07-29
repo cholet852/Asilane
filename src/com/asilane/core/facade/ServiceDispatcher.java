@@ -1,4 +1,4 @@
-package com.asilane.facade;
+package com.asilane.core.facade;
 
 import java.util.HashMap;
 import java.util.HashSet;

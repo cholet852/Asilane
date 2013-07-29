@@ -1,4 +1,4 @@
-package com.asilane.facade;
+package com.asilane.core;
 
 import java.io.BufferedReader;
 import java.io.IOException;
