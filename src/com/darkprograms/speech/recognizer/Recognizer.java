@@ -286,7 +286,7 @@ public class Recognizer {
 		outputStream.close();
 
 		// Get response data.
-		br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+		br = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), "UTF-8"));
 
 		final String response = br.readLine();
 
