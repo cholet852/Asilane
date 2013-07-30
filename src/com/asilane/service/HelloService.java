@@ -22,7 +22,7 @@ public class HelloService implements IService {
 	private static final String HOW_ARE_YOU = "how are you";
 	private static final String TU_VA_BIEN = ".*tu va.* bien";
 	private static final String CA_VA = ".a va";
-	private static final String COMMENT_CA_VA = ".*comment .a va";
+	private static final String COMMENT_CA_VA = ".*comment .. va.*";
 	private static final String COMMENT_VAS_TU = ".*comment va.*tu";
 	private static final String COMMENT_ALLEZ_VOUS = ".*comment allez.*vous";
 

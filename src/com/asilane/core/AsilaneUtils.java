@@ -47,7 +47,7 @@ public class AsilaneUtils {
 		// If not, adding extract all variables in a List
 		final List<String> results = new ArrayList<String>();
 		for (int i = 1; i <= matcher.groupCount(); i++) {
-			results.add(matcher.group(i));
+			results.add(matcher.group(i).trim());
 		}
 
 		return results;

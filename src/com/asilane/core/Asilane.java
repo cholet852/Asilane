@@ -1,16 +1,14 @@
 package com.asilane.core;
 
-import javax.sound.sampled.AudioFileFormat;
+import java.io.IOException;
 
-import javazoom.jl.player.Player;
+import javax.sound.sampled.AudioFileFormat;
 
 import com.asilane.core.facade.Facade;
 import com.asilane.gui.GUI;
 import com.darkprograms.speech.microphone.Microphone;
 import com.darkprograms.speech.microphone.Microphone.CaptureState;
 import com.darkprograms.speech.recognizer.Recognizer;
-import com.darkprograms.speech.synthesiser.PlayerThread;
-import com.darkprograms.speech.synthesiser.Synthesiser;
 
 /**
  * Record voice, play and return the IA response
@@ -62,6 +60,7 @@ public class Asilane {
 		final String textSpeeched = speechToText(SAVED_WAV);
 		if (textSpeeched != null) {
 			final String iaResponse = facade.handleSentence(textSpeeched, lang); // Understand what means the sentence
+			notification(iaResponse); // Display a notification
 			textToSpeech(iaResponse); // Say the response
 
 			return iaResponse; // Return the response;
@@ -96,15 +95,23 @@ public class Asilane {
 	 * 
 	 * @param textToSpeech
 	 */
-	private boolean textToSpeech(final String textToSpeech) {
+	private void textToSpeech(final String textToSpeech) {
+		TextToSpeechThread.getInstance().textToSpeech(textToSpeech, lang);
+		new Thread(TextToSpeechThread.getInstance()).start();
+	}
+
+	/**
+	 * Display a notification in the system
+	 * 
+	 * @param sentence
+	 */
+	private void notification(final String sentence) {
 		try {
-			final Synthesiser synthesiser = new Synthesiser();
-			final Player player = new Player(synthesiser.getMP3Data(textToSpeech, lang.toString().substring(0, 2)));
-			new PlayerThread(player).start();
-		} catch (final Exception e) {
-			return false;
+			final String[] cmd = { "/usr/bin/notify-send", "-t", "1000", sentence };
+			Runtime.getRuntime().exec(cmd);
+		} catch (final IOException e) {
+			e.printStackTrace();
 		}
-		return true;
 	}
 
 	/**
@@ -115,6 +122,7 @@ public class Asilane {
 	 */
 	public String handleSentence(final String sentence) {
 		final String iaRespone = facade.handleSentence(sentence, lang);
+		notification(iaRespone);
 		textToSpeech(iaRespone);
 		return iaRespone;
 	}

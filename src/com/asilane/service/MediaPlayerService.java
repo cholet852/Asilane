@@ -33,10 +33,14 @@ public class MediaPlayerService implements IService {
 			HistoryNode tmpNode = historyTree.getFirstNode();
 			while (!tmpNode.isLeaf()) {
 				tmpNode = (tmpNode.getLeftSon() == null) ? tmpNode.getRightSon() : tmpNode.getRightSon();
-				if (tmpNode.getService().getClass().equals(MediaPlayerService.class)) {
-					((MediaPlayerService) tmpNode.getService()).stopPlayerThread();
+				if (MediaPlayerService.class.equals(tmpNode.getService().getClass())) {
+					if (!((MediaPlayerService) tmpNode.getService()).stopPlayerThread()) {
+						break;
+					}
+					return "Je stop";
 				}
 			}
+			return "Il n'y a rien à stopper.";
 		} else {
 			try {
 				final List<String> filesList = listFiles("/home/walane/Musique/");
@@ -56,8 +60,12 @@ public class MediaPlayerService implements IService {
 	 * 
 	 */
 	@SuppressWarnings("deprecation")
-	public void stopPlayerThread() {
-		playerThread.stop();
+	public boolean stopPlayerThread() {
+		if (playerThread != null) {
+			playerThread.stop();
+			return true;
+		}
+		return false;
 	}
 
 	/**

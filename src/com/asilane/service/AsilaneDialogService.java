@@ -13,6 +13,7 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class AsilaneDialogService implements IService {
 
+	private static final String AU_REVOIR = "au.*revoir";
 	private static final String TEST = "test";
 	private static final String NO = "no";
 	private static final String YES = "yes";
@@ -36,6 +37,8 @@ public class AsilaneDialogService implements IService {
 			return "Derien, c'est un plaisir de vous aider.";
 		} else if (sentence.matches(TEST)) {
 			return "Ça marche !";
+		} else if (sentence.matches(AU_REVOIR)) {
+			System.exit(0);
 		} else if (sentence.matches(QUE_SAIS_TU_FAIRE)) {
 			final StringBuilder builder = new StringBuilder("Voici tout ce que je sais faire :\n\n");
 
@@ -68,6 +71,7 @@ public class AsilaneDialogService implements IService {
 			set.add(MERCI);
 			set.add(QUE_SAIS_TU_FAIRE);
 			set.add(TEST);
+			set.add(AU_REVOIR);
 		} else {
 			set.add(YES);
 			set.add(NO);

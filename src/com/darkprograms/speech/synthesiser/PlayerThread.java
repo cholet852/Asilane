@@ -4,7 +4,7 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 /**
- * This is for running the IA response speeched in another thread
+ * This is for play MP3 in another thread
  * 
  * @author walane
  */
@@ -12,7 +12,7 @@ public class PlayerThread extends Thread {
 	private final Player p;
 
 	/**
-	 * Create a new PlayerThread for running the IA response speeched in another thread
+	 * Create a new PlayerThread for play MP3 in another thread
 	 * 
 	 * @param p
 	 */
