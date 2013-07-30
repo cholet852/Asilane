@@ -19,7 +19,7 @@ public class CinemaService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
-		return "42";
+		return "Voici les films à l'affiche : Monstres Academy, Wolverine, Moi moche et méchant 2, Pacific Rim.";
 	}
 
 	/*
@@ -32,11 +32,8 @@ public class CinemaService implements IService {
 		final Set<String> set = new HashSet<String>();
 
 		if (lang == Language.french) {
-			set.add("quel.* est la réponse à l'univers");
-			set.add("quel.* est le nombre ultime");
+			set.add(".*au cinéma");
 		} else {
-			set.add("what is the answer of the universe");
-			set.add("what is the ultimate number");
 		}
 
 		return set;

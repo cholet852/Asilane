@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.asilane.core.Language;
 import com.asilane.core.facade.ServiceDispatcher;
+import com.asilane.core.facade.history.HistoryNode;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -13,6 +14,7 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class AsilaneDialogService implements IService {
 
+	private static final String DERNIERE_CHOSE_DEMANDE = ".*dernière chose .* demandé";
 	private static final String AU_REVOIR = "au.*revoir";
 	private static final String TEST = "test";
 	private static final String NO = "no";
@@ -39,6 +41,9 @@ public class AsilaneDialogService implements IService {
 			return "Ça marche !";
 		} else if (sentence.matches(AU_REVOIR)) {
 			System.exit(0);
+		} else if (sentence.matches(DERNIERE_CHOSE_DEMANDE)) {
+			final HistoryNode lastNode = historyTree.getLastNode();
+			return lastNode.getService().handleService(lastNode.getSentence(), lang, historyTree);
 		} else if (sentence.matches(QUE_SAIS_TU_FAIRE)) {
 			final StringBuilder builder = new StringBuilder("Voici tout ce que je sais faire :\n\n");
 
@@ -72,6 +77,7 @@ public class AsilaneDialogService implements IService {
 			set.add(QUE_SAIS_TU_FAIRE);
 			set.add(TEST);
 			set.add(AU_REVOIR);
+			set.add(DERNIERE_CHOSE_DEMANDE);
 		} else {
 			set.add(YES);
 			set.add(NO);

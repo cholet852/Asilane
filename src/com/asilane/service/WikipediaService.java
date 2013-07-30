@@ -1,10 +1,6 @@
 package com.asilane.service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -121,28 +117,12 @@ public class WikipediaService implements IService {
 	}
 
 	private String getInfosFromWikipedia(final String info, final Language lang) {
-		final String xmlResponse;
-		BufferedReader in = null;
 		try {
-			// We use amazon to get external IP
-			final URL ipService = new URL("http://" + lang.toString().substring(0, 2)
+			final String ipService = "http://" + lang.toString().substring(0, 2)
 					+ ".wikipedia.org/w/api.php?action=opensearch&search=" + UrlUtil.encode(info.trim(), "UTF-8")
-					+ "&format=xml&limit=1");
-			in = new BufferedReader(new InputStreamReader(ipService.openStream()));
-			xmlResponse = in.readLine();
-		} catch (final Exception e) {
-			return null;
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (final IOException e) {
-					return null;
-				}
-			}
-		}
+					+ "&format=xml&limit=1";
+			final String xmlResponse = AsilaneUtils.curl(ipService);
 
-		try {
 			final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			final Document doc = dBuilder.parse(new InputSource(new StringReader(xmlResponse)));
@@ -152,6 +132,7 @@ public class WikipediaService implements IService {
 			return ((Element) list.item(0)).getElementsByTagName("Description").item(0).getTextContent();
 
 		} catch (final Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

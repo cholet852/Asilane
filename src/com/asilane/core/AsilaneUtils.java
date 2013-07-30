@@ -67,7 +67,7 @@ public class AsilaneUtils {
 		try {
 			final URL url = new URL(address);
 			is = url.openStream();
-			final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 			builder = new StringBuilder();
 
 			while ((line = reader.readLine()) != null) {

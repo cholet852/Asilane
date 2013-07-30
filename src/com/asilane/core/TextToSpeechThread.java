@@ -29,7 +29,6 @@ public class TextToSpeechThread implements Runnable {
 	 * 
 	 * @param textToSpeech
 	 */
-	@SuppressWarnings("deprecation")
 	public void textToSpeech(final String textToSpeech, final Language lang) {
 		// One play at once
 		stopSpeech();
@@ -37,6 +36,7 @@ public class TextToSpeechThread implements Runnable {
 		this.lang = lang;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void stopSpeech() {
 		if (playerThread != null && playerThread.isAlive()) {
 			playerThread.stop();

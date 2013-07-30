@@ -82,6 +82,7 @@ public class MediaPlayerService implements IService {
 				files.addAll(listFiles(file.getAbsolutePath()));
 			} else {
 				files.add(file.getAbsolutePath());
+				break;
 			}
 		}
 

@@ -8,12 +8,14 @@ import java.util.Set;
 import com.asilane.core.Language;
 import com.asilane.service.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentityService;
+import com.asilane.service.CinemaService;
 import com.asilane.service.DateService;
 import com.asilane.service.FindPlaceService;
 import com.asilane.service.FortyTwoService;
 import com.asilane.service.HelloService;
 import com.asilane.service.IPService;
 import com.asilane.service.IService;
+import com.asilane.service.MailService;
 import com.asilane.service.MediaPlayerService;
 import com.asilane.service.WeatherForecastService;
 import com.asilane.service.WebBrowserService;
@@ -92,6 +94,8 @@ public class ServiceDispatcher {
 		allServices.add(new IPService());
 		allServices.add(new WikipediaService());
 		allServices.add(new FindPlaceService());
+		allServices.add(new MailService());
+		allServices.add(new CinemaService());
 
 		return allServices;
 	}

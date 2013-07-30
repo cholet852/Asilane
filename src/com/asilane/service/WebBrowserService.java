@@ -90,7 +90,7 @@ public class WebBrowserService implements IService {
 		if (lang == Language.french) {
 			return "Impossible d'ouvrir votre navigateur Web.";
 		}
-		return "Cannot open your Web Browser";
+		return "Cannot open your Web Browser.";
 	}
 
 	/*

@@ -1,14 +1,11 @@
 package com.asilane.service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
@@ -60,23 +57,11 @@ public class IPService implements IService {
 	}
 
 	private String getExternalIP() {
-		BufferedReader in = null;
-		try {
-			// We use amazon to get external IP
-			final URL ipService = new URL("http://checkip.amazonaws.com");
-			in = new BufferedReader(new InputStreamReader(ipService.openStream()));
-			return in.readLine();
-		} catch (final Exception e) {
+		final String response = AsilaneUtils.curl("http://checkip.amazonaws.com");
+		if (response == null) {
 			return "Cannot find your IP address, are you connected to the Internet ?";
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (final IOException e) {
-					return "Cannot find your IP address, are you connected to the Internet ?";
-				}
-			}
 		}
+		return response;
 	}
 
 	/*

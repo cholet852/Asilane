@@ -66,7 +66,7 @@ public class FindPlaceService implements IService {
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
 				// Duck duck go is used to get the website for more anonymous
-				desktop.browse(URI.create("https://maps.google.fr/maps?q=" + UrlUtil.encode(place, "UTF-8") + "&hl="
+				desktop.browse(URI.create("https://maps.google.com/maps?q=" + UrlUtil.encode(place, "UTF-8") + "&hl="
 						+ lang.toString().substring(0, 2)));
 
 				if (lang == Language.french) {

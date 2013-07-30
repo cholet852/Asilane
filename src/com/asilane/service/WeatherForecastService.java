@@ -78,6 +78,7 @@ public class WeatherForecastService implements IService {
 			set.add(QUEL_METEO_AU);
 			set.add(QUEL_TEMPS_FAIT_IL_A);
 			set.add(QUEL_LE_TEMPS_A);
+			set.add("quel.* la météo");
 		} else {
 			set.add(WHAT_THE_WEATHER_LIKE_IN);
 		}
@@ -160,5 +161,4 @@ public class WeatherForecastService implements IService {
 		}
 		return "Cannot get the weather forecast.";
 	}
-
 }
