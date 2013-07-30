@@ -8,6 +8,7 @@ import com.asilane.core.facade.Facade;
 import com.asilane.gui.GUI;
 import com.darkprograms.speech.microphone.Microphone;
 import com.darkprograms.speech.microphone.Microphone.CaptureState;
+import com.darkprograms.speech.recognizer.GoogleResponse;
 import com.darkprograms.speech.recognizer.Recognizer;
 
 /**
@@ -84,7 +85,9 @@ public class Asilane {
 		recognizer.setLanguage(lang.toString().substring(0, 2));
 
 		try {
-			return recognizer.getRecognizedDataForWave(waveFile).getResponse();
+			final GoogleResponse response = recognizer.getRecognizedDataForWave(waveFile);
+			System.out.println(response.getOtherPossibleResponses());
+			return response.getResponse();
 		} catch (final Exception e) {
 			return null;
 		}

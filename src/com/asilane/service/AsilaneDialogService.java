@@ -19,7 +19,7 @@ public class AsilaneDialogService implements IService {
 	private static final String TEST = "test";
 	private static final String NO = "no";
 	private static final String YES = "yes";
-	private static final String QUE_SAIS_TU_FAIRE = ".*sais.* faire";
+	private static final String QUE_SAIS_TU_FAIRE = ".*sais.* faire.*";
 	private static final String MERCI = ".*merci";
 	private static final String NON = "non";
 	private static final String OUI = "oui";

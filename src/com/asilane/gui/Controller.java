@@ -31,7 +31,7 @@ public class Controller implements ActionListener {
 		TextToSpeechThread.getInstance().stopSpeech();
 
 		// Manual call
-		if (!gui.getTextField().getText().isEmpty()) {
+		if (!gui.getTextField().getText().isEmpty() && !e.getActionCommand().contains("Record")) {
 			gui.getTextFieldResponse().setText(gui.getAsilane().handleSentence(gui.getTextField().getText()));
 			return;
 		}

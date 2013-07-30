@@ -1,7 +1,7 @@
 package com.asilane.core.facade;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,9 +17,11 @@ import com.asilane.service.IPService;
 import com.asilane.service.IService;
 import com.asilane.service.MailService;
 import com.asilane.service.MediaPlayerService;
+import com.asilane.service.SaveWhatSayingService;
 import com.asilane.service.WeatherForecastService;
 import com.asilane.service.WebBrowserService;
 import com.asilane.service.WikipediaService;
+import com.asilane.service.YouTubeService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -63,10 +65,20 @@ public class ServiceDispatcher {
 	 * 
 	 */
 	public IService getService(final String sentence) {
-		// TODO : improve performances
+		// If nothing found in the first time the service research is extended
+		final IService service = getService(sentence, false);
+		if (service != null) {
+			return service;
+		}
+		return getService(sentence, true);
+	}
+
+	private IService getService(final String sentence, final boolean extendedSearch) {
+		final String extended = (extendedSearch) ? ".*" : "";
+
 		for (final IService service : commandsMap.keySet()) {
 			for (final String regexService : commandsMap.get(service)) {
-				if (sentence.matches(".*" + regexService + ".*")) {
+				if (sentence.matches(extended + regexService + extended)) {
 					return service;
 				}
 			}
@@ -81,8 +93,11 @@ public class ServiceDispatcher {
 	 * @return All services
 	 */
 	public Set<IService> getAllServices() {
-		final Set<IService> allServices = new HashSet<IService>();
+		// Using a LinkedHashSet to conserv the order of services
+		final Set<IService> allServices = new LinkedHashSet<IService>();
 
+		allServices.add(new SaveWhatSayingService());
+		allServices.add(new YouTubeService());
 		allServices.add(new HelloService());
 		allServices.add(new AsilaneIdentityService());
 		allServices.add(new FortyTwoService());

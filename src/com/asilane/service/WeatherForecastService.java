@@ -22,8 +22,8 @@ public class WeatherForecastService implements IService {
 	private static final String WHAT_THE_WEATHER_LIKE_IN = "what.* the weather like .. .*";
 	private static final String QUEL_LE_TEMPS_A = "quel.* le temps à.*";
 	private static final String QUEL_TEMPS_FAIT_IL_A = "quel.* temps fait.*il à .*";
-	private static final String QUEL_METEO_AU = "quel.* météo au. .*";
-	private static final String QUEL_METEO_A = "quel.* météo à .*";
+	private static final String QUEL_METEO_AU = ".*météo au. .*";
+	private static final String QUEL_METEO_A = ".*météo à .*";
 
 	/*
 	 * (non-Javadoc)
