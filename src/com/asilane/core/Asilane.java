@@ -149,6 +149,34 @@ public class Asilane {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		new GUI(new Asilane());
+		// Handle args
+		if (args.length > 0) {
+			// Help menu
+			if (args.length > 2) {
+				System.out.println("Usage :\nNo parameter -> GUI Interface");
+				System.out
+						.println("sentence language -> handle sentence in the specified language without GUI Interface (not recommended for performances)");
+				return;
+			}
+
+			// No GUI
+			Language lang = null;
+			if (args.length == 1 || args[1].toLowerCase().trim().equals("english")) {
+				lang = Language.english;
+			} else if (args[1].toLowerCase().trim().equals("french")) {
+				lang = Language.french;
+			}
+
+			// Handle sentence from args
+			if (lang == null) {
+				System.out.println("Unknow language : \"" + args[1] + "\"");
+			} else {
+				final Asilane asilane = new Asilane();
+				asilane.setLanguage(lang);
+				System.out.println(asilane.handleSentence(args[0]));
+			}
+		} else {
+			new GUI(new Asilane());
+		}
 	}
 }
