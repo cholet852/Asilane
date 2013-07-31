@@ -21,6 +21,7 @@ public class FindPlaceService implements IService {
 	private static final String OU_SE_TROUVE = "o. se trouve .*";
 	private static final String OU_SE_SITUE = "o. se situe .*";
 	private static final String ITINERAIRE = ".*itinéraire de .* à .*";
+	private static final String ITINERAIRE_ENTRE = ".*itinéraire entre .* et .*";
 	private static final String WHERE_IS = "where is .*";
 
 	/*
@@ -40,7 +41,8 @@ public class FindPlaceService implements IService {
 				if ((regexVars = AsilaneUtils.extractRegexVars(OU_SE_TROUVE, sentence)) != null
 						|| (regexVars = AsilaneUtils.extractRegexVars(OU_SE_SITUE, sentence)) != null) {
 					place = handleSearch(regexVars.get(0), lang);
-				} else if ((regexVars = AsilaneUtils.extractRegexVars(ITINERAIRE, sentence)) != null) {
+				} else if ((regexVars = AsilaneUtils.extractRegexVars(ITINERAIRE, sentence)) != null
+						|| (regexVars = AsilaneUtils.extractRegexVars(ITINERAIRE_ENTRE, sentence)) != null) {
 					place = handleSearch("from: " + regexVars.get(1) + " to: " + regexVars.get(2), lang);
 				}
 			}
@@ -107,6 +109,7 @@ public class FindPlaceService implements IService {
 			set.add(OU_SE_TROUVE);
 			set.add(OU_SE_SITUE);
 			set.add(ITINERAIRE);
+			set.add(ITINERAIRE_ENTRE);
 		} else {
 			set.add(WHERE_IS);
 		}
