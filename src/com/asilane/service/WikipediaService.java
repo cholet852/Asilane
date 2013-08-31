@@ -116,6 +116,13 @@ public class WikipediaService implements IService {
 		return null;
 	}
 
+	/**
+	 * This will return asked infos from Wikipedia API
+	 * 
+	 * @param info
+	 * @param lang
+	 * @return infos from Wikipedia API
+	 */
 	private String getInfosFromWikipedia(final String info, final Language lang) {
 		try {
 			final String ipService = "http://" + lang.toString().substring(0, 2)

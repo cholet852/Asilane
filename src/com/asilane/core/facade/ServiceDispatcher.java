@@ -67,10 +67,12 @@ public class ServiceDispatcher {
 	public IService getService(final String sentence) {
 		// If nothing found in the first time the service research is extended
 		final IService service = getService(sentence, false);
-		if (service != null) {
-			return service;
+
+		if (service == null) {
+			return getService(sentence, true);
 		}
-		return getService(sentence, true);
+
+		return service;
 	}
 
 	private IService getService(final String sentence, final boolean extendedSearch) {

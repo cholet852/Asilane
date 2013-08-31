@@ -1,4 +1,4 @@
-Asilane
+Asilane, un "Siri like" libre
 =======
 
-Asinale vous permet d'interpréter facilement des commandes vocales et de les exécuter.
+Asinale vous permet d'avoir la liberté d'utiliser un assistant personnel comme vous le souhaitez, sur n'importe quelle plateforme (ou presque).
