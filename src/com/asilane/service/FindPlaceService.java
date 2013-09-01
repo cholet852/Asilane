@@ -10,7 +10,6 @@ import java.util.Set;
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
-import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
  * @author walane
@@ -71,7 +70,7 @@ public class FindPlaceService implements IService {
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
 				// Duck duck go is used to get the website for more anonymous
-				desktop.browse(URI.create("https://maps.google.com/maps?q=" + UrlUtil.encode(place, "UTF-8") + "&hl="
+				desktop.browse(URI.create("https://maps.google.com/maps?q=" + AsilaneUtils.encode(place) + "&hl="
 						+ lang.toString().substring(0, 2)));
 
 				if (lang == Language.french) {

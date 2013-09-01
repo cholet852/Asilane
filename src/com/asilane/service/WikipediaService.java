@@ -16,7 +16,6 @@ import org.xml.sax.InputSource;
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
-import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
  * @author walane
@@ -126,7 +125,7 @@ public class WikipediaService implements IService {
 	private String getInfosFromWikipedia(final String info, final Language lang) {
 		try {
 			final String ipService = "http://" + lang.toString().substring(0, 2)
-					+ ".wikipedia.org/w/api.php?action=opensearch&search=" + UrlUtil.encode(info.trim(), "UTF-8")
+					+ ".wikipedia.org/w/api.php?action=opensearch&search=" + AsilaneUtils.encode(info)
 					+ "&format=xml&limit=1";
 			final String xmlResponse = AsilaneUtils.curl(ipService);
 

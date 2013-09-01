@@ -10,7 +10,6 @@ import java.util.Set;
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
-import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
  * @author walane
@@ -55,7 +54,7 @@ public class YouTubeService implements IService {
 			try {
 				// Duck duck go is used to get the website for more anonymous
 				desktop.browse(URI.create("https://duckduckgo.com/?q=!%20site:youtube.com%2Fwatch%20"
-						+ UrlUtil.encode(term, "UTF-8")));
+						+ AsilaneUtils.encode(term)));
 				if (lang == Language.french) {
 					return "C'est parti.";
 				} else {

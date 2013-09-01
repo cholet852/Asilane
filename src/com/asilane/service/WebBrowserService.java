@@ -10,7 +10,6 @@ import java.util.Set;
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
-import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
  * @author walane
@@ -72,7 +71,7 @@ public class WebBrowserService implements IService {
 				// Duck duck go is used to get the website for more anonymous
 				final String directBrowsingString = directBrowsing ? "!%20" : "";
 				desktop.browse(URI.create("https://duckduckgo.com/?q=" + directBrowsingString
-						+ UrlUtil.encode(term, "UTF-8")));
+						+ AsilaneUtils.encode(term)));
 
 				if (lang == Language.french) {
 					return directBrowsing ? "Ok, je vais sur " + term : "Ok, je cherche des informations sur " + term

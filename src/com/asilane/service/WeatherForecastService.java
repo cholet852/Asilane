@@ -11,7 +11,6 @@ import org.json.simple.JSONValue;
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
-import com.sun.jndi.toolkit.url.UrlUtil;
 
 /**
  * @author walane
@@ -111,7 +110,7 @@ public class WeatherForecastService implements IService {
 		String response;
 		try {
 			response = AsilaneUtils.curl("http://api.openweathermap.org/data/2.5/weather?q="
-					+ UrlUtil.encode(city, "UTF-8") + "&lang=" + lang.toString().substring(0, 2));
+					+ AsilaneUtils.encode(city) + "&lang=" + lang.toString().substring(0, 2));
 		} catch (final UnsupportedEncodingException e) {
 			return handleErrorMessage(lang);
 		}

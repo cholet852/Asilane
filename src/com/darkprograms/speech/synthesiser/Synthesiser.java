@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import com.sun.jndi.toolkit.url.UrlUtil;
+import com.asilane.core.AsilaneUtils;
 
 /**
  * Synthesiser class that connects to Google's unoffical API to retreive data
@@ -34,7 +34,7 @@ public class Synthesiser {
 	 *             Throws exception if it can not complete the request
 	 */
 	public InputStream getMP3Data(final String synthText, final String language) throws Exception {
-		final String encoded = UrlUtil.encode(synthText + "&tl=" + language, "UTF-8"); // Encode
+		final String encoded = AsilaneUtils.encode(synthText + "&tl=" + language); // Encode
 
 		final URL url = new URL(GOOGLE_SYNTHESISER_URL + encoded); // create url
 

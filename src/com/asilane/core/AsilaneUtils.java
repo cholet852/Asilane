@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
@@ -119,5 +120,46 @@ public class AsilaneUtils {
 			public void lostOwnership(final Clipboard arg0, final Transferable arg1) {
 			}
 		});
+	}
+
+	/**
+	 * Encode a string for inclusion in a URI (according to RFC 2396).
+	 * 
+	 * Unsafe characters are escaped by encoding them in three-character sequences '%xy', where 'xy' is the two-digit
+	 * hexadecimal representation of the lower 8-bits of the character.
+	 * 
+	 * The question mark '?' character is also escaped, as required by RFC 2255.
+	 * 
+	 * The string is first converted to the specified encoding. For LDAP (2255), the encoding must be UTF-8.
+	 * 
+	 * @throws UnsupportedEncodingException
+	 */
+	public static String encode(final String s) throws UnsupportedEncodingException {
+		final byte[] bytes = s.trim().getBytes("UTF-8");
+		final int count = bytes.length;
+
+		/*
+		 * From RFC 2396:
+		 * 
+		 * mark = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")" reserved = ";" | "/" | ":" | "?" | "@" | "&" | "="
+		 * | "+" | "$" | ","
+		 */
+		final String allowed = "=,+;.'-@&/$_()!~*:"; // '?' is omitted
+		final char[] buf = new char[3 * count];
+		int j = 0;
+
+		for (int i = 0; i < count; i++) {
+			if ((bytes[i] >= 0x61 && bytes[i] <= 0x7A) || // a..z
+					(bytes[i] >= 0x41 && bytes[i] <= 0x5A) || // A..Z
+					(bytes[i] >= 0x30 && bytes[i] <= 0x39) || // 0..9
+					(allowed.indexOf(bytes[i]) >= 0)) {
+				buf[j++] = (char) bytes[i];
+			} else {
+				buf[j++] = '%';
+				buf[j++] = Character.forDigit(0xF & (bytes[i] >>> 4), 16);
+				buf[j++] = Character.forDigit(0xF & bytes[i], 16);
+			}
+		}
+		return new String(buf, 0, j);
 	}
 }
