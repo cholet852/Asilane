@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.text.DefaultCaret;
 
@@ -23,7 +24,7 @@ public class GUI {
 
 	private JFrame frmAsilane;
 	private final Asilane asilane;
-	private JComboBox<String> languageComboBox;
+	private JComboBox<String> LocaleComboBox;
 	private JTextArea textArea;
 	private JButton btnRecord;
 	private JTextField textField;
@@ -60,11 +61,11 @@ public class GUI {
 		btnRecord.addActionListener(new Controller(this));
 		frmAsilane.getContentPane().add(btnRecord);
 
-		languageComboBox = new JComboBox<String>();
-		languageComboBox.addActionListener(new ComboBoxController(this));
-		languageComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "French", "English" }));
-		languageComboBox.setBounds(443, 420, 125, 24);
-		frmAsilane.getContentPane().add(languageComboBox);
+		LocaleComboBox = new JComboBox<String>();
+		LocaleComboBox.addActionListener(new ComboBoxController(this));
+		LocaleComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "French", "English" }));
+		LocaleComboBox.setBounds(443, 420, 125, 24);
+		frmAsilane.getContentPane().add(LocaleComboBox);
 
 		textArea = new JTextArea();
 		textArea.setEditable(false);
@@ -75,8 +76,8 @@ public class GUI {
 		final DefaultCaret caret = (DefaultCaret) textArea.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
-		final JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		final JScrollPane scrollPane = new JScrollPane(textArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(12, 171, 574, 212);
 		frmAsilane.getContentPane().add(scrollPane);
 
@@ -106,10 +107,10 @@ public class GUI {
 	}
 
 	/**
-	 * @return the languageComboBox
+	 * @return the LocaleComboBox
 	 */
-	public JComboBox<String> getLanguageComboBox() {
-		return languageComboBox;
+	public JComboBox<String> getLocaleComboBox() {
+		return LocaleComboBox;
 	}
 
 	/**

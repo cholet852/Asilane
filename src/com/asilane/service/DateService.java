@@ -4,9 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -23,15 +23,15 @@ public class DateService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
+	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
+	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		final Date date = new Date();
 		final DateFormat dateFormat = new SimpleDateFormat("EEEE d MMMM YYYY");
 		final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			if (sentence.matches(QUEL_JOUR_SOMME_NOUS) || sentence.matches(ON_EST_QUEL_JOUR)
 					|| sentence.matches(QUEL_EST_LA_DATE) || sentence.matches(QUEL_JOUR_ON_EST)) {
 				return "Nous sommes le " + dateFormat.format(date) + ".";
@@ -46,13 +46,13 @@ public class DateService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Locale)
 	 */
 	@Override
-	public Set<String> getCommands(final Language lang) {
+	public Set<String> getCommands(final Locale lang) {
 		final Set<String> set = new HashSet<String>();
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			set.add("quel.* heure es.*il");
 			set.add("il es.* quel.* heure.*");
 
@@ -70,11 +70,11 @@ public class DateService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Language lang) {
-		if (lang == Language.french) {
+	public String handleRecoveryService(final String sentence, final Locale lang) {
+		if (lang == Locale.FRANCE) {
 			if (sentence.contains("et maintenant")) {
 				return handleService("", lang, null);
 			}

@@ -1,5 +1,7 @@
 package com.asilane.core;
 
+import java.util.Locale;
+
 import javazoom.jl.player.Player;
 
 import com.darkprograms.speech.synthesiser.PlayerThread;
@@ -13,7 +15,7 @@ import com.darkprograms.speech.synthesiser.Synthesiser;
 public class TextToSpeechThread implements Runnable {
 	private static TextToSpeechThread INSTANCE;
 	private String textToSpeech;
-	private Language lang;
+	private Locale lang;
 	private Player player;
 	private PlayerThread playerThread;
 
@@ -29,7 +31,7 @@ public class TextToSpeechThread implements Runnable {
 	 * 
 	 * @param textToSpeech
 	 */
-	public void textToSpeech(final String textToSpeech, final Language lang) {
+	public void textToSpeech(final String textToSpeech, final Locale lang) {
 		// One play at once
 		stopSpeech();
 		this.textToSpeech = textToSpeech;

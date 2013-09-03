@@ -3,9 +3,9 @@ package com.asilane.service;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -20,14 +20,14 @@ public class MailService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
+	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
+	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL)) {
 			try {
 				// FRENCH
-				if (lang == Language.french) {
+				if (lang == Locale.FRANCE) {
 					if (sentence.matches(ENVOI_UN_MAIL)) {
 						Desktop.getDesktop().mail();
 						return "Ok, je vous prépare l'envoi d'un email.";
@@ -51,13 +51,13 @@ public class MailService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Locale)
 	 */
 	@Override
-	public Set<String> getCommands(final Language lang) {
+	public Set<String> getCommands(final Locale lang) {
 		final Set<String> set = new HashSet<String>();
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			set.add(ENVOI_UN_MAIL);
 		} else {
 			set.add(SEND_A_MAIL);
@@ -66,8 +66,8 @@ public class MailService implements IService {
 		return set;
 	}
 
-	private String handleErrorMessage(final Language lang) {
-		if (lang == Language.french) {
+	private String handleErrorMessage(final Locale lang) {
+		if (lang == Locale.FRANCE) {
 			return "Impossible d'ouvrir votre client mail.";
 		}
 		return "Cannot open your mail client.";
@@ -76,10 +76,10 @@ public class MailService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Language lang) {
+	public String handleRecoveryService(final String sentence, final Locale lang) {
 		return null;
 	}
 }

@@ -1,6 +1,7 @@
 package com.asilane.core.facade;
 
-import com.asilane.core.Language;
+import java.util.Locale;
+
 import com.asilane.core.facade.history.HistoryNode;
 import com.asilane.core.facade.history.HistoryTree;
 import com.asilane.service.IService;
@@ -25,7 +26,7 @@ public class Facade {
 	 * @param lang
 	 * @return the response
 	 */
-	public String handleSentence(final String sentence, final Language lang) {
+	public String handleSentence(final String sentence, final Locale lang) {
 		// Preparation of sentence
 		final String preparedSentence = sentence.trim().toLowerCase();
 
@@ -49,7 +50,7 @@ public class Facade {
 		}
 
 		// If normal handling and recovery hangling don't work, error message
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			return "Je n'ai pas bien compris, pouvez-vous répéter ?\n" + sentence;
 		}
 		return "I don't understand, can you repeat?\n" + sentence;

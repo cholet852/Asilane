@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import com.asilane.core.AsilaneUtils;
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -26,17 +26,17 @@ public class FindPlaceService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
+	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
+	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		if (Desktop.isDesktopSupported()) {
 			// Extract the place we are looking for
 			List<String> regexVars = null;
 			String place = "";
 
 			// FRENCH
-			if (lang == Language.french) {
+			if (lang == Locale.FRANCE) {
 				if ((regexVars = AsilaneUtils.extractRegexVars(OU_SE_TROUVE, sentence)) != null
 						|| (regexVars = AsilaneUtils.extractRegexVars(OU_SE_SITUE, sentence)) != null) {
 					place = handleSearch(regexVars.get(0), lang);
@@ -53,7 +53,7 @@ public class FindPlaceService implements IService {
 
 			// If no website provided
 			if (place.isEmpty()) {
-				if (lang == Language.french) {
+				if (lang == Locale.FRANCE) {
 					return "Merci de spécifier un lieu.";
 				}
 				return "Please specify a place.";
@@ -64,7 +64,7 @@ public class FindPlaceService implements IService {
 		return handleErrorMessage(lang);
 	}
 
-	private String handleSearch(final String place, final Language lang) {
+	private String handleSearch(final String place, final Locale lang) {
 		// Find website, go to this website, say a confirmation
 		final Desktop desktop = Desktop.getDesktop();
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -73,7 +73,7 @@ public class FindPlaceService implements IService {
 				desktop.browse(URI.create("https://maps.google.com/maps?q=" + AsilaneUtils.encode(place) + "&hl="
 						+ lang.toString().substring(0, 2)));
 
-				if (lang == Language.french) {
+				if (lang == Locale.FRANCE) {
 					if (place.contains("from")) {
 						return "Voilà, je vous ai préparé l'itinéraire.";
 					}
@@ -88,8 +88,8 @@ public class FindPlaceService implements IService {
 		return handleErrorMessage(lang);
 	}
 
-	private String handleErrorMessage(final Language lang) {
-		if (lang == Language.french) {
+	private String handleErrorMessage(final Locale lang) {
+		if (lang == Locale.FRANCE) {
 			return "Impossible d'ouvrir votre navigateur Web.";
 		}
 		return "Cannot open your Web Browser";
@@ -98,13 +98,13 @@ public class FindPlaceService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Locale)
 	 */
 	@Override
-	public Set<String> getCommands(final Language lang) {
+	public Set<String> getCommands(final Locale lang) {
 		final Set<String> set = new HashSet<String>();
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			set.add(OU_SE_TROUVE);
 			set.add(OU_SE_SITUE);
 			set.add(ITINERAIRE);
@@ -119,14 +119,14 @@ public class FindPlaceService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Language lang) {
+	public String handleRecoveryService(final String sentence, final Locale lang) {
 		List<String> regexVars = null;
 
 		// FRENCH
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			if ((regexVars = AsilaneUtils.extractRegexVars("et .*", sentence)) != null) {
 				return handleSearch(regexVars.get(0), lang);
 			}

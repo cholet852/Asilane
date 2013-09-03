@@ -1,8 +1,8 @@
 package com.asilane.service;
 
+import java.util.Locale;
 import java.util.Set;
 
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -12,14 +12,14 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public interface IService {
 	/**
-	 * This will return an appropriate answer to the question in the good language
+	 * This will return an appropriate answer to the question in the good Locale
 	 * 
 	 * @param sentence
 	 * @param historyTree
-	 * @param language
-	 * @return an appropriate answer to the question in the good language
+	 * @param Locale
+	 * @return an appropriate answer to the question in the good Locale
 	 */
-	String handleService(final String sentence, final Language lang, final HistoryTree historyTree);
+	String handleService(final String sentence, final Locale lang, final HistoryTree historyTree);
 
 	/**
 	 * This will returns all sentences which the service can be called
@@ -27,14 +27,14 @@ public interface IService {
 	 * @param lang
 	 * @return all sentences which the service can be called
 	 */
-	Set<String> getCommands(final Language lang);
+	Set<String> getCommands(final Locale lang);
 
 	/**
 	 * This will return an appropriate answer if there is no answer given
 	 * 
 	 * @param sentence
-	 * @param language
+	 * @param Locale
 	 * @return an appropriate answer if there is no answer given
 	 */
-	String handleRecoveryService(final String sentence, final Language lang);
+	String handleRecoveryService(final String sentence, final Locale lang);
 }

@@ -80,7 +80,7 @@ public class AsilaneUtils {
 				builder.append(line);
 			}
 		} catch (final IOException e) {
-			return null;
+			return e.getMessage();
 		} finally {
 			try {
 				is.close();

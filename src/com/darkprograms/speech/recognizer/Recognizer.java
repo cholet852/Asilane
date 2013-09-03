@@ -21,7 +21,7 @@ public class Recognizer {
 	private static final String GOOGLE_RECOGNIZER_URL = "https://www.google.com/speech-api/v1/recognize?xjerr=1&client=chromium";
 
 	private boolean profanityFilter = true;
-	private String language = null;
+	private String Locale = null;
 
 	public static final String LANG_US_ENGLISH = "en-US";
 	public static final String LANG_UK_ENGLISH = "en-GB";
@@ -43,13 +43,13 @@ public class Recognizer {
 	}
 
 	/**
-	 * Language code. This language code must match the language of the speech to be recognized. ex. en-US ru-RU Setting
-	 * this to null will make Google use it's own language detection. This value is null by default.
+	 * Locale code. This Locale code must match the Locale of the speech to be recognized. ex. en-US ru-RU Setting
+	 * this to null will make Google use it's own Locale detection. This value is null by default.
 	 * 
-	 * @param language
+	 * @param Locale
 	 */
-	public void setLanguage(final String language) {
-		this.language = language;
+	public void setLocale(final String Locale) {
+		this.Locale = Locale;
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class Recognizer {
 
 	/**
 	 * Get recognized data from a Wave file. This method will encode the wave file to a FLAC. This method will
-	 * automatically set the language to en-US, or English
+	 * automatically set the Locale to en-US, or English
 	 * 
 	 * @param waveFile
 	 *            Wave file to recognize
@@ -143,7 +143,7 @@ public class Recognizer {
 
 	/**
 	 * Get recognized data from a Wave file. This method will encode the wave file to a FLAC. This method will
-	 * automatically set the language to en-US, or English
+	 * automatically set the Locale to en-US, or English
 	 * 
 	 * @param waveFile
 	 *            Wave file to recognize
@@ -156,7 +156,7 @@ public class Recognizer {
 	}
 
 	/**
-	 * Get recognized data from a FLAC file. This method will automatically set the language to en-US, or English
+	 * Get recognized data from a FLAC file. This method will automatically set the Locale to en-US, or English
 	 * 
 	 * @param flacFile
 	 *            FLAC file to recognize
@@ -169,7 +169,7 @@ public class Recognizer {
 	}
 
 	/**
-	 * Get recognized data from a FLAC file. This method will automatically set the language to en-US, or English
+	 * Get recognized data from a FLAC file. This method will automatically set the Locale to en-US, or English
 	 * 
 	 * @param flacFile
 	 *            FLAC file to recognize
@@ -246,9 +246,9 @@ public class Recognizer {
 		BufferedReader br;
 
 		final StringBuilder sb = new StringBuilder(GOOGLE_RECOGNIZER_URL);
-		if (language != null) {
+		if (Locale != null) {
 			sb.append("&lang=");
-			sb.append(language);
+			sb.append(Locale);
 		}
 		if (!profanityFilter) {
 			sb.append("&pfilter=0");

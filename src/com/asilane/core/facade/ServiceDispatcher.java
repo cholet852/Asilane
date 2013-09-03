@@ -2,10 +2,10 @@ package com.asilane.core.facade;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import com.asilane.core.Language;
 import com.asilane.service.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentityService;
 import com.asilane.service.CinemaService;
@@ -33,14 +33,14 @@ import com.asilane.service.YouTubeService;
 public class ServiceDispatcher {
 	private static ServiceDispatcher INSTANCE;
 	private static Map<IService, Set<String>> commandsMap;
-	private final Language lang;
+	private final Locale lang;
 
-	private ServiceDispatcher(final Language lang) {
+	private ServiceDispatcher(final Locale lang) {
 		initMaps(lang);
 		this.lang = lang;
 	}
 
-	public static ServiceDispatcher getInstance(final Language lang) {
+	public static ServiceDispatcher getInstance(final Locale lang) {
 		// If there is no instance or if the lang is not the same than the local instance
 		if (INSTANCE == null || INSTANCE.lang != lang) {
 			INSTANCE = new ServiceDispatcher(lang);
@@ -48,7 +48,7 @@ public class ServiceDispatcher {
 		return INSTANCE;
 	}
 
-	private void initMaps(final Language lang) {
+	private void initMaps(final Locale lang) {
 		commandsMap = new HashMap<IService, Set<String>>();
 
 		for (final IService service : getAllServices()) {

@@ -3,6 +3,7 @@ package com.asilane.service;
 import java.io.StringReader;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -14,7 +15,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.asilane.core.AsilaneUtils;
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -31,15 +31,15 @@ public class WikipediaService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
+	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
+	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		List<String> regexVars = null;
 		String wikipediaResult = null;
 
 		// FRENCH
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			if ((regexVars = AsilaneUtils.extractRegexVars(QU_EST_CE_QU, sentence)) != null) {
 				wikipediaResult = getInfosFromWikipedia(regexVars.get(3), lang);
 			} else if ((regexVars = AsilaneUtils.extractRegexVars(QU_EST_CE_QUE, sentence)) != null) {
@@ -71,13 +71,13 @@ public class WikipediaService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Locale)
 	 */
 	@Override
-	public Set<String> getCommands(final Language lang) {
+	public Set<String> getCommands(final Locale lang) {
 		final Set<String> set = new HashSet<String>();
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			set.add(QU_EST_CE_QUE);
 			set.add(QU_EST_CE_QU);
 			set.add(CEST_QUOI);
@@ -91,14 +91,14 @@ public class WikipediaService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Language lang) {
+	public String handleRecoveryService(final String sentence, final Locale lang) {
 		List<String> regexVars = null;
 
 		// FRENCH
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			if ((regexVars = AsilaneUtils.extractRegexVars("et un.* .*", sentence)) != null) {
 				final String var = (regexVars.get(1) == null || regexVars.get(1).isEmpty()) ? regexVars.get(0)
 						: regexVars.get(1);
@@ -122,7 +122,7 @@ public class WikipediaService implements IService {
 	 * @param lang
 	 * @return infos from Wikipedia API
 	 */
-	private String getInfosFromWikipedia(final String info, final Language lang) {
+	private String getInfosFromWikipedia(final String info, final Locale lang) {
 		try {
 			final String ipService = "http://" + lang.toString().substring(0, 2)
 					+ ".wikipedia.org/w/api.php?action=opensearch&search=" + AsilaneUtils.encode(info)

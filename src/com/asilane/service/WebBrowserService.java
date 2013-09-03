@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import com.asilane.core.AsilaneUtils;
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -26,17 +26,17 @@ public class WebBrowserService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
+	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
+	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		if (Desktop.isDesktopSupported()) {
 			// Extract the website we are looking for
 			List<String> regexVars = null;
 			final String term = "";
 
 			// FRENCH
-			if (lang == Language.french) {
+			if (lang == Locale.FRANCE) {
 				if ((regexVars = AsilaneUtils.extractRegexVars(VA_SUR, sentence)) != null) {
 					return handleSearch(regexVars.get(0), lang, true);
 				} else if ((regexVars = AsilaneUtils.extractRegexVars(INFO_SUR, sentence)) != null) {
@@ -53,7 +53,7 @@ public class WebBrowserService implements IService {
 
 			// If no website provided
 			if (term.isEmpty()) {
-				if (lang == Language.french) {
+				if (lang == Locale.FRANCE) {
 					return "Merci de spécifier un site Web";
 				}
 				return "Please specify a website.";
@@ -63,7 +63,7 @@ public class WebBrowserService implements IService {
 		return handleErrorMessage(lang);
 	}
 
-	private String handleSearch(final String term, final Language lang, final boolean directBrowsing) {
+	private String handleSearch(final String term, final Locale lang, final boolean directBrowsing) {
 		// Find website, go to this website, say a confirmation
 		final Desktop desktop = Desktop.getDesktop();
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -73,7 +73,7 @@ public class WebBrowserService implements IService {
 				desktop.browse(URI.create("https://duckduckgo.com/?q=" + directBrowsingString
 						+ AsilaneUtils.encode(term)));
 
-				if (lang == Language.french) {
+				if (lang == Locale.FRANCE) {
 					return directBrowsing ? "Ok, je vais sur " + term : "Ok, je cherche des informations sur " + term
 							+ ".";
 				}
@@ -85,8 +85,8 @@ public class WebBrowserService implements IService {
 		return handleErrorMessage(lang);
 	}
 
-	private String handleErrorMessage(final Language lang) {
-		if (lang == Language.french) {
+	private String handleErrorMessage(final Locale lang) {
+		if (lang == Locale.FRANCE) {
 			return "Impossible d'ouvrir votre navigateur Web.";
 		}
 		return "Cannot open your Web Browser.";
@@ -95,13 +95,13 @@ public class WebBrowserService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Locale)
 	 */
 	@Override
-	public Set<String> getCommands(final Language lang) {
+	public Set<String> getCommands(final Locale lang) {
 		final Set<String> set = new HashSet<String>();
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			set.add(VA_SUR);
 			set.add(INFO_SUR);
 		} else {
@@ -116,10 +116,10 @@ public class WebBrowserService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Language lang) {
+	public String handleRecoveryService(final String sentence, final Locale lang) {
 		return null;
 	}
 }

@@ -1,9 +1,9 @@
 package com.asilane.service;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -29,12 +29,12 @@ public class HelloService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
+	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
+	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		// TODO : Use regular expressions to extract vars
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			if (sentence.matches(CA_VA) || sentence.matches(COMMENT_CA_VA) || sentence.matches(COMMENT_VAS_TU)
 					|| sentence.matches(TU_VA_BIEN) || sentence.matches(COMMENT_ALLEZ_VOUS)) {
 				return "Je vais toujours bien.";
@@ -65,13 +65,13 @@ public class HelloService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Locale)
 	 */
 	@Override
-	public Set<String> getCommands(final Language lang) {
+	public Set<String> getCommands(final Locale lang) {
 		final Set<String> set = new HashSet<String>();
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			set.add("bonjour");
 			set.add("salut");
 			set.add("hey");
@@ -99,8 +99,8 @@ public class HelloService implements IService {
 	}
 
 	@Override
-	public String handleRecoveryService(final String sentence, final Language lang) {
-		if (lang == Language.french) {
+	public String handleRecoveryService(final String sentence, final Locale lang) {
+		if (lang == Locale.FRANCE) {
 			if (sentence.contains("et toi")) {
 				return "Je vais toujours bien";
 			}

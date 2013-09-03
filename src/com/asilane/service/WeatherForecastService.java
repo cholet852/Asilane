@@ -3,13 +3,13 @@ package com.asilane.service;
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import com.asilane.core.AsilaneUtils;
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -27,15 +27,15 @@ public class WeatherForecastService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
+	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
+	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		String city = "";
 		List<String> regexVars = null;
 
 		// FRENCH
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			if ((regexVars = AsilaneUtils.extractRegexVars(QUEL_LE_TEMPS_A, sentence)) != null) {
 				city = regexVars.get(1);
 			} else if ((regexVars = AsilaneUtils.extractRegexVars(QUEL_TEMPS_FAIT_IL_A, sentence)) != null) {
@@ -54,7 +54,7 @@ public class WeatherForecastService implements IService {
 
 		// The city must no be empty to get the weather forecast
 		if (city.isEmpty()) {
-			if (lang == Language.french) {
+			if (lang == Locale.FRANCE) {
 				return "Veuillez spécifier une ville.";
 			}
 			return "Please specify a city";
@@ -66,18 +66,18 @@ public class WeatherForecastService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Locale)
 	 */
 	@Override
-	public Set<String> getCommands(final Language lang) {
+	public Set<String> getCommands(final Locale lang) {
 		final Set<String> set = new HashSet<String>();
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			set.add(QUEL_METEO_A);
 			set.add(QUEL_METEO_AU);
 			set.add(QUEL_TEMPS_FAIT_IL_A);
 			set.add(QUEL_LE_TEMPS_A);
-			set.add("quel.* la météo");
+			set.add(QUEL_METEO_A);
 		} else {
 			set.add(WHAT_THE_WEATHER_LIKE_IN);
 		}
@@ -88,13 +88,13 @@ public class WeatherForecastService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Language lang) {
+	public String handleRecoveryService(final String sentence, final Locale lang) {
 		List<String> regexVars = null;
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			if ((regexVars = AsilaneUtils.extractRegexVars("et .* .*", sentence)) != null) {
 				return getWeatherForecast(regexVars.get(1), lang);
 			}
@@ -103,7 +103,7 @@ public class WeatherForecastService implements IService {
 		return null;
 	}
 
-	private String getWeatherForecast(final String city, final Language lang) {
+	private String getWeatherForecast(final String city, final Locale lang) {
 		final StringBuilder out = new StringBuilder();
 
 		// Using openweathermap.org api
@@ -122,7 +122,7 @@ public class WeatherForecastService implements IService {
 		final JSONObject parsedResponse = (JSONObject) JSONValue.parse(response);
 		// If the city is not found
 		if (parsedResponse.get("weather") == null) {
-			if (lang == Language.french) {
+			if (lang == Locale.FRANCE) {
 				return "La ville \"" + city + "\" n'a pas pu être trouvée.";
 			}
 			return "The city \"" + city + "\" could not be found";
@@ -138,8 +138,8 @@ public class WeatherForecastService implements IService {
 		// Convert Kelvin temperature to Celsius
 		final int temperature = (int) Math.round(Double.valueOf(parsedMain.get("temp").toString()) - 273.15);
 
-		// Saying the weather in the appropriate language
-		if (lang == Language.french) {
+		// Saying the weather in the appropriate Locale
+		if (lang == Locale.FRANCE) {
 			out.append("Voici le temps à " + cleanCity + " : ");
 			out.append(parsedWeather.get("description"));
 			out.append(", humidité à " + parsedMain.get("humidity") + "%, et température à " + temperature
@@ -154,8 +154,8 @@ public class WeatherForecastService implements IService {
 		return out.toString();
 	}
 
-	private String handleErrorMessage(final Language lang) {
-		if (lang == Language.french) {
+	private String handleErrorMessage(final Locale lang) {
+		if (lang == Locale.FRANCE) {
 			return "Impossible de récupérer la météo.";
 		}
 		return "Cannot get the weather forecast.";

@@ -2,8 +2,7 @@ package com.asilane.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import com.asilane.core.Language;
+import java.util.Locale;
 
 public class ComboBoxController implements ActionListener {
 	private final GUI gui;
@@ -22,12 +21,12 @@ public class ComboBoxController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		final String textLang = gui.getLanguageComboBox().getModel().getSelectedItem().toString();
+		final String textLang = gui.getLocaleComboBox().getModel().getSelectedItem().toString();
 		if (textLang.equals("French")) {
-			gui.getAsilane().setLanguage(Language.french);
+			gui.getAsilane().setLocale(Locale.FRANCE);
 			gui.getManualTypeLabel().setText("Posez une question à l'écrit ou appuyez sur Record :");
 		} else if (textLang.equals("English")) {
-			gui.getAsilane().setLanguage(Language.english);
+			gui.getAsilane().setLocale(Locale.ENGLISH);
 			gui.getManualTypeLabel().setText("Type a question or push Record:");
 		}
 	}

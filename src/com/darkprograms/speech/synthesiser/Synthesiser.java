@@ -33,8 +33,8 @@ public class Synthesiser {
 	 * @throws Exception
 	 *             Throws exception if it can not complete the request
 	 */
-	public InputStream getMP3Data(final String synthText, final String language) throws Exception {
-		final String encoded = AsilaneUtils.encode(synthText + "&tl=" + language); // Encode
+	public InputStream getMP3Data(final String synthText, final String Locale) throws Exception {
+		final String encoded = AsilaneUtils.encode(synthText + "&tl=" + Locale); // Encode
 
 		final URL url = new URL(GOOGLE_SYNTHESISER_URL + encoded); // create url
 

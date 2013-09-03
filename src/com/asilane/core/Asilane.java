@@ -1,6 +1,7 @@
 package com.asilane.core;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.sound.sampled.AudioFileFormat;
 
@@ -20,14 +21,14 @@ public class Asilane {
 	private static final String SAVED_WAV = "voice.wav";
 	private final Facade facade;
 	private Microphone microphone;
-	private Language lang;
+	private Locale lang;
 
 	/**
 	 * Create a new Asilane Instance
 	 */
 	public Asilane() {
 		facade = new Facade();
-		lang = Language.french;
+		lang = Locale.FRANCE;
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class Asilane {
 		}
 
 		// If nothing has been heard
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			return "Rien n'a été entendu.";
 		}
 		return "Nothing has been head.";
@@ -82,7 +83,7 @@ public class Asilane {
 	 */
 	private String speechToText(final String waveFile) {
 		final Recognizer recognizer = new Recognizer();
-		recognizer.setLanguage(lang.toString().substring(0, 2));
+		recognizer.setLocale(lang.toString().substring(0, 2));
 
 		try {
 			final GoogleResponse response = recognizer.getRecognizedDataForWave(waveFile);
@@ -133,7 +134,7 @@ public class Asilane {
 	/**
 	 * @return the lang
 	 */
-	public Language getLanguage() {
+	public Locale getLocale() {
 		return lang;
 	}
 
@@ -141,7 +142,7 @@ public class Asilane {
 	 * @param lang
 	 *            the lang to set
 	 */
-	public void setLanguage(final Language lang) {
+	public void setLocale(final Locale lang) {
 		this.lang = lang;
 	}
 
@@ -166,24 +167,24 @@ public class Asilane {
 			if (args.length > 2) {
 				System.out.println("Usage :\nNo parameter -> GUI Interface");
 				System.out
-						.println("sentence language -> handle sentence in the specified language without GUI Interface (not recommended for performances)");
+						.println("sentence Locale -> handle sentence in the specified Locale without GUI Interface (not recommended for performances)");
 				return;
 			}
 
 			// No GUI
-			Language lang = null;
+			Locale lang = null;
 			if (args.length == 1 || args[1].toLowerCase().trim().equals("english")) {
-				lang = Language.english;
+				lang = Locale.ENGLISH;
 			} else if (args[1].toLowerCase().trim().equals("french")) {
-				lang = Language.french;
+				lang = Locale.FRANCE;
 			}
 
 			// Handle sentence from args
 			if (lang == null) {
-				System.out.println("Unknow language : \"" + args[1] + "\"");
+				System.out.println("Unknow Locale : \"" + args[1] + "\"");
 			} else {
 				final Asilane asilane = new Asilane();
-				asilane.setLanguage(lang);
+				asilane.setLocale(lang);
 				System.out.println(asilane.handleSentence(args[0]));
 			}
 		} else {

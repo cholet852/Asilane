@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import com.asilane.core.AsilaneUtils;
-import com.asilane.core.Language;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -22,10 +22,10 @@ public class YouTubeService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Language)
+	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
 	@Override
-	public String handleService(final String sentence, final Language lang, final HistoryTree historyTree) {
+	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		if (Desktop.isDesktopSupported()) {
 			// Extract the website we are looking for
 			List<String> regexVars = null;
@@ -37,7 +37,7 @@ public class YouTubeService implements IService {
 
 			// If no website provided
 			if (term.isEmpty()) {
-				if (lang == Language.french) {
+				if (lang == Locale.FRANCE) {
 					return "Merci de spécifier un site Web";
 				}
 				return "Please specify a website.";
@@ -47,7 +47,7 @@ public class YouTubeService implements IService {
 		return handleErrorMessage(lang);
 	}
 
-	private String handleSearch(final String term, final Language lang) {
+	private String handleSearch(final String term, final Locale lang) {
 		// Find website, go to this website, say a confirmation
 		final Desktop desktop = Desktop.getDesktop();
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -55,7 +55,7 @@ public class YouTubeService implements IService {
 				// Duck duck go is used to get the website for more anonymous
 				desktop.browse(URI.create("https://duckduckgo.com/?q=!%20site:youtube.com%2Fwatch%20"
 						+ AsilaneUtils.encode(term)));
-				if (lang == Language.french) {
+				if (lang == Locale.FRANCE) {
 					return "C'est parti.";
 				} else {
 					return "Let's go.";
@@ -68,8 +68,8 @@ public class YouTubeService implements IService {
 		return handleErrorMessage(lang);
 	}
 
-	private String handleErrorMessage(final Language lang) {
-		if (lang == Language.french) {
+	private String handleErrorMessage(final Locale lang) {
+		if (lang == Locale.FRANCE) {
 			return "Impossible d'ouvrir votre navigateur Web.";
 		}
 		return "Cannot open your Web Browser.";
@@ -78,13 +78,13 @@ public class YouTubeService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Language)
+	 * @see com.asilane.service.IService#getCommands(com.asilane.recognition.Locale)
 	 */
 	@Override
-	public Set<String> getCommands(final Language lang) {
+	public Set<String> getCommands(final Locale lang) {
 		final Set<String> set = new HashSet<String>();
 
-		if (lang == Language.french) {
+		if (lang == Locale.FRANCE) {
 			set.add(VIDEO);
 		} else {
 			set.add(VIDEO);
@@ -96,10 +96,10 @@ public class YouTubeService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Language)
+	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Language lang) {
+	public String handleRecoveryService(final String sentence, final Locale lang) {
 		return null;
 	}
 }
