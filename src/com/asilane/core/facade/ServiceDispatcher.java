@@ -17,6 +17,7 @@ import com.asilane.service.IPService;
 import com.asilane.service.IService;
 import com.asilane.service.MailService;
 import com.asilane.service.MediaPlayerService;
+import com.asilane.service.RepeatService;
 import com.asilane.service.SaveWhatSayingService;
 import com.asilane.service.WeatherForecastService;
 import com.asilane.service.WebBrowserService;
@@ -113,6 +114,7 @@ public class ServiceDispatcher {
 		allServices.add(new FindPlaceService());
 		allServices.add(new MailService());
 		allServices.add(new CinemaService());
+		allServices.add(new RepeatService());
 
 		return allServices;
 	}

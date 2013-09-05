@@ -58,7 +58,7 @@ public class TextToSpeechThread implements Runnable {
 			playerThread = new PlayerThread(player);
 			playerThread.start();
 		} catch (final Exception e) {
-			e.printStackTrace();
+			System.out.println("Google text to speech not avaible.");
 		}
 	}
 }

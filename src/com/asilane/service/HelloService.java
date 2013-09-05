@@ -1,9 +1,11 @@
 package com.asilane.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import com.asilane.core.AsilaneUtils;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -33,15 +35,16 @@ public class HelloService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
-		// TODO : Use regular expressions to extract vars
+		List<String> regexVars = null;
+
 		if (lang == Locale.FRANCE) {
 			if (sentence.matches(CA_VA) || sentence.matches(COMMENT_CA_VA) || sentence.matches(COMMENT_VAS_TU)
 					|| sentence.matches(TU_VA_BIEN) || sentence.matches(COMMENT_ALLEZ_VOUS)) {
 				return "Je vais toujours bien.";
-			} else if (sentence.matches(DIS_BONJOUR_A)) {
-				return "Bonjour " + sentence.substring(sentence.lastIndexOf("à") + 1).trim() + ", comment allez-vous ?";
-			} else if (sentence.matches(DIS_AU_REVOIR_A)) {
-				return "Au revoir " + sentence.substring(sentence.lastIndexOf("à") + 1).trim() + " et à bientôt !";
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(DIS_BONJOUR_A, sentence)) != null) {
+				return "Bonjour " + regexVars.get(1) + ", comment allez-vous ?";
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(DIS_AU_REVOIR_A, sentence)) != null) {
+				return "Au revoir " + regexVars.get(2) + " et à bientôt !";
 			} else if (sentence.matches(AU_REVOIR)) {
 				return "Au revoir et à bientôt !";
 			}

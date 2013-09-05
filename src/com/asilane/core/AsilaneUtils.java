@@ -113,6 +113,7 @@ public class AsilaneUtils {
 	 * @param aString
 	 */
 	public static void setClipboardContents(final String aString) {
+		// TODO : Android support
 		final StringSelection stringSelection = new StringSelection(aString);
 		final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, new ClipboardOwner() {
