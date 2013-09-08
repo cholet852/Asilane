@@ -1,5 +1,3 @@
-English version below
-
 Asilane, un "Siri like" libre
 =============================
 
