@@ -69,7 +69,6 @@ public class FindPlaceService implements IService {
 		final Desktop desktop = Desktop.getDesktop();
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
-				// Duck duck go is used to get the website for more anonymous
 				desktop.browse(URI.create("https://maps.google.com/maps?q=" + AsilaneUtils.encode(place) + "&hl="
 						+ lang.toString().substring(0, 2)));
 
