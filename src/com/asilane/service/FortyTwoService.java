@@ -32,6 +32,7 @@ public class FortyTwoService implements IService {
 		final Set<String> set = new HashSet<String>();
 
 		if (lang == Locale.FRANCE) {
+			set.add("quel.* est le sens de la vie");
 			set.add("quel.* est la réponse à l'univers");
 			set.add("quel.* est le nombre ultime");
 		} else {
