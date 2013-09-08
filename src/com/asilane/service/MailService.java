@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import com.asilane.core.AsilaneUtils;
 import com.asilane.core.facade.history.HistoryTree;
 
 /**
@@ -24,7 +25,7 @@ public class MailService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
-		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL)) {
+		if (AsilaneUtils.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL)) {
 			try {
 				// FRENCH
 				if (lang == Locale.FRANCE) {

@@ -26,7 +26,7 @@ public class YouTubeService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
-		if (Desktop.isDesktopSupported()) {
+		if (AsilaneUtils.isDesktopSupported()) {
 			// Extract the website we are looking for
 			List<String> regexVars = null;
 			final String term = "";
