@@ -109,13 +109,12 @@ public class AsilaneUtils {
 	}
 
 	/**
-	 * Place a String on the clipboard, and make this class the owner of the Clipboard's contents.
+	 * Place a String in the clipboard, and make this class the owner of the Clipboard's contents.
 	 * 
 	 * @param aString
 	 */
-	public static void setClipboardContents(final String aString) {
-		// TODO : Android support
-		final StringSelection stringSelection = new StringSelection(aString);
+	public static void setClipboardContents(final String string) {
+		final StringSelection stringSelection = new StringSelection(string);
 		final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, new ClipboardOwner() {
 			@Override

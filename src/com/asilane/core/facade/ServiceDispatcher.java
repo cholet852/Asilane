@@ -37,7 +37,7 @@ public class ServiceDispatcher {
 	private final Locale lang;
 
 	private ServiceDispatcher(final Locale lang) {
-		initMaps(lang);
+		initMaps(getAllServices(), lang);
 		this.lang = lang;
 	}
 
@@ -49,10 +49,10 @@ public class ServiceDispatcher {
 		return INSTANCE;
 	}
 
-	private void initMaps(final Locale lang) {
+	private void initMaps(final Set<IService> services, final Locale lang) {
 		commandsMap = new HashMap<IService, Set<String>>();
 
-		for (final IService service : getAllServices()) {
+		for (final IService service : services) {
 			commandsMap.put(service, service.getCommands(lang));
 		}
 	}
@@ -117,5 +117,15 @@ public class ServiceDispatcher {
 		allServices.add(new RepeatService());
 
 		return allServices;
+	}
+
+	/**
+	 * Set a custom service list to the ServiceDispatcher<br>
+	 * Useful for adding Android services for example
+	 * 
+	 * @param otherServices
+	 */
+	public void setServices(final Set<IService> services) {
+		initMaps(services, lang);
 	}
 }
