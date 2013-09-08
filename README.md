@@ -34,7 +34,6 @@ Contribuer
 ----------
 **Aidez-moi à construire un "Siri like" libre !** Pour cela, il vous faut connaître un minimum le langage de programmation JAVA. Ouvrez Eclipse et importez directement le projet GIT. Pour comprendre le fonctionnement du logiciel, regardez ci-dessous ;)
 
-<br>
 Documentation
 -------------
 
@@ -62,6 +61,8 @@ La classe mère s'appelle `Asilane`, j'ai mis du temps à trouver un nom origina
 4. Si vous souhaitez un contrôle plus fin des phrases vous pouvez utilisez la classe `AsilaneUtils` qui vous permet entre autres d'extraire des variables dans une expression régulière (par exemple d'extraire "Lille" dans "Quelle est la météo à Lille ?". Pour en comprendre le fonctionnement, vous pouvez consulter la classe `WebBrowserService` pour utiliser ça dans votre `Service` en gardant la même architecture ci-possible.
 
 5. Pour finir la fonction `handleRecoveryService()` vous permet de faire la même chose que la méthode `handleSentence()` sauf que la première est appellée lorsque la phrase n'a pas été comprise par le `ServiceDispatcher`. Celui-ci appelle-donc le dernier service qui a été exécuté et envoi la phrase incomprise. Ceci vous permet d'avoir un dialogue plus confortable avec Asilane, vous pouvez par exemple lui demandez "Qu'est-ce qu'un chien ?" puis, "et un chat ?".
+
+6. N'oubliez pas d'ajouter votre service dans la méthode `getAllServices()` du `ServiceDispatcher` dans l'ordre de priorité ou dans la classe `MainActivity` si vous travaillez sur la version Android.
 
 Le dernier point fonctionne grâce à un arbre de recherche disponible dans la méthode `handleSentence()` qui enregistre tout ce qui est dit, quelles sont les derniers services appellés, leur réponse, etc. Pour plus d'informations, consultez les classes `HistoryTree` et `HistoryNode`.
 
