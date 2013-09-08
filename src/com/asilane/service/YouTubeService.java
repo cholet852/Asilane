@@ -38,9 +38,9 @@ public class YouTubeService implements IService {
 			// If no website provided
 			if (term.isEmpty()) {
 				if (lang == Locale.FRANCE) {
-					return "Merci de spécifier un site Web";
+					return "Merci de spécifier un nom de vidéo.";
 				}
-				return "Please specify a website.";
+				return "Please specify a video name.";
 			}
 		}
 
