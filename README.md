@@ -62,7 +62,7 @@ La classe mère s'appelle `Asilane`, j'ai mis du temps à trouver un nom origina
 
 5. Pour finir la fonction `handleRecoveryService()` vous permet de faire la même chose que la méthode `handleSentence()` sauf que la première est appellée lorsque la phrase n'a pas été comprise par le `ServiceDispatcher`. Celui-ci appelle-donc le dernier service qui a été exécuté et envoi la phrase incomprise. Ceci vous permet d'avoir un dialogue plus confortable avec Asilane, vous pouvez par exemple lui demandez "Qu'est-ce qu'un chien ?" puis, "et un chat ?".
 
-6. N'oubliez pas d'ajouter votre service dans la méthode `getAllServices()` du `ServiceDispatcher` dans l'ordre de priorité ou dans la classe `MainActivity` si vous travaillez sur la version Android.
+6. N'oubliez pas d'ajouter votre service dans la méthode `getAllServices()` du `ServiceDispatcher` ou dans la classe `MainActivity` si vous travaillez sur la version Android. Note : les services sont classés par ordre de priorité, si un autre service prend le dessus sur le votre, placez-le donc au-dessus.
 
 Le dernier point fonctionne grâce à un arbre de recherche disponible dans la méthode `handleSentence()` qui enregistre tout ce qui est dit, quelles sont les derniers services appellés, leur réponse, etc. Pour plus d'informations, consultez les classes `HistoryTree` et `HistoryNode`.
 
