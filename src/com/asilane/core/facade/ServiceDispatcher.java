@@ -101,7 +101,6 @@ public class ServiceDispatcher {
 
 		allServices.add(new SaveWhatSayingService());
 		allServices.add(new YouTubeService());
-		allServices.add(new HelloService());
 		allServices.add(new AsilaneIdentityService());
 		allServices.add(new FortyTwoService());
 		allServices.add(new WeatherForecastService());
@@ -115,6 +114,7 @@ public class ServiceDispatcher {
 		allServices.add(new MailService());
 		allServices.add(new CinemaService());
 		allServices.add(new RepeatService());
+		allServices.add(new HelloService());
 
 		return allServices;
 	}

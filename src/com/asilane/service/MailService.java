@@ -25,6 +25,8 @@ public class MailService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
+		// TODO use : String message = "mailto:dummy@domain.com?subject=First%20Email";URI uri = URI.create(message);
+
 		if (AsilaneUtils.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL)) {
 			try {
 				// FRENCH
