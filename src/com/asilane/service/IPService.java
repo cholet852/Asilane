@@ -15,25 +15,27 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class IPService implements IService {
 
+	private static final String WHAT_IS_MY_LOCAL_IP = "what is my local ip.*";
+	private static final String QUEL_EST_MON_IP_LOCAL = "quel.* es.* mon .*ip.*local.*";
 	private static final String WHAT_IS_MY_IP = "what is my ip.*";
 	private static final String QUELLE_EST_MON_IP = "quel.* es.* mon .*ip";
 
 	@Override
 	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
-		// External IP
-		if (sentence.matches(QUELLE_EST_MON_IP) || sentence.matches(WHAT_IS_MY_IP)) {
-			return getExternalIP();
+		// Local IP
+		if (sentence.matches(QUEL_EST_MON_IP_LOCAL) || sentence.matches(WHAT_IS_MY_LOCAL_IP)) {
+			try {
+				return InetAddress.getLocalHost().getHostAddress();
+			} catch (final UnknownHostException e) {
+				if (lang == Locale.FRANCE) {
+					return "Impossible de trouver votre adresse IP locale.";
+				}
+				return "Could not find your local IP address.";
+			}
 		}
 
-		// Local IP
-		try {
-			return InetAddress.getLocalHost().getHostAddress();
-		} catch (final UnknownHostException e) {
-			if (lang == Locale.FRANCE) {
-				return "Impossible de trouver votre adresse IP locale.";
-			}
-			return "Could not find your local IP address.";
-		}
+		// External IP
+		return getExternalIP();
 	}
 
 	/*
@@ -47,10 +49,10 @@ public class IPService implements IService {
 
 		if (lang == Locale.FRANCE) {
 			set.add(QUELLE_EST_MON_IP);
-			set.add("quel.* es.* mon .*ip.*local.*");
+			set.add(QUEL_EST_MON_IP_LOCAL);
 		} else {
 			set.add(WHAT_IS_MY_IP);
-			set.add("what is my local ip.*");
+			set.add(WHAT_IS_MY_LOCAL_IP);
 		}
 
 		return set;
