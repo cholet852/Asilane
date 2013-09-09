@@ -2,7 +2,9 @@ package com.asilane.service;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -18,6 +20,12 @@ public class MailService implements IService {
 	private static final String ENVOI_UN_MAIL = "envoi.* un .*mail";
 	private static final String SEND_A_MAIL = "send a .*mail";
 
+	private static final String ENVOI_UN_MAIL_A = "envoi.* un .*mail à.*";
+	private static final String SEND_A_MAIL_TO = "send a .*mail to.*";
+
+	private static final String ENVOI_UN_MAIL_A_EN_DISANT = "envoi.* un .*mail à .* en.* disant .*";
+	private static final String SEND_A_MAIL_TO_AND_SAY = "send a .*mail to .* and say .*";
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -25,30 +33,83 @@ public class MailService implements IService {
 	 */
 	@Override
 	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
-		// TODO use : String message = "mailto:dummy@domain.com?subject=First%20Email";URI uri = URI.create(message);
+		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL)) {
 
-		if (AsilaneUtils.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL)) {
 			try {
+
+				List<String> regexVars = null;
+
 				// FRENCH
 				if (lang == Locale.FRANCE) {
-					if (sentence.matches(ENVOI_UN_MAIL)) {
-						Desktop.getDesktop().mail();
-						return "Ok, je vous prépare l'envoi d'un email.";
+					// With dest and message
+					if ((regexVars = AsilaneUtils.extractRegexVars(ENVOI_UN_MAIL_A_EN_DISANT, sentence)) != null) {
+						final String dest = textToEmailAddress(regexVars.get(2), lang);
+						mail(dest, "", regexVars.get(4));
+						return "Ok, je vous prépare l'envoi d'un email à " + dest;
 					}
+
+					// With dest
+					else if ((regexVars = AsilaneUtils.extractRegexVars(ENVOI_UN_MAIL_A, sentence)) != null) {
+						final String dest = textToEmailAddress(regexVars.get(2), lang);
+						mail(dest, "", "");
+						return "Ok, je vous prépare l'envoi d'un email à " + dest;
+					}
+
+					// Blank mail
+					mail("", "", "");
+					return "Ok, je vous prépare l'envoi d'un email.";
 				}
 
 				// ENGLISH
-				if (sentence.matches(SEND_A_MAIL)) {
-					Desktop.getDesktop().mail();
-					return "Ok.";
+
+				// With dest
+				if ((regexVars = AsilaneUtils.extractRegexVars(SEND_A_MAIL_TO, sentence)) != null) {
+					final String dest = textToEmailAddress(regexVars.get(1), lang);
+					mail(dest, "", "");
+					return "Ok, i send a mail to " + dest;
+				}
+				// With dest and message
+				else if ((regexVars = AsilaneUtils.extractRegexVars(SEND_A_MAIL_TO_AND_SAY, sentence)) != null) {
+					final String dest = textToEmailAddress(regexVars.get(1), lang);
+					mail(dest, "", regexVars.get(2));
+					return "Ok, i send a mail to " + dest;
 				}
 
+				// Blank mail
+				mail("", "", "");
+				return "Ok.";
 			} catch (final IOException e) {
 				return handleErrorMessage(lang);
 			}
 		}
-
 		return handleErrorMessage(lang);
+	}
+
+	/**
+	 * Transform a text into a valid email address
+	 * 
+	 * @param text
+	 * @return the valid email address corresponding to the text
+	 */
+	private String textToEmailAddress(final String text, final Locale lang) {
+		if (lang == Locale.FRANCE) {
+			return text.replace("arobase", "@").replace("point", ".").replace(" ", "");
+		}
+		return text.replace("arobas", "@").replace("dot", ".").replace(" ", "");
+	}
+
+	/**
+	 * Send a mail
+	 * 
+	 * @param dest
+	 * @param subject
+	 * @param message
+	 * @throws IOException
+	 */
+	private void mail(final String dest, final String subject, final String message) throws IOException {
+		Desktop.getDesktop().mail(
+				URI.create("mailto:" + dest + "?subject=" + AsilaneUtils.encode(subject) + "&body="
+						+ AsilaneUtils.encode(message)));
 	}
 
 	/*

@@ -1,6 +1,5 @@
 package com.asilane.core;
 
-import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -162,18 +161,5 @@ public class AsilaneUtils {
 			}
 		}
 		return new String(buf, 0, j);
-	}
-
-	/**
-	 * Verify if Desktop exists (especially for Android)
-	 * 
-	 * @return
-	 */
-	public static boolean isDesktopSupported() {
-		try {
-			return Desktop.isDesktopSupported();
-		} catch (final NoClassDefFoundError e) {
-			return false;
-		}
 	}
 }
