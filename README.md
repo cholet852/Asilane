@@ -54,7 +54,7 @@ La classe mère s'appelle `Asilane`, j'ai mis du temps à trouver un nom origina
 
 1. Créez une classe dans le package `com.asilane.service` qui implémente l'interface `IService`, ou copiez la classe `FortyTwoService` qui contient tout ce qu'il faut pour démarrer.
 
-2. Dans la méthode `getCommands()`, remplacez "quel.* est le sens de la vie" par la question que vous voulez (c'est pour aidez le ServiceDispatcher à trouver le service associé à une requête d'un utilisateur). Vous pouvez utilisez des jokers ".*" pour avoir plus de tolérance dans la compréhension des phrases.
+2. Dans la méthode `getCommands()`, remplacez "quel.* est le sens de la vie" par la question que vous voulez (c'est pour aidez le ServiceDispatcher à trouver le service associé à une requête d'un utilisateur). Vous pouvez utilisez un joker `.*` pour avoir plus de tolérance dans la compréhension des phrases.
 
 3. Dans la méthode `handleService()`, vous devez retournez la réponse à la question posée (`sentence`). Dans `FortyTwoService`, la réponse retournée est toujours 42 quelque soit la question posée comprise dans `getCommands()`.
 
