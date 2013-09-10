@@ -3,6 +3,8 @@ Asilane, un "Siri like" libre
 
 Asinale vous permet d'avoir la liberté d'utiliser un assistant personnel comme vous le souhaitez, sur n'importe quelle plateforme (ou presque).
 
+![Asilane](http://walane.net/pic/images/asilane1.png)
+
 Installation
 ------------
 Pour lancer Asilane, **exécutez Asilane.jar** ou tapez dans un terminal `java -jar Asilane.jar`.
