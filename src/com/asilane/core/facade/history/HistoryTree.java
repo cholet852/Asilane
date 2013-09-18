@@ -46,6 +46,7 @@ public class HistoryTree {
 			if (tempNode.isLeaf()) {
 				break;
 			}
+
 			tempNode = (tempNode.getLeftSon() == null) ? tempNode.getRightSon() : tempNode.getLeftSon();
 		}
 		return tempNode;

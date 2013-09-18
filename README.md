@@ -12,14 +12,21 @@ Utilisation
 -----------
 Demandez-lui ce que vous voulez, voici quelques exemples :
 
-* Quelle est la météo à Lille ?
-* Envoi un mail à Michael@Vendetta.fr en lui disant qu'il est beau.
-* Enregistre ce que je dis : les chaussettes de l'archiduchesse... (Enregistrement dans le presse-papier)
-* Va sur Walane.net / Cherche des informations sur Walane (Recherche DuckDuckGo)
-* Qu'est ce qu'un chien/chat/ordinateur ? (Wikipédia)
-* Montre la vidéo de Bill Gates qui se prend une tarte (YouTube)
-* Quel jour sommes-nous ? / quel heure est-il ?
-* Et beaucoup d'autres...
+- Quelle est la météo à Lille ?
+- Envoi un mail à Michael@Vendetta.fr en lui disant qu'il est beau.
+- Enregistre ce que je dis : les chaussettes de l'archiduchesse... (Enregistrement dans le presse-apier)
+- Va sur Walane.net / Cherche des informations sur Walane (Recherche DuckDuckGo)
+- Qu'est ce qu'un chien/chat/ordinateur ? (Wikipédia)
+- Montre la vidéo de Bill Gates qui se prend une tarte (YouTube)
+- Où se situe Lille ? Dis-moi l'itinéraire entre Paris et Lille.
+- Quel jour sommes-nous ? / quel heure est-il ?
+- Et beaucoup d'autres...
+
+Si vous installez Asilane sur Android, vous pourriez également faire tout ça :
+- Appelle le 06 11 13 17 42
+- Envoi un sms à Édouard en disant "Quel est le sens de la vie ?"
+- Réveille moi demain à 9h42
+- Et d'autres à venir, ça dépend que de vous :)
 
 Application Android
 -------------------

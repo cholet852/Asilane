@@ -38,7 +38,7 @@ public class WebBrowserService implements IService {
 			// FRENCH
 			if (lang == Locale.FRANCE) {
 				if ((regexVars = AsilaneUtils.extractRegexVars(VA_SUR, sentence)) != null) {
-					return handleSearch(regexVars.get(0), lang, true);
+					return handleSearch(regexVars.get(1), lang, true);
 				} else if ((regexVars = AsilaneUtils.extractRegexVars(INFO_SUR, sentence)) != null) {
 					return handleSearch(regexVars.get(2), lang, false);
 				}
