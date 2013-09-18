@@ -5,7 +5,7 @@ Asinale vous permet d'avoir la liberté d'utiliser un assistant personnel comme 
 
 Installation
 ------------
-Pour lancer Asilane, **exécutez Asilane.jar** ou tapez dans un terminal `java -jar Asilane.jar`.
+Pour lancer Asilane, **exécutez `Asilane.jar`** ou tapez dans un terminal `java -jar Asilane.jar`.
 <br>Ce programme est créé en Java, il est donc **compatible Windows/Mac/Linux**.
 
 Utilisation
