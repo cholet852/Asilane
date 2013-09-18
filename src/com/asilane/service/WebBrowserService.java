@@ -17,8 +17,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class WebBrowserService implements IService {
 
-	private static final String GO_ON = "go on.*";
-	private static final String VA_SUR = "va sur.*";
+	private static final String GO_ON = "(go on|find) .*";
+	private static final String VA_SUR = "(va sur|trouve) .*";
 	private static final String GIVE_ME_INFO_ON = "give me info.* on.*";
 	private static final String SEARCH_INFO_ON = "search info.* on.*";
 	private static final String INFO_SUR = ".*info.* sur .*";
@@ -46,7 +46,7 @@ public class WebBrowserService implements IService {
 
 			// ENGLISH
 			if ((regexVars = AsilaneUtils.extractRegexVars(GO_ON, sentence)) != null) {
-				return handleSearch(regexVars.get(0), lang, true);
+				return handleSearch(regexVars.get(1), lang, true);
 			} else if ((regexVars = AsilaneUtils.extractRegexVars(SEARCH_INFO_ON, sentence)) != null) {
 				return handleSearch(regexVars.get(1), lang, false);
 			}
