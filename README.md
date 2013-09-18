@@ -22,11 +22,11 @@ Demandez-lui ce que vous voulez, voici quelques exemples :
 - Quel jour sommes-nous ? / quel heure est-il ?
 - Et beaucoup d'autres...
 
-Si vous installez Asilane sur Android, vous pourriez également faire tout ça :
+Si vous installez Asilane sur Android, vous pourrez également faire tout ça :
 - Appelle le 06 11 13 17 42
 - Envoi un sms à Édouard en disant "Quel est le sens de la vie ?"
 - Réveille moi demain à 9h42
-- Et d'autres à venir, ça dépend que de vous :)
+- Et d'autres à venir, pour cela, contribuez !
 
 Application Android
 -------------------
