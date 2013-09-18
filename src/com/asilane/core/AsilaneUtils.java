@@ -100,8 +100,8 @@ public class AsilaneUtils {
 	 */
 	public static boolean isConnectedToInternet() {
 		try {
-			// Test with cloudfare.net
-			return InetAddress.getByName("69.43.161.171").isReachable(4000);
+			// Test with google.com
+			return InetAddress.getByName("173.194.40.103").isReachable(4000);
 		} catch (final IOException e) {
 			return false;
 		}
@@ -112,8 +112,8 @@ public class AsilaneUtils {
 	 * 
 	 * @param aString
 	 */
-	public static void setClipboardContents(final String string) {
-		final StringSelection stringSelection = new StringSelection(string);
+	public static void setClipboardContents(final String s) {
+		final StringSelection stringSelection = new StringSelection(s);
 		final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, new ClipboardOwner() {
 			@Override
