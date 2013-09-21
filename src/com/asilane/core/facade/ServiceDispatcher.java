@@ -8,7 +8,6 @@ import java.util.Set;
 
 import com.asilane.service.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentityService;
-import com.asilane.service.CinemaService;
 import com.asilane.service.DateService;
 import com.asilane.service.FindPlaceService;
 import com.asilane.service.FortyTwoService;
@@ -16,7 +15,6 @@ import com.asilane.service.HelloService;
 import com.asilane.service.IPService;
 import com.asilane.service.IService;
 import com.asilane.service.MailService;
-import com.asilane.service.MediaPlayerService;
 import com.asilane.service.RepeatService;
 import com.asilane.service.SaveWhatSayingService;
 import com.asilane.service.WeatherForecastService;
@@ -81,6 +79,10 @@ public class ServiceDispatcher {
 
 		for (final IService service : commandsMap.keySet()) {
 			for (final String regexService : commandsMap.get(service)) {
+				if (service instanceof DateService) {
+					System.out.println(regexService);
+					System.out.println("on est quel jour");
+				}
 				if (sentence.matches(extended + regexService + extended)) {
 					return service;
 				}
@@ -105,14 +107,12 @@ public class ServiceDispatcher {
 		allServices.add(new FortyTwoService());
 		allServices.add(new WeatherForecastService());
 		allServices.add(new WebBrowserService());
-		allServices.add(new MediaPlayerService());
 		allServices.add(new AsilaneDialogService());
 		allServices.add(new DateService());
 		allServices.add(new IPService());
 		allServices.add(new WikipediaService());
 		allServices.add(new FindPlaceService());
 		allServices.add(new MailService());
-		allServices.add(new CinemaService());
 		allServices.add(new RepeatService());
 		allServices.add(new HelloService());
 

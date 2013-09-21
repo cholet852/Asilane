@@ -64,6 +64,13 @@ public class FindPlaceService implements IService {
 		return handleErrorMessage(lang);
 	}
 
+	/**
+	 * Handle place search
+	 * 
+	 * @param place
+	 * @param lang
+	 * @return place location
+	 */
 	private String handleSearch(final String place, final Locale lang) {
 		// Find website, go to this website, say a confirmation
 		final Desktop desktop = Desktop.getDesktop();

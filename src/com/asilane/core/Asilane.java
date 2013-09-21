@@ -18,7 +18,7 @@ import com.darkprograms.speech.recognizer.Recognizer;
  * @author walane
  */
 public class Asilane {
-	private static final String SAVED_WAV = "voice.wav";
+	private static final String SAVED_WAV = "asilane-voice.wav";
 	private final Facade facade;
 	private Microphone microphone;
 	private Locale lang;

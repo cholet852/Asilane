@@ -17,7 +17,7 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class YouTubeService implements IService {
 
-	private static final String VIDEO = "vid.o.*";
+	private static final String VIDEO = "(video|vidéo) .*";
 
 	/*
 	 * (non-Javadoc)
@@ -32,7 +32,7 @@ public class YouTubeService implements IService {
 			final String term = "";
 
 			if ((regexVars = AsilaneUtils.extractRegexVars(VIDEO, sentence)) != null) {
-				return handleSearch(regexVars.get(0), lang);
+				return handleSearch(regexVars.get(1), lang);
 			}
 
 			// If no website provided

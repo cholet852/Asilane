@@ -24,7 +24,7 @@ public class MailService implements IService {
 	private static final String SEND_A_MAIL_TO = "send a .*mail to.*";
 
 	private static final String ENVOI_UN_MAIL_A_EN_DISANT = "envoi.* un .*mail à .* en.* disant .*";
-	private static final String SEND_A_MAIL_TO_AND_SAY = "send a .*mail to .* and say .*";
+	private static final String SEND_A_MAIL_TO_AND_SAY = "send (a|an) .*mail to .* and say .*";
 
 	/*
 	 * (non-Javadoc)
@@ -34,9 +34,7 @@ public class MailService implements IService {
 	@Override
 	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL)) {
-
 			try {
-
 				List<String> regexVars = null;
 
 				// FRENCH
@@ -62,16 +60,16 @@ public class MailService implements IService {
 
 				// ENGLISH
 
-				// With dest
-				if ((regexVars = AsilaneUtils.extractRegexVars(SEND_A_MAIL_TO, sentence)) != null) {
-					final String dest = textToEmailAddress(regexVars.get(1), lang);
-					mail(dest, "", "");
+				// With dest and message
+				if ((regexVars = AsilaneUtils.extractRegexVars(SEND_A_MAIL_TO_AND_SAY, sentence)) != null) {
+					final String dest = textToEmailAddress(regexVars.get(2), lang);
+					mail(dest, "", regexVars.get(3));
 					return "Ok, i send a mail to " + dest;
 				}
-				// With dest and message
-				else if ((regexVars = AsilaneUtils.extractRegexVars(SEND_A_MAIL_TO_AND_SAY, sentence)) != null) {
+				// With dest
+				else if ((regexVars = AsilaneUtils.extractRegexVars(SEND_A_MAIL_TO, sentence)) != null) {
 					final String dest = textToEmailAddress(regexVars.get(1), lang);
-					mail(dest, "", regexVars.get(2));
+					mail(dest, "", "");
 					return "Ok, i send a mail to " + dest;
 				}
 
@@ -82,6 +80,7 @@ public class MailService implements IService {
 				return handleErrorMessage(lang);
 			}
 		}
+
 		return handleErrorMessage(lang);
 	}
 
