@@ -1,7 +1,8 @@
 package com.asilane.core.facade;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -47,7 +48,7 @@ public class ServiceDispatcher {
 		return INSTANCE;
 	}
 
-	private void initMaps(final Set<IService> services, final Locale lang) {
+	private void initMaps(final List<IService> services, final Locale lang) {
 		commandsMap = new HashMap<IService, Set<String>>();
 
 		for (final IService service : services) {
@@ -79,10 +80,6 @@ public class ServiceDispatcher {
 
 		for (final IService service : commandsMap.keySet()) {
 			for (final String regexService : commandsMap.get(service)) {
-				if (service instanceof DateService) {
-					System.out.println(regexService);
-					System.out.println("on est quel jour");
-				}
 				if (sentence.matches(extended + regexService + extended)) {
 					return service;
 				}
@@ -97,20 +94,20 @@ public class ServiceDispatcher {
 	 * 
 	 * @return All services
 	 */
-	public Set<IService> getAllServices() {
+	public List<IService> getAllServices() {
 		// Using a LinkedHashSet to conserv the order of services
-		final Set<IService> allServices = new LinkedHashSet<IService>();
+		final List<IService> allServices = new ArrayList<IService>();
 
+		allServices.add(new WikipediaService());
+		allServices.add(new FortyTwoService());
 		allServices.add(new SaveWhatSayingService());
 		allServices.add(new YouTubeService());
 		allServices.add(new AsilaneIdentityService());
-		allServices.add(new FortyTwoService());
 		allServices.add(new WeatherForecastService());
 		allServices.add(new WebBrowserService());
 		allServices.add(new AsilaneDialogService());
 		allServices.add(new DateService());
 		allServices.add(new IPService());
-		allServices.add(new WikipediaService());
 		allServices.add(new FindPlaceService());
 		allServices.add(new MailService());
 		allServices.add(new RepeatService());
@@ -125,7 +122,7 @@ public class ServiceDispatcher {
 	 * 
 	 * @param otherServices
 	 */
-	public void setServices(final Set<IService> services) {
+	public void setServices(final List<IService> services) {
 		initMaps(services, lang);
 	}
 }

@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ DateServiceTest.class, FindPlaceServiceTest.class })
+@SuiteClasses({ DateServiceTest.class, FindPlaceServiceTest.class, FortyTwoServiceTest.class, IPServiceTest.class,
+		MailServiceTest.class, WeatherForecastServiceTest.class, WikipediaServiceTest.class, YouTubeServiceTest.class })
 public class AllTests {
 
 }

@@ -23,7 +23,7 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class WikipediaService implements IService {
 
-	private static final String WHAT_IS_A = "what.* .*";
+	private static final String WHAT_IS_A = "(what's|what is) .*";
 	private static final String QU_EST_CE_QUE = "qu.*ce.*que.* .*";
 	private static final String QU_EST_CE_QU = "qu.*ce.*qu'.* .*";
 	private static final String CEST_QUOI = "c'est quoi.* .*";
