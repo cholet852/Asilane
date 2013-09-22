@@ -15,6 +15,7 @@ import com.asilane.service.FortyTwoService;
 import com.asilane.service.HelloService;
 import com.asilane.service.IPService;
 import com.asilane.service.IService;
+import com.asilane.service.InsultService;
 import com.asilane.service.MailService;
 import com.asilane.service.RepeatService;
 import com.asilane.service.SaveWhatSayingService;
@@ -112,6 +113,7 @@ public class ServiceDispatcher {
 		allServices.add(new MailService());
 		allServices.add(new RepeatService());
 		allServices.add(new HelloService());
+		allServices.add(new InsultService());
 
 		return allServices;
 	}
