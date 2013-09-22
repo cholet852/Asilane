@@ -52,8 +52,9 @@ public class ServiceDispatcher {
 	private void initMaps(final List<IService> services, final Locale lang) {
 		commandsMap = new HashMap<IService, Set<String>>();
 
-		for (final IService service : services) {
-			commandsMap.put(service, service.getCommands(lang));
+		// Normal loop to keep arraylist order
+		for (int i = 0; i < services.size(); i++) {
+			commandsMap.put(services.get(i), services.get(i).getCommands(lang));
 		}
 	}
 
@@ -96,12 +97,12 @@ public class ServiceDispatcher {
 	 * @return All services
 	 */
 	public List<IService> getAllServices() {
-		// Using a LinkedHashSet to conserv the order of services
 		final List<IService> allServices = new ArrayList<IService>();
 
-		allServices.add(new WikipediaService());
-		allServices.add(new FortyTwoService());
 		allServices.add(new SaveWhatSayingService());
+		allServices.add(new RepeatService());
+		allServices.add(new FortyTwoService());
+		allServices.add(new WikipediaService());
 		allServices.add(new YouTubeService());
 		allServices.add(new AsilaneIdentityService());
 		allServices.add(new WeatherForecastService());
@@ -111,7 +112,6 @@ public class ServiceDispatcher {
 		allServices.add(new IPService());
 		allServices.add(new FindPlaceService());
 		allServices.add(new MailService());
-		allServices.add(new RepeatService());
 		allServices.add(new HelloService());
 		allServices.add(new InsultService());
 
