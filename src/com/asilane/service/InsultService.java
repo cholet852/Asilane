@@ -37,7 +37,7 @@ public class InsultService implements IService {
 		insultResponseList.add("Merci, c'est toujours sympa de se faire insulter en travaillant...");
 		insultResponseList.add("Vous avez l'air très sympatique, c'est agréable.");
 		insultResponseList
-				.add("Je vois votre tête avec l'appareil photo et il y a aussi de quoi vous insultez croyez-moi...");
+				.add("Je vois votre tête avec l'appareil photo et il y a aussi de quoi vous insulter croyez-moi...");
 
 		final Random random = new Random();
 		return insultResponseList.get(random.nextInt(insultResponseList.size()));
