@@ -55,4 +55,11 @@ public class Facade {
 		}
 		return "I don't understand, can you repeat?";
 	}
+
+	/**
+	 * @return the historyTree
+	 */
+	public HistoryTree getHistoryTree() {
+		return historyTree;
+	}
 }
