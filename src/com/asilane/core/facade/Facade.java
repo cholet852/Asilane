@@ -25,8 +25,9 @@ public class Facade {
 	 * @param sentence
 	 * @param lang
 	 * @return the response
+	 * @throws NoServiceFoundException
 	 */
-	public String handleSentence(final String sentence, final Locale lang) {
+	public String handleSentence(final String sentence, final Locale lang) throws NoServiceFoundException {
 		// Preparation of sentence
 		final String preparedSentence = sentence.trim().toLowerCase();
 
@@ -49,11 +50,8 @@ public class Facade {
 			return recoveryAnswer;
 		}
 
-		// If normal handling and recovery hangling don't work, error message
-		if (lang == Locale.FRANCE) {
-			return "Je n'ai pas bien compris, pouvez-vous répéter ?";
-		}
-		return "I don't understand, can you repeat?";
+		// If normal handling and recovery hangling don't work, exception
+		throw new NoServiceFoundException(lang);
 	}
 
 	/**

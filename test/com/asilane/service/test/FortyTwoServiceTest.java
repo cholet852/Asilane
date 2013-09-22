@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.asilane.core.facade.Facade;
+import com.asilane.core.facade.NoServiceFoundException;
 
 public class FortyTwoServiceTest {
 	private Facade facade;
@@ -18,7 +19,7 @@ public class FortyTwoServiceTest {
 	}
 
 	@Test
-	public void testFrench() {
+	public void testFrench() throws NoServiceFoundException {
 		final Locale lang = Locale.FRANCE;
 		assertSame("42", facade.handleSentence("quel est le sens de la vie", lang));
 		assertSame("42", facade.handleSentence("quelle est la réponse à l'univers", lang));
@@ -26,7 +27,7 @@ public class FortyTwoServiceTest {
 	}
 
 	@Test
-	public void testEnglish() {
+	public void testEnglish() throws NoServiceFoundException {
 		final Locale lang = Locale.ENGLISH;
 		assertSame("42", facade.handleSentence("what is the answer of the universe", lang));
 		assertSame("42", facade.handleSentence("what is the ultimate number", lang));

@@ -6,6 +6,7 @@ import java.util.Locale;
 import javax.sound.sampled.AudioFileFormat;
 
 import com.asilane.core.facade.Facade;
+import com.asilane.core.facade.NoServiceFoundException;
 import com.asilane.gui.GUI;
 import com.darkprograms.speech.microphone.Microphone;
 import com.darkprograms.speech.microphone.Microphone.CaptureState;
@@ -61,7 +62,13 @@ public class Asilane {
 		// Transform voice into text
 		final String textSpeeched = speechToText(SAVED_WAV);
 		if (textSpeeched != null) {
-			final String iaResponse = facade.handleSentence(textSpeeched, lang); // Understand what means the sentence
+			String iaResponse;
+			try {
+				// Understand what means the sentence
+				iaResponse = facade.handleSentence(textSpeeched, lang);
+			} catch (final NoServiceFoundException e) {
+				iaResponse = e.getMessage();
+			}
 			notification(iaResponse); // Display a notification
 			textToSpeech(iaResponse); // Say the response
 
@@ -125,10 +132,15 @@ public class Asilane {
 	 * @return The response of the IA corresponding to the sentence
 	 */
 	public String handleSentence(final String sentence) {
-		final String iaRespone = facade.handleSentence(sentence, lang);
-		notification(iaRespone);
-		textToSpeech(iaRespone);
-		return iaRespone;
+		String iaResponse;
+		try {
+			iaResponse = facade.handleSentence(sentence, lang);
+			textToSpeech(iaResponse);
+		} catch (final NoServiceFoundException e) {
+			iaResponse = e.getMessage();
+		}
+		notification(iaResponse);
+		return iaResponse;
 	}
 
 	/**

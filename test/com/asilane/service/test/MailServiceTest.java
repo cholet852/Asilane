@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.asilane.core.facade.Facade;
+import com.asilane.core.facade.NoServiceFoundException;
 
 public class MailServiceTest {
 	private Facade facade;
@@ -18,7 +19,7 @@ public class MailServiceTest {
 	}
 
 	@Test
-	public void testFrench() {
+	public void testFrench() throws NoServiceFoundException {
 		final Locale lang = Locale.FRANCE;
 		assertTrue(facade.handleSentence("envoi un mail", lang).contains("Ok"));
 		assertTrue(facade.handleSentence("envoi un mail à foo@bar.com", lang).contains("foo@bar.com"));
@@ -27,7 +28,7 @@ public class MailServiceTest {
 	}
 
 	@Test
-	public void testEnglish() {
+	public void testEnglish() throws NoServiceFoundException {
 		final Locale lang = Locale.ENGLISH;
 		assertTrue(facade.handleSentence("send a mail", lang).contains("Ok"));
 		assertTrue(facade.handleSentence("send a mail to foo@bar.com", lang).contains("foo@bar.com"));
