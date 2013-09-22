@@ -33,8 +33,10 @@ public interface IService {
 	 * This will return an appropriate answer if there is no answer given
 	 * 
 	 * @param sentence
+	 * @param historyTree
+	 *            TODO
 	 * @param Locale
 	 * @return an appropriate answer if there is no answer given
 	 */
-	String handleRecoveryService(final String sentence, final Locale lang);
+	String handleRecoveryService(final String sentence, final Locale lang, final HistoryTree historyTree);
 }

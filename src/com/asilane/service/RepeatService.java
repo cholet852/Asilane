@@ -56,7 +56,7 @@ public class RepeatService implements IService {
 	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
 	 */
 	@Override
-	public String handleRecoveryService(final String sentence, final Locale lang) {
+	public String handleRecoveryService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		return null;
 	}
 }

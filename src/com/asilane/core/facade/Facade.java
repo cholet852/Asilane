@@ -44,7 +44,7 @@ public class Facade {
 		// If no any service has been found trying to call recovery handling in the previous service
 		final HistoryNode lastNode = historyTree.getLastNode();
 		final String recoveryAnswer = historyTree.getFirstNode().isLeaf() ? null : lastNode.getService()
-				.handleRecoveryService(preparedSentence, lang);
+				.handleRecoveryService(preparedSentence, lang, historyTree);
 		if (recoveryAnswer != null) {
 			historyTree.addNode(sentence, recoveryAnswer, lastNode.getService());
 			return recoveryAnswer;

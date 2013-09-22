@@ -102,7 +102,7 @@ public class HelloService implements IService {
 	}
 
 	@Override
-	public String handleRecoveryService(final String sentence, final Locale lang) {
+	public String handleRecoveryService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		if (lang == Locale.FRANCE) {
 			if (sentence.contains("et toi")) {
 				return "Je vais toujours bien";
