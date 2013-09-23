@@ -14,6 +14,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class HelloService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String GOODBYE = "good.*bye.*";
 	private static final String SAY_GOOD_BYE_TO = "say good.*bye to.*";
 	private static final String SAY_HELLO_TO = "say hello to.*";
@@ -72,33 +74,32 @@ public class HelloService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
+		if (commands.isEmpty()) {
+			if (lang == Locale.FRANCE) {
+				commands.add("bonjour");
+				commands.add("salut");
+				commands.add("hey");
 
-		if (lang == Locale.FRANCE) {
-			set.add("bonjour");
-			set.add("salut");
-			set.add("hey");
+				commands.add(CA_VA);
+				commands.add(COMMENT_CA_VA);
+				commands.add(COMMENT_VAS_TU);
+				commands.add(COMMENT_ALLEZ_VOUS);
+				commands.add(TU_VA_BIEN);
+				commands.add(DIS_BONJOUR_A);
+				commands.add(DIS_AU_REVOIR_A);
+				commands.add(AU_REVOIR);
+			} else {
+				commands.add("hello");
+				commands.add("hi");
+				commands.add("hey");
 
-			set.add(CA_VA);
-			set.add(COMMENT_CA_VA);
-			set.add(COMMENT_VAS_TU);
-			set.add(COMMENT_ALLEZ_VOUS);
-			set.add(TU_VA_BIEN);
-			set.add(DIS_BONJOUR_A);
-			set.add(DIS_AU_REVOIR_A);
-			set.add(AU_REVOIR);
-		} else {
-			set.add("hello");
-			set.add("hi");
-			set.add("hey");
-
-			set.add(HOW_ARE_YOU);
-			set.add(SAY_HELLO_TO);
-			set.add(SAY_GOOD_BYE_TO);
-			set.add(GOODBYE);
+				commands.add(HOW_ARE_YOU);
+				commands.add(SAY_HELLO_TO);
+				commands.add(SAY_GOOD_BYE_TO);
+				commands.add(GOODBYE);
+			}
 		}
-
-		return set;
+		return commands;
 	}
 
 	@Override

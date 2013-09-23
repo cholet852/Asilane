@@ -15,6 +15,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class AsilaneIdentityService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String WHO_IS_YOUR_CREATOR = "who is your creator";
 	private static final String QUEL_EST_TON_CREATEUR = "qu.* est ton créateur";
 	private static final String WHAT_IS_YOUR_GOAL = "what is your goal";
@@ -76,29 +78,30 @@ public class AsilaneIdentityService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
+		if (commands.isEmpty()) {
 
-		if (lang == Locale.FRANCE) {
-			set.add("qui es-tu.*");
-			set.add("qui tu es");
+			if (lang == Locale.FRANCE) {
+				commands.add("qui es-tu.*");
+				commands.add("qui tu es");
 
-			set.add("comment t'appelle.*tu");
-			set.add("comment tu t'appelle.*");
+				commands.add("comment t'appelle.*tu");
+				commands.add("comment tu t'appelle.*");
 
-			set.add(QUEL_EST_TON_BUT);
-			set.add(QUELLE_EST_TA_MISSION);
-			set.add(ASILANE);
-			set.add(QUEL_EST_TON_CREATEUR);
-			set.add(QUEL_AGE_AS_TU);
-		} else {
-			set.add("who are you");
+				commands.add(QUEL_EST_TON_BUT);
+				commands.add(QUELLE_EST_TA_MISSION);
+				commands.add(ASILANE);
+				commands.add(QUEL_EST_TON_CREATEUR);
+				commands.add(QUEL_AGE_AS_TU);
+			} else {
+				commands.add("who are you");
 
-			set.add(WHAT_IS_YOUR_GOAL);
-			set.add(ASILANE);
-			set.add(WHO_IS_YOUR_CREATOR);
+				commands.add(WHAT_IS_YOUR_GOAL);
+				commands.add(ASILANE);
+				commands.add(WHO_IS_YOUR_CREATOR);
+			}
 		}
 
-		return set;
+		return commands;
 	}
 
 	/*

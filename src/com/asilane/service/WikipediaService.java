@@ -23,6 +23,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class WikipediaService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String WHAT_IS_A = "(what's|what is) .*";
 	private static final String QU_EST_CE_QUE = "qu.*ce.*que.* .*";
 	private static final String QU_EST_CE_QU = "qu.*ce.*qu'.* .*";
@@ -75,17 +77,17 @@ public class WikipediaService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
-
-		if (lang == Locale.FRANCE) {
-			set.add(QU_EST_CE_QUE);
-			set.add(QU_EST_CE_QU);
-			set.add(CEST_QUOI);
-		} else {
-			set.add(WHAT_IS_A);
+		if (commands.isEmpty()) {
+			if (lang == Locale.FRANCE) {
+				commands.add(QU_EST_CE_QUE);
+				commands.add(QU_EST_CE_QU);
+				commands.add(CEST_QUOI);
+			} else {
+				commands.add(WHAT_IS_A);
+			}
 		}
 
-		return set;
+		return commands;
 	}
 
 	/*

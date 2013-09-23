@@ -14,6 +14,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class AsilaneDialogService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String DERNIERE_CHOSE_DEMANDE = ".*dernière chose .* demandé";
 	private static final String AU_REVOIR = "au.*revoir";
 	private static final String TEST = "test";
@@ -66,21 +68,21 @@ public class AsilaneDialogService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
-
-		if (lang == Locale.FRANCE) {
-			set.add(OUI);
-			set.add(MERCI);
-			set.add(QUE_SAIS_TU_FAIRE);
-			set.add(TEST);
-			set.add(AU_REVOIR);
-			set.add(DERNIERE_CHOSE_DEMANDE);
-		} else {
-			set.add(YES);
-			set.add(NO);
+		if (commands.isEmpty()) {
+			if (lang == Locale.FRANCE) {
+				commands.add(OUI);
+				commands.add(MERCI);
+				commands.add(QUE_SAIS_TU_FAIRE);
+				commands.add(TEST);
+				commands.add(AU_REVOIR);
+				commands.add(DERNIERE_CHOSE_DEMANDE);
+			} else {
+				commands.add(YES);
+				commands.add(NO);
+			}
 		}
 
-		return set;
+		return commands;
 	}
 
 	/*

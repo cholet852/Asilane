@@ -16,6 +16,7 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class InsultService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
 	private static final String TA_MERE_TA_SOEUR = ".*(ta mère|ta soeur).*";
 
 	/*
@@ -34,6 +35,10 @@ public class InsultService implements IService {
 		insultResponseList.add("Merci, vous aussi.");
 		insultResponseList.add("Ce n'est pas très gentil.");
 		insultResponseList.add("Oooohh ! Vous êtes grossier.");
+		insultResponseList.add("Vous êtes grossier.");
+		insultResponseList.add("Vous me décevez.");
+		insultResponseList.add("La bave du crapaud n'atteint pas la blanche colombe.");
+		insultResponseList.add("Votre niveau lexical m'épate !");
 		insultResponseList.add("Merci, c'est toujours sympa de se faire insulter en travaillant...");
 		insultResponseList.add("Vous avez l'air très sympatique, c'est agréable.");
 		insultResponseList
@@ -50,17 +55,17 @@ public class InsultService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
-
-		if (lang == Locale.FRANCE) {
-			set.add(".*ta gueule.*");
-			set.add(TA_MERE_TA_SOEUR);
-			set.add(".*(connard|con|pute|salo|salop|salopard|enfoiré|enculé|bâtard|batard).*");
-			set.add(".*(c\\*.*|p\\*.*|s\\*.*|e\\*.*|e\\*.*|e\\*.*|d\\*.*).*");
-		} else {
+		if (commands.isEmpty()) {
+			if (lang == Locale.FRANCE) {
+				commands.add(".*ta gueule.*");
+				commands.add(TA_MERE_TA_SOEUR);
+				commands.add(".*(connard|con|pute|salo|salop|salopard|enfoiré|enculé|bâtard|batard).*");
+				commands.add(".*(c\\*.*|p\\*.*|s\\*.*|e\\*.*|e\\*.*|e\\*.*|d\\*.*).*");
+			} else {
+			}
 		}
 
-		return set;
+		return commands;
 	}
 
 	/*
@@ -71,8 +76,9 @@ public class InsultService implements IService {
 	@Override
 	public String handleRecoveryService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		final HistoryNode lastNode = historyTree.getLastNode();
+
 		if (lastNode.getSentence().matches(TA_MERE_TA_SOEUR) && sentence.contains("non")) {
-			return "Alors je vous prie de bien vouloir vous calmer et de revenir lorsque vous serez calme.";
+			return "Alors je vous prie de bien vouloir vous détendre et de revenir lorsque vous serez calme.";
 		}
 
 		return null;

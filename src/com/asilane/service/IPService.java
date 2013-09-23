@@ -15,6 +15,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class IPService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String WHAT_IS_MY_LOCAL_IP = "what is my local ip.*";
 	private static final String QUEL_EST_MON_IP_LOCAL = "quel.* es.* mon .*ip.*local.*";
 	private static final String WHAT_IS_MY_IP = "what is my ip.*";
@@ -45,17 +47,18 @@ public class IPService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
+		if (commands.isEmpty()) {
 
-		if (lang == Locale.FRANCE) {
-			set.add(QUELLE_EST_MON_IP);
-			set.add(QUEL_EST_MON_IP_LOCAL);
-		} else {
-			set.add(WHAT_IS_MY_IP);
-			set.add(WHAT_IS_MY_LOCAL_IP);
+			if (lang == Locale.FRANCE) {
+				commands.add(QUELLE_EST_MON_IP);
+				commands.add(QUEL_EST_MON_IP_LOCAL);
+			} else {
+				commands.add(WHAT_IS_MY_IP);
+				commands.add(WHAT_IS_MY_LOCAL_IP);
+			}
 		}
 
-		return set;
+		return commands;
 	}
 
 	private String getExternalIP() {

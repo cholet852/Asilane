@@ -13,6 +13,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class RepeatService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String REPETE_APRES_MOI = ".*répète après moi.*";
 	private static final String REPEAT_AFTER_ME = ".*repeat after me.*";
 
@@ -39,15 +41,15 @@ public class RepeatService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
-
-		if (lang == Locale.FRANCE) {
-			set.add(REPETE_APRES_MOI);
-		} else {
-			set.add(REPEAT_AFTER_ME);
+		if (commands.isEmpty()) {
+			if (lang == Locale.FRANCE) {
+				commands.add(REPETE_APRES_MOI);
+			} else {
+				commands.add(REPEAT_AFTER_ME);
+			}
 		}
 
-		return set;
+		return commands;
 	}
 
 	/*

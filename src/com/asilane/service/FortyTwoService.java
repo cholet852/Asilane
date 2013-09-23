@@ -12,6 +12,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class FortyTwoService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -29,18 +31,19 @@ public class FortyTwoService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
+		if (commands.isEmpty()) {
 
-		if (lang == Locale.FRANCE) {
-			set.add("quel.* est le sens de la vie");
-			set.add("quel.* est la réponse à l'univers");
-			set.add("quel.* est le nombre ultime");
-		} else {
-			set.add("what is the answer of the universe");
-			set.add("what is the ultimate number");
+			if (lang == Locale.FRANCE) {
+				commands.add("quel.* est le sens de la vie");
+				commands.add("quel.* est la réponse à l'univers");
+				commands.add("quel.* est le nombre ultime");
+			} else {
+				commands.add("what is the answer of the universe");
+				commands.add("what is the ultimate number");
+			}
 		}
 
-		return set;
+		return commands;
 	}
 
 	/*

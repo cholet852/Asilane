@@ -15,6 +15,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class DateService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String QUEL_JOUR_SOMME_NOUS = "quel.* jour somme.*nous";
 	private static final String ON_EST_QUEL_JOUR = "on.* es.* quel.* jour";
 	private static final String QUEL_JOUR_ON_EST = "quel.* jour on.* es.*";
@@ -50,21 +52,21 @@ public class DateService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
+		if (commands.isEmpty()) {
 
-		if (lang == Locale.FRANCE) {
-			set.add("quel.* heure es.*il");
-			set.add("il es.* quel.* heure.*");
+			if (lang == Locale.FRANCE) {
+				commands.add("quel.* heure es.*il");
+				commands.add("il es.* quel.* heure.*");
 
-			set.add(QUEL_JOUR_SOMME_NOUS);
-			set.add(ON_EST_QUEL_JOUR);
-			set.add(QUEL_JOUR_ON_EST);
-			set.add(QUEL_EST_LA_DATE);
-		} else {
-			set.add("what.* time is it");
+				commands.add(QUEL_JOUR_SOMME_NOUS);
+				commands.add(ON_EST_QUEL_JOUR);
+				commands.add(QUEL_JOUR_ON_EST);
+				commands.add(QUEL_EST_LA_DATE);
+			} else {
+				commands.add("what.* time is it");
+			}
 		}
-
-		return set;
+		return commands;
 	}
 
 	/*

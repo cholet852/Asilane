@@ -18,6 +18,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class WeatherForecastService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String WHAT_THE_WEATHER_LIKE_IN = "what.* the weather like .. .*";
 	private static final String QUEL_LE_TEMPS_A = "quel.* le temps à.*";
 	private static final String QUEL_TEMPS_FAIT_IL_A = "quel.* temps fait.*il à .*";
@@ -70,19 +72,18 @@ public class WeatherForecastService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
-
-		if (lang == Locale.FRANCE) {
-			set.add(QUEL_METEO_A);
-			set.add(QUEL_METEO_AU);
-			set.add(QUEL_TEMPS_FAIT_IL_A);
-			set.add(QUEL_LE_TEMPS_A);
-			set.add(QUEL_METEO_A);
-		} else {
-			set.add(WHAT_THE_WEATHER_LIKE_IN);
+		if (commands.isEmpty()) {
+			if (lang == Locale.FRANCE) {
+				commands.add(QUEL_METEO_A);
+				commands.add(QUEL_METEO_AU);
+				commands.add(QUEL_TEMPS_FAIT_IL_A);
+				commands.add(QUEL_LE_TEMPS_A);
+				commands.add(QUEL_METEO_A);
+			} else {
+				commands.add(WHAT_THE_WEATHER_LIKE_IN);
+			}
 		}
-
-		return set;
+		return commands;
 	}
 
 	/*

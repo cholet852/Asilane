@@ -17,6 +17,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class WebBrowserService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String GO_ON = "(go on|find) .*";
 	private static final String VA_SUR = "(va sur|trouve) .*";
 	private static final String GIVE_ME_INFO_ON = "give me info.* on.*";
@@ -99,18 +101,17 @@ public class WebBrowserService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
-
-		if (lang == Locale.FRANCE) {
-			set.add(VA_SUR);
-			set.add(INFO_SUR);
-		} else {
-			set.add(GO_ON);
-			set.add(SEARCH_INFO_ON);
-			set.add(GIVE_ME_INFO_ON);
+		if (commands.isEmpty()) {
+			if (lang == Locale.FRANCE) {
+				commands.add(VA_SUR);
+				commands.add(INFO_SUR);
+			} else {
+				commands.add(GO_ON);
+				commands.add(SEARCH_INFO_ON);
+				commands.add(GIVE_ME_INFO_ON);
+			}
 		}
-
-		return set;
+		return commands;
 	}
 
 	/*

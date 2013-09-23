@@ -17,6 +17,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class YouTubeService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String VIDEO = "(video|vidéo) .*";
 
 	/*
@@ -82,15 +84,14 @@ public class YouTubeService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
-
-		if (lang == Locale.FRANCE) {
-			set.add(VIDEO);
-		} else {
-			set.add(VIDEO);
+		if (commands.isEmpty()) {
+			if (lang == Locale.FRANCE) {
+				commands.add(VIDEO);
+			} else {
+				commands.add(VIDEO);
+			}
 		}
-
-		return set;
+		return commands;
 	}
 
 	/*

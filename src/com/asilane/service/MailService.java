@@ -17,6 +17,8 @@ import com.asilane.core.facade.history.HistoryTree;
  */
 public class MailService implements IService {
 
+	private final Set<String> commands = new HashSet<String>();
+
 	private static final String ENVOI_UN_MAIL = "envoi.* un .*mail";
 	private static final String SEND_A_MAIL = "send a .*mail";
 
@@ -118,15 +120,15 @@ public class MailService implements IService {
 	 */
 	@Override
 	public Set<String> getCommands(final Locale lang) {
-		final Set<String> set = new HashSet<String>();
+		if (commands.isEmpty()) {
 
-		if (lang == Locale.FRANCE) {
-			set.add(ENVOI_UN_MAIL);
-		} else {
-			set.add(SEND_A_MAIL);
+			if (lang == Locale.FRANCE) {
+				commands.add(ENVOI_UN_MAIL);
+			} else {
+				commands.add(SEND_A_MAIL);
+			}
 		}
-
-		return set;
+		return commands;
 	}
 
 	private String handleErrorMessage(final Locale lang) {
