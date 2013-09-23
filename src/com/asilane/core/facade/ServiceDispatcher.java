@@ -1,11 +1,8 @@
 package com.asilane.core.facade;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 import com.asilane.service.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentityService;
@@ -33,12 +30,12 @@ import com.asilane.service.YouTubeService;
  */
 public class ServiceDispatcher {
 	private static ServiceDispatcher INSTANCE;
-	private static Map<IService, Set<String>> commandsMap;
 	private final Locale lang;
+	private List<IService> services;
 
 	private ServiceDispatcher(final Locale lang) {
-		initMaps(getAllServices(), lang);
 		this.lang = lang;
+		initServices();
 	}
 
 	public static ServiceDispatcher getInstance(final Locale lang) {
@@ -47,15 +44,6 @@ public class ServiceDispatcher {
 			INSTANCE = new ServiceDispatcher(lang);
 		}
 		return INSTANCE;
-	}
-
-	private void initMaps(final List<IService> services, final Locale lang) {
-		commandsMap = new HashMap<IService, Set<String>>();
-
-		// Normal loop to keep arraylist order
-		for (int i = 0; i < services.size(); i++) {
-			commandsMap.put(services.get(i), services.get(i).getCommands(lang));
-		}
 	}
 
 	/**
@@ -80,8 +68,8 @@ public class ServiceDispatcher {
 	private IService getService(final String sentence, final boolean extendedSearch) {
 		final String extended = (extendedSearch) ? ".*" : "";
 
-		for (final IService service : commandsMap.keySet()) {
-			for (final String regexService : commandsMap.get(service)) {
+		for (final IService service : services) {
+			for (final String regexService : service.getCommands(lang)) {
 				if (sentence.matches(extended + regexService + extended)) {
 					return service;
 				}
@@ -92,30 +80,36 @@ public class ServiceDispatcher {
 	}
 
 	/**
+	 * Initall services
+	 * 
+	 */
+	private void initServices() {
+		services = new ArrayList<IService>();
+
+		services.add(new MailService());
+		services.add(new FindPlaceService());
+		services.add(new SaveWhatSayingService());
+		services.add(new RepeatService());
+		services.add(new FortyTwoService());
+		services.add(new YouTubeService());
+		services.add(new AsilaneIdentityService());
+		services.add(new WeatherForecastService());
+		services.add(new WebBrowserService());
+		services.add(new DateService());
+		services.add(new WikipediaService());
+		services.add(new IPService());
+		services.add(new AsilaneDialogService());
+		services.add(new InsultService());
+		services.add(new HelloService());
+	}
+
+	/**
 	 * Get all services
 	 * 
 	 * @return All services
 	 */
 	public List<IService> getAllServices() {
-		final List<IService> allServices = new ArrayList<IService>();
-
-		allServices.add(new SaveWhatSayingService());
-		allServices.add(new RepeatService());
-		allServices.add(new FortyTwoService());
-		allServices.add(new WikipediaService());
-		allServices.add(new YouTubeService());
-		allServices.add(new AsilaneIdentityService());
-		allServices.add(new WeatherForecastService());
-		allServices.add(new WebBrowserService());
-		allServices.add(new AsilaneDialogService());
-		allServices.add(new DateService());
-		allServices.add(new IPService());
-		allServices.add(new FindPlaceService());
-		allServices.add(new MailService());
-		allServices.add(new HelloService());
-		allServices.add(new InsultService());
-
-		return allServices;
+		return services;
 	}
 
 	/**
@@ -125,6 +119,6 @@ public class ServiceDispatcher {
 	 * @param otherServices
 	 */
 	public void setServices(final List<IService> services) {
-		initMaps(services, lang);
+		this.services = services;
 	}
 }

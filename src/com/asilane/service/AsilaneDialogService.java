@@ -21,7 +21,6 @@ public class AsilaneDialogService implements IService {
 	private static final String YES = "yes";
 	private static final String QUE_SAIS_TU_FAIRE = ".*sais.* faire.*";
 	private static final String MERCI = ".*merci";
-	private static final String NON = "non";
 	private static final String OUI = "oui";
 
 	/*
@@ -33,8 +32,7 @@ public class AsilaneDialogService implements IService {
 	public String handleService(final String sentence, final Locale lang, final HistoryTree historyTree) {
 		if (sentence.matches(OUI)) {
 			return "Ok.";
-		} else if (sentence.matches(NON)) {
-			return "Pourquoi non ?";
+
 		} else if (sentence.matches(MERCI)) {
 			return "Derien, c'est un plaisir de vous aider.";
 		} else if (sentence.matches(TEST)) {
@@ -72,7 +70,6 @@ public class AsilaneDialogService implements IService {
 
 		if (lang == Locale.FRANCE) {
 			set.add(OUI);
-			set.add(NON);
 			set.add(MERCI);
 			set.add(QUE_SAIS_TU_FAIRE);
 			set.add(TEST);

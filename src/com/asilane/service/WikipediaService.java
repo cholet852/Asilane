@@ -138,7 +138,6 @@ public class WikipediaService implements IService {
 			return ((Element) list.item(0)).getElementsByTagName("Description").item(0).getTextContent();
 
 		} catch (final Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
