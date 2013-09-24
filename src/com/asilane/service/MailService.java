@@ -124,8 +124,12 @@ public class MailService implements IService {
 
 			if (lang == Locale.FRANCE) {
 				commands.add(ENVOI_UN_MAIL);
+				commands.add(ENVOI_UN_MAIL_A);
+				commands.add(ENVOI_UN_MAIL_A_EN_DISANT);
 			} else {
 				commands.add(SEND_A_MAIL);
+				commands.add(SEND_A_MAIL_TO);
+				commands.add(SEND_A_MAIL_TO_AND_SAY);
 			}
 		}
 		return commands;

@@ -60,7 +60,7 @@ public class InsultService implements IService {
 				commands.add(".*ta gueule.*");
 				commands.add(TA_MERE_TA_SOEUR);
 				commands.add(".*(connard|con|pute|salo|salop|salopard|enfoiré|enculé|bâtard|batard).*");
-				commands.add(".*(c\\*.*|p\\*.*|s\\*.*|e\\*.*|e\\*.*|e\\*.*|d\\*.*).*");
+				commands.add(".*(c\\*.*|p\\*.*|s\\*.*|e\\*.*|e\\*.*|e\\*.*|d\\*.*|f\\*.*).*");
 			} else {
 			}
 		}
