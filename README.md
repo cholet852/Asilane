@@ -14,7 +14,7 @@ Demandez-lui ce que vous voulez, voici quelques exemples :
 
 - Quelle est la météo à Lille ?
 - Envoi un mail à Michael@Vendetta.fr en lui disant qu'il est beau.
-- Enregistre ce que je dis : les chaussettes de l'archiduchesse... (Enregistrement dans le presse-apier)
+- Enregistre ce que je dis : les chaussettes de l'archiduchesse... (Enregistrement dans le presse-papier)
 - Va sur Walane.net / Cherche des informations sur Walane (Recherche DuckDuckGo)
 - Qu'est ce qu'un chien/chat/ordinateur ? (Wikipédia)
 - Montre la vidéo de Bill Gates qui se prend une tarte (YouTube)
@@ -51,7 +51,7 @@ La classe mère s'appelle `Asilane`, j'ai mis du temps à trouver un nom origina
 * La capture audio est envoyée à Google pour la transformer en texte, Asilane s'occupe surtout d'analyser les phrases qui lui ont proposés.
  * La requête de l'utilisateur est ensuite envoyée à la classe `Facade` qui va se charger de nettoyer la phrase (espaces, majuscules, minuscules)
     
-     * La `Facade` fait ensuite appel au `ServiceDispatcher` qui répertorie toutes les commandes qui déclenchent les services (par exemple quel est la météo à Lille ?). C'est lui qui va dire à la facade quelle service il faut appaller appeler en fonction de ce qu'a dit l'utilisateur.
+     * La `Facade` fait ensuite appel au `ServiceDispatcher` qui répertorie toutes les commandes qui déclenchent les services (par exemple quel est la météo à Lille ?). C'est lui qui va dire à la facade quelle service il faut appeler en fonction de ce qu'a dit l'utilisateur.
 
  * Une fois que la `Facade`connaît quel service correspond à la phrase elle appelle la méthode `handleSentence()` du service en question qui va retourner la réponse à la question posée par l'utilisateur (par exemple : Quel est la météo à Lille ? -> Il pleut).
 
