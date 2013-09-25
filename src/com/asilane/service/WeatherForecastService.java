@@ -136,6 +136,10 @@ public class WeatherForecastService implements IService {
 		final String cleanCity = parsedResponse.get("name").toString().isEmpty() ? city : parsedResponse.get("name")
 				.toString();
 
+		if (parsedWeather == null) {
+			return handleErrorMessage(lang);
+		}
+
 		// Convert Kelvin temperature to Celsius
 		final int temperature = (int) Math.round(Double.valueOf(parsedMain.get("temp").toString()) - 273.15);
 

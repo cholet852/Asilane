@@ -19,17 +19,17 @@ public class MailService implements IService {
 
 	private final Set<String> commands = new HashSet<String>();
 
-	private static final String ENVOI_UN_MAIL = "envoi.* un .*mail";
-	private static final String SEND_A_MAIL = "send a .*mail";
+	private static final String ENVOI_UN_MAIL = ".*mail";
+	private static final String SEND_A_MAIL = ".*mail";
 
-	private static final String ENVOI_UN_MAIL_A = "envoi.* un .*mail à.*";
-	private static final String SEND_A_MAIL_TO = "send a .*mail to.*";
+	private static final String ENVOI_UN_MAIL_A = ".*mail à.*";
+	private static final String SEND_A_MAIL_TO = ".*mail to.*";
 
-	private static final String ENVOI_UN_MAIL_A_EN_DISANT = "envoi.* un .*mail à .* en.* disant .*";
-	private static final String SEND_A_MAIL_TO_AND_SAY = "send (a|an) .*mail to .* and say .*";
+	private static final String ENVOI_UN_MAIL_A_EN_DISANT = ".*mail à (\\S+@\\S+\\.\\S+|\\S+ arobase \\S+ point \\S+) .*";
+	private static final String SEND_A_MAIL_TO_AND_SAY = ".*mail to (\\S+@\\S+\\.\\S+|\\S+ arobas \\S+ point \\S+) .*";
 
 	/*
-	 * (non-Javadoc)
+	 * (non-Javadoc)mail à thomas@chambon.me bonjur ca va
 	 * 
 	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
 	 */
@@ -43,14 +43,14 @@ public class MailService implements IService {
 				if (lang == Locale.FRANCE) {
 					// With dest and message
 					if ((regexVars = AsilaneUtils.extractRegexVars(ENVOI_UN_MAIL_A_EN_DISANT, sentence)) != null) {
-						final String dest = textToEmailAddress(regexVars.get(2), lang);
-						mail(dest, "", regexVars.get(4));
+						final String dest = textToEmailAddress(regexVars.get(1), lang);
+						mail(dest, "", regexVars.get(2));
 						return "Ok, je vous prépare l'envoi d'un email à " + dest;
 					}
 
 					// With dest
 					else if ((regexVars = AsilaneUtils.extractRegexVars(ENVOI_UN_MAIL_A, sentence)) != null) {
-						final String dest = textToEmailAddress(regexVars.get(2), lang);
+						final String dest = textToEmailAddress(regexVars.get(1), lang);
 						mail(dest, "", "");
 						return "Ok, je vous prépare l'envoi d'un email à " + dest;
 					}
@@ -64,8 +64,8 @@ public class MailService implements IService {
 
 				// With dest and message
 				if ((regexVars = AsilaneUtils.extractRegexVars(SEND_A_MAIL_TO_AND_SAY, sentence)) != null) {
-					final String dest = textToEmailAddress(regexVars.get(2), lang);
-					mail(dest, "", regexVars.get(3));
+					final String dest = textToEmailAddress(regexVars.get(1), lang);
+					mail(dest, "", regexVars.get(2));
 					return "Ok, i send a mail to " + dest;
 				}
 				// With dest
@@ -94,9 +94,9 @@ public class MailService implements IService {
 	 */
 	private String textToEmailAddress(final String text, final Locale lang) {
 		if (lang == Locale.FRANCE) {
-			return text.replace("arobase", "@").replace("point", ".").replace(" ", "");
+			return text.trim().replace("arobase", "@").replace("point", ".").replace(" ", "");
 		}
-		return text.replace("arobas", "@").replace("dot", ".").replace(" ", "");
+		return text.trim().replace("arobas", "@").replace("dot", ".").replace(" ", "");
 	}
 
 	/**

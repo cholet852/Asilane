@@ -23,8 +23,7 @@ public class MailServiceTest {
 		final Locale lang = Locale.FRANCE;
 		assertTrue(facade.handleSentence("envoi un mail", lang).contains("Ok"));
 		assertTrue(facade.handleSentence("envoi un mail à foo@bar.com", lang).contains("foo@bar.com"));
-		assertTrue(facade.handleSentence("envoi un mail à foo@bar.com en lui disant bonjour", lang).contains(
-				"foo@bar.com"));
+		assertTrue(facade.handleSentence("envoi un mail à foo@bar.com bonjour", lang).contains("foo@bar.com"));
 	}
 
 	@Test
@@ -32,6 +31,6 @@ public class MailServiceTest {
 		final Locale lang = Locale.ENGLISH;
 		assertTrue(facade.handleSentence("send a mail", lang).contains("Ok"));
 		assertTrue(facade.handleSentence("send a mail to foo@bar.com", lang).contains("foo@bar.com"));
-		assertTrue(facade.handleSentence("send a mail to foo@bar.com and say hello", lang).contains("foo@bar.com"));
+		assertTrue(facade.handleSentence("send a mail to foo@bar.com hello", lang).contains("foo@bar.com"));
 	}
 }

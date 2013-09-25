@@ -102,7 +102,7 @@ public class AsilaneUtils {
 		try {
 			// Test with google.com
 			return InetAddress.getByName("173.194.40.103").isReachable(4000);
-		} catch (final IOException e) {
+		} catch (final Exception e) {
 			return false;
 		}
 	}
