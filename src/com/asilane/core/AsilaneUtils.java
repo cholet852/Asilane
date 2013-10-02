@@ -13,9 +13,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Some good things used in the application
@@ -29,11 +32,39 @@ public class AsilaneUtils {
 	 * 
 	 * @param regex
 	 * @param sentence
-	 * @return a list which contains all variables which are in the regex
+	 * @return RegexVarsResult @see {@link RegexVarsResult}
 	 */
-	public static List<String> extractRegexVars(final String regex, final String sentence) {
-		String regexCleaned = regex.replace(".*", "(.*)");
+	public static RegexVarsResult extractRegexVars(final String regex, final String sentence) {
+		// 1. Save the position of each named regex
+		boolean inParenthese = false;
+		int cptRegex = 0;
+		final List<String> namedRegexList = new ArrayList<String>();
+		StringBuilder namedRegexTmp = new StringBuilder();
 
+		// Parsing
+		for (int i = 0; i < regex.length(); i++) {
+			if (inParenthese && regex.charAt(i) == ' ') {
+				namedRegexList.add(cptRegex++, namedRegexTmp.toString());
+				namedRegexTmp = new StringBuilder();
+				inParenthese = false;
+			} else if (inParenthese) {
+				namedRegexTmp.append(regex.charAt(i));
+			} else if (regex.charAt(i) == '(') {
+				inParenthese = true;
+			} else if (inParenthese && regex.charAt(i) == ')') {
+				namedRegexList.add(cptRegex++, null);
+				namedRegexTmp = new StringBuilder();
+				inParenthese = false;
+			}
+		}
+
+		// 2. Remove named regex from the regex
+		String regexCleaned = regex;
+		for (final String regexName : namedRegexList) {
+			regexCleaned = regexCleaned.replace(regexName + " ", "");
+		}
+
+		// 3. Use the Matcher to extract vars
 		// Enlarge regex to expand performances
 		if (!regex.startsWith(".*")) {
 			regexCleaned = ".*" + regexCleaned;
@@ -46,17 +77,36 @@ public class AsilaneUtils {
 		final Matcher matcher = pattern.matcher(sentence);
 
 		// If there is no any match
-		if (!matcher.matches()) {
+		try {
+			if (!matcher.matches()) {
+				return null;
+			}
+		} catch (final PatternSyntaxException e) {
 			return null;
 		}
 
 		// If not, adding extract all variables in a List
-		final List<String> results = new ArrayList<String>();
+		final List<String> regexValues = new ArrayList<String>();
 		for (int i = 1; i <= matcher.groupCount(); i++) {
-			results.add(matcher.group(i).trim());
+			regexValues.add(matcher.group(i).trim());
 		}
 
-		return results;
+		// 4. Prepare & return what we need
+
+		// For each regex name, his value
+		final Map<String, String> namedRegexMap = new HashMap<String, String>();
+		// Represent the non-named regex
+		final List<String> otherRegex = new ArrayList<String>();
+
+		for (int i = 0; i < namedRegexList.size(); i++) {
+			if (regexValues.get(i) == null) {
+				otherRegex.add(regexValues.get(i));
+			} else {
+				namedRegexMap.put(namedRegexList.get(i), regexValues.get(i));
+			}
+		}
+
+		return new RegexVarsResult(namedRegexMap, otherRegex);
 	}
 
 	/**
