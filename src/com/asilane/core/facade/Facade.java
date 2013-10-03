@@ -1,7 +1,5 @@
 package com.asilane.core.facade;
 
-import java.util.Locale;
-
 import com.asilane.core.facade.history.HistoryNode;
 import com.asilane.core.facade.history.HistoryTree;
 import com.asilane.service.IService;
@@ -22,36 +20,37 @@ public class Facade {
 	/**
 	 * Intercept speech to text, prepare the sentence and call the good service
 	 * 
-	 * @param sentence
-	 * @param lang
+	 * @param question
+	 * 
 	 * @return the response
 	 * @throws NoServiceFoundException
 	 */
-	public String handleSentence(final String sentence, final Locale lang) throws NoServiceFoundException {
+	public Response handleSentence(final Question question) throws NoServiceFoundException {
 		// Preparation of sentence
-		final String preparedSentence = sentence.trim().toLowerCase();
+		question.cleanQuestion();
 
 		// Try to get the service corresponding to the sentence
-		final IService askedService = ServiceDispatcher.getInstance(lang).getService(preparedSentence);
+		final IService askedService = ServiceDispatcher.getInstance(question.getLanguage()).getService(
+				question.getQuestion());
 
 		// Return the response of the service if this one is found
 		if (askedService != null) {
-			final String answer = askedService.handleService(preparedSentence, lang, historyTree);
-			historyTree.addNode(sentence, answer, askedService);
-			return answer;
+			final Response response = askedService.handleService(question);
+			historyTree.addNode(question, response, askedService);
+			return response;
 		}
 
 		// If no any service has been found trying to call recovery handling in the previous service
 		final HistoryNode lastNode = historyTree.getLastNode();
-		final String recoveryAnswer = historyTree.getFirstNode().isLeaf() ? null : lastNode.getService()
-				.handleRecoveryService(preparedSentence, lang, historyTree);
-		if (recoveryAnswer != null) {
-			historyTree.addNode(sentence, recoveryAnswer, lastNode.getService());
-			return recoveryAnswer;
+		final Response recoveryResponse = historyTree.getFirstNode().isLeaf() ? null : lastNode.getService()
+				.handleRecoveryService(question);
+		if (recoveryResponse != null) {
+			historyTree.addNode(question, recoveryResponse, lastNode.getService());
+			return recoveryResponse;
 		}
 
 		// If normal handling and recovery hangling don't work, exception
-		throw new NoServiceFoundException(lang);
+		throw new NoServiceFoundException(question.getLanguage());
 	}
 
 	/**

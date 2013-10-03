@@ -1,5 +1,7 @@
 package com.asilane.core.facade.history;
 
+import com.asilane.core.facade.Question;
+import com.asilane.core.facade.Response;
 import com.asilane.service.IService;
 
 /**
@@ -11,11 +13,11 @@ public class HistoryNode {
 	/**
 	 * The sentence asked by the client
 	 */
-	private String sentence;
+	private Question question;
 	/**
 	 * The answer given by the IA
 	 */
-	private String answer;
+	private Response response;
 	/**
 	 * The service which has managed the sentence to give the answer
 	 */
@@ -30,6 +32,9 @@ public class HistoryNode {
 	 */
 	private HistoryNode rightSon;
 
+	/**
+	 * 
+	 */
 	public HistoryNode() {
 	}
 
@@ -41,40 +46,40 @@ public class HistoryNode {
 	 * @param service
 	 *            The service which has managed the sentence to give the answer
 	 */
-	public HistoryNode(final String sentence, final String answer, final IService service) {
-		this.sentence = sentence;
-		this.answer = answer;
+	public HistoryNode(final Question question, final Response response, final IService service) {
+		this.question = question;
+		this.response = response;
 		this.service = service;
 	}
 
 	/**
-	 * @return the sentence asked by the client
+	 * @return the question asked by the client
 	 */
-	public String getSentence() {
-		return sentence;
+	public Question getQuestion() {
+		return question;
 	}
 
 	/**
 	 * @param sentence
 	 *            the sentence to set
 	 */
-	public void setSentence(final String sentence) {
-		this.sentence = sentence;
+	public void setQuestion(final Question question) {
+		this.question = question;
 	}
 
 	/**
-	 * @return the answer given by the IA
+	 * @return the response given by the IA
 	 */
-	public String getAnswer() {
-		return answer;
+	public Response getResponse() {
+		return response;
 	}
 
 	/**
-	 * @param answer
+	 * @param response
 	 *            the answer to set
 	 */
-	public void setAnswer(final String answer) {
-		this.answer = answer;
+	public void setResponse(final Response response) {
+		this.response = response;
 	}
 
 	/**

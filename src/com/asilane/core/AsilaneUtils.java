@@ -20,6 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import com.asilane.core.facade.Question;
+
 /**
  * Some good things used in the application
  * 
@@ -31,10 +33,10 @@ public class AsilaneUtils {
 	 * Extract all variables which are in the regex
 	 * 
 	 * @param regex
-	 * @param sentence
+	 * @param question
 	 * @return RegexVarsResult @see {@link RegexVarsResult}
 	 */
-	public static RegexVarsResult extractRegexVars(final String regex, final String sentence) {
+	public static RegexVarsResult extractRegexVars(final String regex, final Question question) {
 		// 1. Save the position of each named regex
 		boolean inParenthese = false;
 		int cptRegex = 0;
@@ -74,7 +76,7 @@ public class AsilaneUtils {
 		}
 
 		final Pattern pattern = Pattern.compile(regexCleaned);
-		final Matcher matcher = pattern.matcher(sentence);
+		final Matcher matcher = pattern.matcher(question.getQuestion());
 
 		// If there is no any match
 		try {

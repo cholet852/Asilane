@@ -1,12 +1,13 @@
 package com.asilane.core;
 
-import java.io.IOException;
 import java.util.Locale;
 
 import javax.sound.sampled.AudioFileFormat;
 
 import com.asilane.core.facade.Facade;
 import com.asilane.core.facade.NoServiceFoundException;
+import com.asilane.core.facade.Question;
+import com.asilane.core.facade.Response;
 import com.asilane.gui.GUI;
 import com.darkprograms.speech.microphone.Microphone;
 import com.darkprograms.speech.microphone.Microphone.CaptureState;
@@ -25,7 +26,7 @@ public class Asilane {
 	private Locale lang;
 
 	/**
-	 * Create a new Asilane Instance
+	 * Create a new Asilane instance
 	 */
 	public Asilane() {
 		facade = new Facade();
@@ -62,17 +63,19 @@ public class Asilane {
 		// Transform voice into text
 		final String textSpeeched = speechToText(SAVED_WAV);
 		if (textSpeeched != null) {
-			String iaResponse;
+			Response iaResponse;
 			try {
 				// Understand what means the sentence
-				iaResponse = facade.handleSentence(textSpeeched, lang);
+				iaResponse = facade.handleSentence(new Question(textSpeeched, lang));
 			} catch (final NoServiceFoundException e) {
-				iaResponse = e.getMessage();
+				iaResponse = new Response();
+				iaResponse.setResponse(e.getMessage());
 			}
-			notification(iaResponse); // Display a notification
-			textToSpeech(iaResponse); // Say the response
 
-			return iaResponse; // Return the response;
+			// Say the response
+			textToSpeech(iaResponse.getSpeechedResponse());
+			// Return the response;
+			return iaResponse.getDisplayedResponse();
 		}
 
 		// If nothing has been heard
@@ -112,35 +115,21 @@ public class Asilane {
 	}
 
 	/**
-	 * Display a notification in the system
-	 * 
-	 * @param sentence
-	 */
-	private void notification(final String sentence) {
-		try {
-			final String[] cmd = { "/usr/bin/notify-send", "-t", "1000", sentence };
-			Runtime.getRuntime().exec(cmd);
-		} catch (final IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Direct sentence handling without voice recognition
 	 * 
 	 * @param sentence
 	 * @return The response of the IA corresponding to the sentence
 	 */
 	public String handleSentence(final String sentence) {
-		String iaResponse;
+		Response iaResponse;
 		try {
-			iaResponse = facade.handleSentence(sentence, lang);
-			textToSpeech(iaResponse);
+			iaResponse = facade.handleSentence(new Question(sentence, lang));
+			textToSpeech(iaResponse.getSpeechedResponse());
+
+			return iaResponse.getDisplayedResponse();
 		} catch (final NoServiceFoundException e) {
-			iaResponse = e.getMessage();
+			return e.getMessage();
 		}
-		notification(iaResponse);
-		return iaResponse;
 	}
 
 	/**

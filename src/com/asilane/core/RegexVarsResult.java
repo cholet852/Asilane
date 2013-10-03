@@ -39,21 +39,28 @@ public class RegexVarsResult {
 	}
 
 	/**
-	 * @return the namedRegex :<br>
-	 *         For each regex name, his value<br>
-	 *         For example : "what the weather like in (city .*) ?" -> (city -> .*)
+	 * Get the named regex value by his key<br>
+	 * For example : "what the weather like in (city .*)
+	 * 
+	 * @param key
+	 * @return the named regex value by his key
 	 */
-	public Map<String, String> getNamedRegex() {
-		return namedRegex;
+	public String get(final String key) {
+		return namedRegex.get(key);
 	}
 
 	/**
-	 * @return the otherRegex :<br>
-	 *         Represent the non-named regex<br>
-	 *         For example : "what .* is .* a .*" -> (List)<br>
-	 *         In this case : "what .* is (city .*) and .*" this return the two non-named regex
+	 * Get the non-named regex value by his number<br>
+	 * For example : "what .* is .* a .*"
+	 * 
+	 * @param number
+	 * @return the non-named regex value by his number
 	 */
-	public List<String> getOtherRegex() {
-		return otherRegex;
+	public String get(final int number) {
+		try {
+			return otherRegex.get(number);
+		} catch (final IndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 }

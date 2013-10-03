@@ -1,5 +1,7 @@
 package com.asilane.core.facade.history;
 
+import com.asilane.core.facade.Question;
+import com.asilane.core.facade.Response;
 import com.asilane.service.IService;
 
 /**
@@ -59,14 +61,14 @@ public class HistoryTree {
 	 * @param answer
 	 * @param service
 	 */
-	public void addNode(final String sentence, final String answer, final IService service) {
+	public void addNode(final Question question, final Response response, final IService service) {
 		final HistoryNode lastNode = getLastNode();
 
 		// Define if the node will be at left or right (link with the upper node or not)
 		if (service.equals(lastNode.getService())) {
-			lastNode.setLeftSon(new HistoryNode(sentence, answer, service));
+			lastNode.setLeftSon(new HistoryNode(question, response, service));
 		} else {
-			lastNode.setRightSon(new HistoryNode(sentence, answer, service));
+			lastNode.setRightSon(new HistoryNode(question, response, service));
 		}
 	}
 }
