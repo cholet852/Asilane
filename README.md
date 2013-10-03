@@ -74,4 +74,4 @@ La classe mère s'appelle `Asilane`, j'ai mis du temps à trouver un nom origina
 Le dernier point fonctionne grâce à un arbre de recherche disponible dans la méthode `handleSentence()` qui enregistre tout ce qui est dit, quelles sont les derniers services appellés, leur réponse, etc. Pour plus d'informations, consultez les classes `HistoryTree` et `HistoryNode`.
 
 ### Tutoriel vidéo
-Un ancien [tutoriel vidéo](https://www.youtube.com/watch?v=h3dgMjBSUpA) est disponible pour comprendre un peu plus en détails le fonctionnement d'Asilane.
+Un [tutoriel vidéo](https://www.youtube.com/watch?v=JPaPwXzQZHk) est disponible pour comprendre un peu plus en détails le fonctionnement et l'architecture d'Asilane.
