@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.asilane.service.IService;
+import com.asilane.service.AsilaneDialog.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentity.AsilaneIdentityService;
 
 /**
@@ -123,7 +124,7 @@ public class ServiceDispatcher {
 		// services.add(new DateService());
 		// services.add(new WikipediaService());
 		// services.add(new IPService());
-		// services.add(new AsilaneDialogService());
+		services.add(new AsilaneDialogService());
 		// services.add(new InsultService());
 		// services.add(new HelloService());
 	}
