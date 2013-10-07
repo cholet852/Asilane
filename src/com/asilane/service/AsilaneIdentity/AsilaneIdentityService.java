@@ -8,7 +8,7 @@ import com.asilane.core.AsilaneUtils;
 import com.asilane.core.facade.Question;
 import com.asilane.core.facade.Response;
 import com.asilane.core.facade.ServiceDispatcher;
-import com.asilane.core.facade.Translation;
+import com.asilane.core.facade.Translator;
 import com.asilane.service.IService;
 
 /**
@@ -17,9 +17,13 @@ import com.asilane.service.IService;
  */
 public class AsilaneIdentityService implements IService {
 
-	private static final String WHO_IS_YOUR_CREATOR = "who_is_your_creator";
-	private static final String WHAT_IS_YOUR_GOAL = "what_is_your_goal";
-	private static final String HOW_OLD_ARE_YOU = "how_old_are_you";
+	private static enum dynamicCommands {
+		how_old_are_you
+	}
+
+	private static enum staticCommands {
+		who_is_your_creator, what_is_your_goal
+	}
 
 	private static final int MILISECOND_PER_DAY = 86400000;
 
@@ -30,24 +34,19 @@ public class AsilaneIdentityService implements IService {
 	 */
 	@Override
 	public Response handleService(final Question question) {
-		final Translation translation = ServiceDispatcher.getInstance(question.getLanguage()).getTranslation(this);
+		final Translator translator = ServiceDispatcher.getInstance(question.getLanguage()).getTranslation(this);
 
-		if (AsilaneUtils.extractRegexVars(translation.getQuestion(WHO_IS_YOUR_CREATOR), question) != null) {
-			return new Response(translation.getAnswer(WHO_IS_YOUR_CREATOR));
-		} else if (AsilaneUtils.extractRegexVars(translation.getQuestion(WHAT_IS_YOUR_GOAL), question) != null) {
-			return new Response(translation.getAnswer(WHAT_IS_YOUR_GOAL));
-		} else if (AsilaneUtils.extractRegexVars(translation.getQuestion(HOW_OLD_ARE_YOU), question) != null) {
+		if (AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.how_old_are_you), question) != null) {
 			final GregorianCalendar calendar = new GregorianCalendar();
-			calendar.clear();
-			calendar.set(2013, Calendar.JULY, 10, 00, 42); // Date of Asilane Creation
+			calendar.set(2013, Calendar.JULY, 10, 00, 42); // Date of Asilane creation
 			final Date bornDate = calendar.getTime();
 			final Date todayDate = new Date();
 			final int age = Math.round(Math.abs((todayDate.getTime() - bornDate.getTime()) / MILISECOND_PER_DAY));
 
-			return new Response(translation.getAnswer(HOW_OLD_ARE_YOU, String.valueOf(age)));
+			return new Response(translator.getAnswer(dynamicCommands.how_old_are_you, String.valueOf(age)));
 		}
 
-		return null;
+		return AsilaneUtils.handleStaticCommands(staticCommands.values(), question, translator);
 	}
 
 	/*
