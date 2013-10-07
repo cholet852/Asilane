@@ -9,14 +9,14 @@ import java.util.Properties;
  * @author walane
  * 
  */
-public class Translation {
+public class Translator {
 	private final Properties translationMap;
 	private static final String ANSWER = "_answer";
 
 	/**
 	 * @param translationMap
 	 */
-	protected Translation(final Properties translationMap) {
+	protected Translator(final Properties translationMap) {
 		this.translationMap = translationMap;
 	}
 
@@ -24,16 +24,16 @@ public class Translation {
 	 * @param key
 	 * @return The question corresponding to the translation key
 	 */
-	public String getQuestion(final String key) {
-		return String.valueOf(translationMap.get(key));
+	public String getQuestion(final Object key) {
+		return String.valueOf(translationMap.get(String.valueOf(key)));
 	}
 
 	/**
 	 * @param key
 	 * @return The answer corresponding to the translation key
 	 */
-	public String getAnswer(final String key) {
-		return String.valueOf(translationMap.get(key + ANSWER));
+	public String getAnswer(final Object key) {
+		return String.valueOf(translationMap.get(String.valueOf(key) + ANSWER));
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class Translation {
 	 *         Example : <code>getAnswer("prety_cloudy", "Paris")</code> :<br>
 	 *         "It's pretty cloudy in {0}" -> "It's pretty cloudy in Paris"
 	 */
-	public String getAnswer(final String key, final String... vars) {
+	public String getAnswer(final Object key, final String... vars) {
 		String response = String.valueOf(translationMap.get(key + ANSWER));
 
 		// Parse {n}

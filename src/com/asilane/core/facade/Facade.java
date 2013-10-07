@@ -28,6 +28,7 @@ public class Facade {
 	public Response handleSentence(final Question question) throws NoServiceFoundException {
 		// Preparation of sentence
 		question.cleanQuestion();
+		question.setHistoryTree(historyTree);
 
 		// Try to get the service corresponding to the sentence
 		final IService askedService = ServiceDispatcher.getInstance(question.getLanguage()).getService(

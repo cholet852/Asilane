@@ -21,6 +21,8 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import com.asilane.core.facade.Question;
+import com.asilane.core.facade.Response;
+import com.asilane.core.facade.Translator;
 
 /**
  * Some good things used in the application
@@ -39,6 +41,7 @@ public class AsilaneUtils {
 	public static RegexVarsResult extractRegexVars(final String regex, final Question question) {
 		// 1. Save the position of each named regex
 		boolean inParenthese = false;
+		boolean inPipe = false;
 		int cptRegex = 0;
 		final List<String> namedRegexList = new ArrayList<String>();
 		StringBuilder namedRegexTmp = new StringBuilder();
@@ -46,9 +49,18 @@ public class AsilaneUtils {
 		// Parsing
 		for (int i = 0; i < regex.length(); i++) {
 			if (inParenthese && regex.charAt(i) == ' ') {
-				namedRegexList.add(cptRegex++, namedRegexTmp.toString());
+				for (final int j = i; regex.charAt(j) != ')' && j < regex.length(); i++) {
+					if (regex.charAt(i) == '|') {
+						inPipe = true;
+						break;
+					}
+				}
+				if (!inPipe) {
+					namedRegexList.add(cptRegex++, namedRegexTmp.toString());
+				}
 				namedRegexTmp = new StringBuilder();
 				inParenthese = false;
+				inPipe = false;
 			} else if (inParenthese) {
 				namedRegexTmp.append(regex.charAt(i));
 			} else if (regex.charAt(i) == '(') {
@@ -109,6 +121,26 @@ public class AsilaneUtils {
 		}
 
 		return new RegexVarsResult(namedRegexMap, otherRegex);
+	}
+
+	/**
+	 * Handle static commands to avoid duplicate code
+	 * 
+	 * @param staticCommands
+	 * @param question
+	 * @param translator
+	 * @return the response from the static command corresponding to the question
+	 */
+	public static Response handleStaticCommands(final Object[] staticCommands, final Question question,
+			final Translator translator) {
+
+		for (final Object command : staticCommands) {
+			if (AsilaneUtils.extractRegexVars(translator.getQuestion(command), question) != null) {
+				return new Response(translator.getAnswer(command));
+			}
+		}
+
+		return null;
 	}
 
 	/**

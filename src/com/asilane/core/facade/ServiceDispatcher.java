@@ -54,7 +54,7 @@ public class ServiceDispatcher {
 	 */
 	public IService getService(final String sentence) {
 		for (final IService service : services) {
-			final Translation translationFile = getTranslation(service);
+			final Translator translationFile = getTranslation(service);
 
 			for (final Object regex : translationFile.values()) {
 				if (sentence.matches(cleanRegex(regex.toString()))) {
@@ -75,6 +75,7 @@ public class ServiceDispatcher {
 	private String cleanRegex(final String regex) {
 		// 1. Save the position of each named regex
 		boolean inParenthese = false;
+		boolean inPipe = false;
 		int cptRegex = 0;
 		final List<String> namedRegexList = new ArrayList<String>();
 		StringBuilder namedRegexTmp = new StringBuilder();
@@ -82,9 +83,18 @@ public class ServiceDispatcher {
 		// Parsing
 		for (int i = 0; i < regex.length(); i++) {
 			if (inParenthese && regex.charAt(i) == ' ') {
-				namedRegexList.add(cptRegex++, namedRegexTmp.toString());
+				for (final int j = i; regex.charAt(j) != ')' && j < regex.length(); i++) {
+					if (regex.charAt(i) == '|') {
+						inPipe = true;
+						break;
+					}
+				}
+				if (!inPipe) {
+					namedRegexList.add(cptRegex++, namedRegexTmp.toString());
+				}
 				namedRegexTmp = new StringBuilder();
 				inParenthese = false;
+				inPipe = false;
 			} else if (inParenthese) {
 				namedRegexTmp.append(regex.charAt(i));
 			} else if (regex.charAt(i) == '(') {
@@ -97,12 +107,12 @@ public class ServiceDispatcher {
 		}
 
 		// 2. Remove named regex from the regex
-		String regexCleaned = regex;
+		final StringBuilder regexCleaned = new StringBuilder(regex);
 		for (final String regexName : namedRegexList) {
-			regexCleaned = regexCleaned.replace(regexName + " ", "");
+			regexCleaned.append(regexCleaned.toString().replace(regexName + " ", ""));
 		}
 
-		return regexCleaned;
+		return regexCleaned.toString();
 	}
 
 	/**
@@ -135,7 +145,7 @@ public class ServiceDispatcher {
 	 * @param service
 	 * @return the translation of the service
 	 */
-	public Translation getTranslation(final IService service) {
+	public Translator getTranslation(final IService service) {
 		Properties propertyFile = translationMap.get(service);
 
 		// If the property file corresponding to the service doesn't exists, get it
@@ -158,7 +168,7 @@ public class ServiceDispatcher {
 			}
 		}
 
-		return new Translation(propertyFile);
+		return new Translator(propertyFile);
 	}
 
 	/**

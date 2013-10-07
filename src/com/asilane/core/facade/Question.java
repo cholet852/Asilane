@@ -1,6 +1,8 @@
 package com.asilane.core.facade;
 
+import java.text.Normalizer;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import com.asilane.core.facade.history.HistoryTree;
 
@@ -97,9 +99,13 @@ public class Question {
 	}
 
 	/**
-	 * Clean the question asked by the client
+	 * Clean the question asked by the client<br>
+	 * Remove accents, trim, to lower case
 	 */
 	public void cleanQuestion() {
-		question.trim().toLowerCase();
+		final String nfdNormalizedString = Normalizer.normalize(question, Normalizer.Form.NFD);
+		final Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+
+		question = pattern.matcher(nfdNormalizedString).replaceAll("").trim().toLowerCase();
 	}
 }
