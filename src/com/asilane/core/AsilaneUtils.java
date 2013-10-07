@@ -43,21 +43,32 @@ public class AsilaneUtils {
 		boolean inParenthese = false;
 		boolean inPipe = false;
 		int cptRegex = 0;
-		final List<String> namedRegexList = new ArrayList<String>();
+		final Map<Integer, String> regexMap = new HashMap<Integer, String>();
 		StringBuilder namedRegexTmp = new StringBuilder();
 
 		// Parsing
 		for (int i = 0; i < regex.length(); i++) {
 			if (inParenthese && regex.charAt(i) == ' ') {
-				for (final int j = i; regex.charAt(j) != ')' && j < regex.length(); i++) {
-					if (regex.charAt(i) == '|') {
+				for (int j = i; j < regex.length() && regex.charAt(j) != ')'; j++) {
+					if (regex.charAt(j) == '|') {
 						inPipe = true;
 						break;
 					}
 				}
-				if (!inPipe) {
-					namedRegexList.add(cptRegex++, namedRegexTmp.toString());
+
+				regexMap.put(cptRegex++, inPipe ? null : namedRegexTmp.toString());
+				namedRegexTmp = new StringBuilder();
+				inParenthese = false;
+				inPipe = false;
+			} else if (inParenthese && regex.charAt(i) == ')') {
+				for (int j = i; j >= 0 && regex.charAt(j) != '('; j--) {
+					if (regex.charAt(j) == '|') {
+						inPipe = true;
+						break;
+					}
 				}
+
+				regexMap.put(cptRegex++, inPipe ? null : namedRegexTmp.toString());
 				namedRegexTmp = new StringBuilder();
 				inParenthese = false;
 				inPipe = false;
@@ -65,16 +76,12 @@ public class AsilaneUtils {
 				namedRegexTmp.append(regex.charAt(i));
 			} else if (regex.charAt(i) == '(') {
 				inParenthese = true;
-			} else if (inParenthese && regex.charAt(i) == ')') {
-				namedRegexList.add(cptRegex++, null);
-				namedRegexTmp = new StringBuilder();
-				inParenthese = false;
 			}
 		}
 
 		// 2. Remove named regex from the regex
 		String regexCleaned = regex;
-		for (final String regexName : namedRegexList) {
+		for (final String regexName : regexMap.values()) {
 			regexCleaned = regexCleaned.replace(regexName + " ", "");
 		}
 
@@ -112,12 +119,8 @@ public class AsilaneUtils {
 		// Represent the non-named regex
 		final List<String> otherRegex = new ArrayList<String>();
 
-		for (int i = 0; i < namedRegexList.size(); i++) {
-			if (regexValues.get(i) == null) {
-				otherRegex.add(regexValues.get(i));
-			} else {
-				namedRegexMap.put(namedRegexList.get(i), regexValues.get(i));
-			}
+		for (int i = 0; i < regexMap.size(); i++) {
+			namedRegexMap.put(regexMap.get(i), regexValues.get(i));
 		}
 
 		return new RegexVarsResult(namedRegexMap, otherRegex);

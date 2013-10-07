@@ -82,21 +82,32 @@ public class ServiceDispatcher {
 		boolean inParenthese = false;
 		boolean inPipe = false;
 		int cptRegex = 0;
-		final List<String> namedRegexList = new ArrayList<String>();
+		final Map<Integer, String> regexMap = new HashMap<Integer, String>();
 		StringBuilder namedRegexTmp = new StringBuilder();
 
 		// Parsing
 		for (int i = 0; i < regex.length(); i++) {
 			if (inParenthese && regex.charAt(i) == ' ') {
-				for (final int j = i; regex.charAt(j) != ')' && j < regex.length(); i++) {
-					if (regex.charAt(i) == '|') {
+				for (int j = i; j < regex.length() && regex.charAt(j) != ')'; j++) {
+					if (regex.charAt(j) == '|') {
 						inPipe = true;
 						break;
 					}
 				}
-				if (!inPipe) {
-					namedRegexList.add(cptRegex++, namedRegexTmp.toString());
+
+				regexMap.put(cptRegex++, inPipe ? null : namedRegexTmp.toString());
+				namedRegexTmp = new StringBuilder();
+				inParenthese = false;
+				inPipe = false;
+			} else if (inParenthese && regex.charAt(i) == ')') {
+				for (int j = i; j >= 0 && regex.charAt(j) != '('; j--) {
+					if (regex.charAt(j) == '|') {
+						inPipe = true;
+						break;
+					}
 				}
+
+				regexMap.put(cptRegex++, inPipe ? null : namedRegexTmp.toString());
 				namedRegexTmp = new StringBuilder();
 				inParenthese = false;
 				inPipe = false;
@@ -104,20 +115,24 @@ public class ServiceDispatcher {
 				namedRegexTmp.append(regex.charAt(i));
 			} else if (regex.charAt(i) == '(') {
 				inParenthese = true;
-			} else if (inParenthese && regex.charAt(i) == ')') {
-				namedRegexList.add(cptRegex++, null);
-				namedRegexTmp = new StringBuilder();
-				inParenthese = false;
 			}
 		}
 
 		// 2. Remove named regex from the regex
-		final StringBuilder regexCleaned = new StringBuilder(regex);
-		for (final String regexName : namedRegexList) {
-			regexCleaned.append(regexCleaned.toString().replace(regexName + " ", ""));
+		String regexCleaned = regex;
+		for (final String regexName : regexMap.values()) {
+			regexCleaned = regexCleaned.replace(regexName + " ", "");
 		}
 
-		return regexCleaned.toString();
+		// Enlarge regex to expand performances
+		// if (!regex.startsWith(".*")) {
+		// regexCleaned = ".*" + regexCleaned;
+		// }
+		// if (!regex.endsWith(".*")) {
+		// regexCleaned = regexCleaned + ".*";
+		// }
+
+		return regexCleaned;
 	}
 
 	/**
