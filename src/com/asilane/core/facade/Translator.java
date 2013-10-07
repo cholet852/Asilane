@@ -25,7 +25,7 @@ public class Translator {
 	 * @return The question corresponding to the translation key
 	 */
 	public String getQuestion(final Object key) {
-		return String.valueOf(translationMap.get(String.valueOf(key)));
+		return String.valueOf(translationMap.get(String.valueOf(key))).replace("RECOVERY", "").trim();
 	}
 
 	/**

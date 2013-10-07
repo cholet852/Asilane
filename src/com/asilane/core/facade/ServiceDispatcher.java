@@ -12,6 +12,8 @@ import java.util.Properties;
 import com.asilane.service.IService;
 import com.asilane.service.AsilaneDialog.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentity.AsilaneIdentityService;
+import com.asilane.service.Date.DateService;
+import com.asilane.service.FindPlace.FindPlaceService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -53,11 +55,13 @@ public class ServiceDispatcher {
 	 * 
 	 */
 	public IService getService(final String sentence) {
-		for (final IService service : services) {
-			final Translator translationFile = getTranslation(service);
+		Translator translator;
 
-			for (final Object regex : translationFile.values()) {
-				if (sentence.matches(cleanRegex(regex.toString()))) {
+		for (final IService service : services) {
+			translator = getTranslation(service);
+
+			for (final Object regex : translator.values()) {
+				if (!regex.toString().contains("RECOVERY") && sentence.matches(cleanRegex(regex.toString()))) {
 					return service;
 				}
 			}
@@ -73,6 +77,7 @@ public class ServiceDispatcher {
 	 * @return the cleaned regex
 	 */
 	private String cleanRegex(final String regex) {
+
 		// 1. Save the position of each named regex
 		boolean inParenthese = false;
 		boolean inPipe = false;
@@ -123,7 +128,7 @@ public class ServiceDispatcher {
 		services = new ArrayList<IService>();
 
 		// services.add(new MailService());
-		// services.add(new FindPlaceService());
+		services.add(new FindPlaceService());
 		// services.add(new SaveWhatSayingService());
 		// services.add(new RepeatService());
 		// services.add(new FortyTwoService());
@@ -131,7 +136,7 @@ public class ServiceDispatcher {
 		services.add(new AsilaneIdentityService());
 		// services.add(new WeatherForecastService());
 		// services.add(new WebBrowserService());
-		// services.add(new DateService());
+		services.add(new DateService());
 		// services.add(new WikipediaService());
 		// services.add(new IPService());
 		services.add(new AsilaneDialogService());
