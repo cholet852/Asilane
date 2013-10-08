@@ -14,6 +14,7 @@ import com.asilane.service.AsilaneDialog.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentity.AsilaneIdentityService;
 import com.asilane.service.Date.DateService;
 import com.asilane.service.FindPlace.FindPlaceService;
+import com.asilane.service.FortyTwo.FortyTwoService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -124,14 +125,6 @@ public class ServiceDispatcher {
 			regexCleaned = regexCleaned.replace(regexName + " ", "");
 		}
 
-		// Enlarge regex to expand performances
-		// if (!regex.startsWith(".*")) {
-		// regexCleaned = ".*" + regexCleaned;
-		// }
-		// if (!regex.endsWith(".*")) {
-		// regexCleaned = regexCleaned + ".*";
-		// }
-
 		return regexCleaned;
 	}
 
@@ -146,7 +139,7 @@ public class ServiceDispatcher {
 		services.add(new FindPlaceService());
 		// services.add(new SaveWhatSayingService());
 		// services.add(new RepeatService());
-		// services.add(new FortyTwoService());
+		services.add(new FortyTwoService());
 		// services.add(new YouTubeService());
 		services.add(new AsilaneIdentityService());
 		// services.add(new WeatherForecastService());
@@ -156,7 +149,6 @@ public class ServiceDispatcher {
 		// services.add(new IPService());
 		services.add(new AsilaneDialogService());
 		// services.add(new InsultService());
-		// services.add(new HelloService());
 	}
 
 	/**
