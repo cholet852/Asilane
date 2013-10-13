@@ -15,6 +15,8 @@ import com.asilane.service.AsilaneIdentity.AsilaneIdentityService;
 import com.asilane.service.Date.DateService;
 import com.asilane.service.FindPlace.FindPlaceService;
 import com.asilane.service.FortyTwo.FortyTwoService;
+import com.asilane.service.IP.IPService;
+import com.asilane.service.Insult.InsultService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -146,9 +148,9 @@ public class ServiceDispatcher {
 		// services.add(new WebBrowserService());
 		services.add(new DateService());
 		// services.add(new WikipediaService());
-		// services.add(new IPService());
+		services.add(new IPService());
 		services.add(new AsilaneDialogService());
-		// services.add(new InsultService());
+		services.add(new InsultService());
 	}
 
 	/**
