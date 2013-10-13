@@ -17,6 +17,7 @@ import com.asilane.service.FindPlace.FindPlaceService;
 import com.asilane.service.FortyTwo.FortyTwoService;
 import com.asilane.service.IP.IPService;
 import com.asilane.service.Insult.InsultService;
+import com.asilane.service.Mail.MailService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -64,7 +65,7 @@ public class ServiceDispatcher {
 			translator = getTranslation(service);
 
 			for (final Object regex : translator.values()) {
-				if (!regex.toString().contains("RECOVERY") && sentence.matches(cleanRegex(regex.toString()))) {
+				if (!regex.toString().contains("RECOVERY")) {
 					return service;
 				}
 			}
@@ -74,70 +75,13 @@ public class ServiceDispatcher {
 	}
 
 	/**
-	 * Clean regex : transform (name .*) to (.*)
-	 * 
-	 * @param regex
-	 * @return the cleaned regex
-	 */
-	private String cleanRegex(final String regex) {
-
-		// 1. Save the position of each named regex
-		boolean inParenthese = false;
-		boolean inPipe = false;
-		int cptRegex = 0;
-		final Map<Integer, String> regexMap = new HashMap<Integer, String>();
-		StringBuilder namedRegexTmp = new StringBuilder();
-
-		// Parsing
-		for (int i = 0; i < regex.length(); i++) {
-			if (inParenthese && regex.charAt(i) == ' ') {
-				for (int j = i; j < regex.length() && regex.charAt(j) != ')'; j++) {
-					if (regex.charAt(j) == '|') {
-						inPipe = true;
-						break;
-					}
-				}
-
-				regexMap.put(cptRegex++, inPipe ? null : namedRegexTmp.toString());
-				namedRegexTmp = new StringBuilder();
-				inParenthese = false;
-				inPipe = false;
-			} else if (inParenthese && regex.charAt(i) == ')') {
-				for (int j = i; j >= 0 && regex.charAt(j) != '('; j--) {
-					if (regex.charAt(j) == '|') {
-						inPipe = true;
-						break;
-					}
-				}
-
-				regexMap.put(cptRegex++, inPipe ? null : namedRegexTmp.toString());
-				namedRegexTmp = new StringBuilder();
-				inParenthese = false;
-				inPipe = false;
-			} else if (inParenthese) {
-				namedRegexTmp.append(regex.charAt(i));
-			} else if (regex.charAt(i) == '(') {
-				inParenthese = true;
-			}
-		}
-
-		// 2. Remove named regex from the regex
-		String regexCleaned = regex;
-		for (final String regexName : regexMap.values()) {
-			regexCleaned = regexCleaned.replace(regexName + " ", "");
-		}
-
-		return regexCleaned;
-	}
-
-	/**
 	 * Initall services
 	 * 
 	 */
 	private void initServices() {
 		services = new ArrayList<IService>();
 
-		// services.add(new MailService());
+		services.add(new MailService());
 		services.add(new FindPlaceService());
 		// services.add(new SaveWhatSayingService());
 		// services.add(new RepeatService());
