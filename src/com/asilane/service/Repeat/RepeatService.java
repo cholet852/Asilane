@@ -33,7 +33,7 @@ public class RepeatService implements IService {
 			return new Response(translator.getAnswer(dynamicCommands.repeat_after_me));
 		}
 
-		return new Response(regexVars.get("sentence"));
+		return new Response(regexVars.get("sentence").trim());
 	}
 
 	/*
