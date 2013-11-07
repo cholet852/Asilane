@@ -30,7 +30,7 @@ public class FindPlaceService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
+	 * @see com.asilane.service.IService#handleService(com.asilane.core.facade.Question)
 	 */
 	@Override
 	public Response handleService(final Question question) {
@@ -40,8 +40,7 @@ public class FindPlaceService implements IService {
 
 			if ((regexVars = AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.where_is), question)) != null) {
 				return new Response(handleSearch(regexVars.get("place"), question.getLanguage()));
-			} else if ((regexVars = AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.itinerary),
-					question)) != null) {
+			} else if ((regexVars = AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.itinerary), question)) != null) {
 				return new Response(handleSearch("from:" + regexVars.get("place1") + " to:" + regexVars.get("place2"),
 						question.getLanguage()));
 			}
@@ -53,7 +52,7 @@ public class FindPlaceService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
+	 * @see com.asilane.service.IService#handleRecoveryService(com.asilane.core.facade.Question)
 	 */
 	@Override
 	public Response handleRecoveryService(final Question question) {
@@ -82,8 +81,7 @@ public class FindPlaceService implements IService {
 		if (desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
 				final String langParsed = lang.getCountry().isEmpty() ? lang.toString() : lang.getCountry();
-				desktop.browse(URI.create("https://maps.google.com/maps?q=" + AsilaneUtils.encode(place) + "&hl="
-						+ langParsed));
+				desktop.browse(URI.create("https://maps.google.com/maps?q=" + AsilaneUtils.encode(place) + "&hl=" + langParsed));
 
 				if (place.contains("from")) {
 					return translator.getAnswer(dynamicCommands.itinerary);

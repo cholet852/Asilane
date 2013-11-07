@@ -27,7 +27,7 @@ public class InsultService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
+	 * @see com.asilane.service.IService#handleService(com.asilane.core.facade.Question)
 	 */
 	@Override
 	public Response handleService(final Question question) {
@@ -47,7 +47,7 @@ public class InsultService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
+	 * @see com.asilane.service.IService#handleRecoveryService(com.asilane.core.facade.Question)
 	 */
 	@Override
 	public Response handleRecoveryService(final Question question) {

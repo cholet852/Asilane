@@ -40,7 +40,7 @@ public class MailService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.Service#handleService(java.lang.String, com.asilane.recognition.Locale)
+	 * @see com.asilane.service.IService#handleService(com.asilane.core.facade.Question)
 	 */
 	@Override
 	public Response handleService(final Question question) {
@@ -53,8 +53,7 @@ public class MailService implements IService {
 				RegexVarsResult regexVars = null;
 
 				// Mail with dest & body
-				if ((regexVars = AsilaneUtils.extractRegexVars(
-						translator.getQuestion(dynamicCommands.send_a_mail_to_with_body), question)) != null) {
+				if ((regexVars = AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.send_a_mail_to_with_body), question)) != null) {
 					final String dest = textToEmailAddress(regexVars.get("mail"));
 					mail(dest, "", regexVars.get("body"));
 
@@ -62,8 +61,7 @@ public class MailService implements IService {
 				}
 
 				// Mail with dest only
-				else if ((regexVars = AsilaneUtils.extractRegexVars(
-						translator.getQuestion(dynamicCommands.send_a_mail_to), question)) != null) {
+				else if ((regexVars = AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.send_a_mail_to), question)) != null) {
 					final String dest = textToEmailAddress(regexVars.get("mail"));
 					mail(dest, "", "");
 
@@ -80,6 +78,16 @@ public class MailService implements IService {
 		}
 
 		return new Response(translator.getQuestion(errors.error_client_mail));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.asilane.service.IService#handleRecoveryService(com.asilane.core.facade.Question)
+	 */
+	@Override
+	public Response handleRecoveryService(final Question question) {
+		return null;
 	}
 
 	/**
@@ -102,17 +110,7 @@ public class MailService implements IService {
 	 */
 	private void mail(final String dest, final String subject, final String message) throws IOException {
 		Desktop.getDesktop().mail(
-				URI.create("mailto:" + dest + "?subject=" + AsilaneUtils.encode(subject) + "&body="
-						+ AsilaneUtils.encode(message)));
+				URI.create("mailto:" + dest + "?subject=" + AsilaneUtils.encode(subject) + "&body=" + AsilaneUtils.encode(message)));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
-	 */
-	@Override
-	public Response handleRecoveryService(final Question question) {
-		return null;
-	}
 }

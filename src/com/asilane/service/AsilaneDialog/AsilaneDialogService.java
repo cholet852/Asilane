@@ -25,7 +25,7 @@ public class AsilaneDialogService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleService(java.lang.String, com.asilane.recognition.Locale)
+	 * @see com.asilane.service.IService#handleService(com.asilane.core.facade.Question)
 	 */
 	@Override
 	public Response handleService(final Question question) {
@@ -34,10 +34,8 @@ public class AsilaneDialogService implements IService {
 
 		if (AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.last_asked_thing), question) != null) {
 			final Response lastResponse = question.getHistoryTree().getLastNode().getResponse();
-			return (lastResponse == null) ? new Response(translator.getAnswer(dynamicCommands.last_asked_thing))
-					: lastResponse;
-		} else if ((regexVars = AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.say_hello_to),
-				question)) != null) {
+			return (lastResponse == null) ? new Response(translator.getAnswer(dynamicCommands.last_asked_thing)) : lastResponse;
+		} else if ((regexVars = AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.say_hello_to), question)) != null) {
 			return new Response(translator.getAnswer(dynamicCommands.say_hello_to, regexVars.get("name")));
 		} else if (AsilaneUtils.extractRegexVars(translator.getQuestion(staticCommands.and_you), question) != null) {
 			return new Response(translator.getAnswer(staticCommands.how_are_you));
@@ -49,7 +47,7 @@ public class AsilaneDialogService implements IService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.asilane.service.IService#handleRecoveryService(java.lang.String, com.asilane.core.Locale)
+	 * @see com.asilane.service.IService#handleRecoveryService(com.asilane.core.facade.Question)
 	 */
 	@Override
 	public Response handleRecoveryService(final Question question) {
