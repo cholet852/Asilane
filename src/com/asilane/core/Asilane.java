@@ -124,7 +124,7 @@ public class Asilane {
 		Response iaResponse;
 		try {
 			iaResponse = facade.handleSentence(new Question(sentence, lang));
-			textToSpeech(iaResponse.getSpeechedResponse());
+			// textToSpeech(iaResponse.getSpeechedResponse());
 
 			return iaResponse.getDisplayedResponse();
 		} catch (final NoServiceFoundException e) {

@@ -12,10 +12,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -39,63 +35,8 @@ public class AsilaneUtils {
 	 * @return RegexVarsResult @see {@link RegexVarsResult}
 	 */
 	public static RegexVarsResult extractRegexVars(final String regex, final Question question) {
-		// 1. Save the position of each named regex
-		boolean inParenthese = false;
-		boolean inPipe = false;
-		int cptRegex = 0;
-		final Map<Integer, String> regexMap = new HashMap<Integer, String>();
-		StringBuilder namedRegexTmp = new StringBuilder();
-
-		// Parsing
-		for (int i = 0; i < regex.length(); i++) {
-			if (inParenthese && regex.charAt(i) == ' ') {
-				for (int j = i; j < regex.length() && regex.charAt(j) != ')'; j++) {
-					if (regex.charAt(j) == '|') {
-						inPipe = true;
-						break;
-					}
-				}
-
-				regexMap.put(cptRegex++, inPipe ? null : namedRegexTmp.toString());
-				namedRegexTmp = new StringBuilder();
-				inParenthese = false;
-				inPipe = false;
-			} else if (inParenthese && regex.charAt(i) == ')') {
-				for (int j = i; j >= 0 && regex.charAt(j) != '('; j--) {
-					if (regex.charAt(j) == '|') {
-						inPipe = true;
-						break;
-					}
-				}
-
-				regexMap.put(cptRegex++, inPipe ? null : namedRegexTmp.toString());
-				namedRegexTmp = new StringBuilder();
-				inParenthese = false;
-				inPipe = false;
-			} else if (inParenthese) {
-				namedRegexTmp.append(regex.charAt(i));
-			} else if (regex.charAt(i) == '(') {
-				inParenthese = true;
-			}
-		}
-
-		// 2. Remove named regex from the regex
-		String regexCleaned = regex;
-		for (final String regexName : regexMap.values()) {
-			regexCleaned = regexCleaned.replace(regexName + " ", "");
-		}
-
-		// 3. Use the Matcher to extract vars
-		// Enlarge regex to expand performances
-		if (!regex.startsWith(".*")) {
-			regexCleaned = ".*" + regexCleaned;
-		}
-		if (!regex.endsWith(".*")) {
-			regexCleaned = regexCleaned + ".*";
-		}
-
-		final Pattern pattern = Pattern.compile(regexCleaned);
-		final Matcher matcher = pattern.matcher(question.getQuestion());
+		// Use the Matcher to extract vars
+		final Matcher matcher = Pattern.compile(regex).matcher(question.getQuestion());
 
 		// If there is no any match
 		try {
@@ -106,24 +47,7 @@ public class AsilaneUtils {
 			return null;
 		}
 
-		// If not, adding extract all variables in a List
-		final List<String> regexValues = new ArrayList<String>();
-		for (int i = 1; i <= matcher.groupCount(); i++) {
-			regexValues.add(matcher.group(i).trim());
-		}
-
-		// 4. Prepare & return what we need
-
-		// For each regex name, his value
-		final Map<String, String> namedRegexMap = new HashMap<String, String>();
-		// Represent the non-named regex
-		final List<String> otherRegex = new ArrayList<String>();
-
-		for (int i = 0; i < regexMap.size(); i++) {
-			namedRegexMap.put(regexMap.get(i), regexValues.get(i));
-		}
-
-		return new RegexVarsResult(namedRegexMap, otherRegex);
+		return new RegexVarsResult(matcher);
 	}
 
 	/**

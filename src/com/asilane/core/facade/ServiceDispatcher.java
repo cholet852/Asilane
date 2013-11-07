@@ -9,6 +9,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import com.asilane.core.AsilaneUtils;
+import com.asilane.core.RegexVarsResult;
 import com.asilane.service.IService;
 import com.asilane.service.AsilaneDialog.AsilaneDialogService;
 import com.asilane.service.AsilaneIdentity.AsilaneIdentityService;
@@ -60,12 +62,15 @@ public class ServiceDispatcher {
 	 */
 	public IService getService(final String sentence) {
 		Translator translator;
+		RegexVarsResult regexVars;
 
 		for (final IService service : services) {
 			translator = getTranslation(service);
 
 			for (final Object regex : translator.values()) {
-				if (!regex.toString().contains("RECOVERY")) {
+				regexVars = AsilaneUtils.extractRegexVars(regex.toString(), new Question(sentence, lang));
+
+				if (!regex.toString().contains("RECOVERY") && regexVars != null) {
 					return service;
 				}
 			}

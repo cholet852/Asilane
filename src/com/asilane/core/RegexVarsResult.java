@@ -1,7 +1,6 @@
 package com.asilane.core;
 
-import java.util.List;
-import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * @author walane
@@ -10,43 +9,28 @@ import java.util.Map;
 public class RegexVarsResult {
 
 	/**
-	 * For each regex name, his value<br>
-	 * For example : "what the weather like in (city .*) ?" -> (city -> .*)
+	 * The RegexVarsResult class is just a simple tool to access to hide matcher methods
 	 */
-	private final Map<String, String> namedRegex;
-
-	/**
-	 * Represent the non-named regex<br>
-	 * For example : "what .* is .* a .*" -> (List)<br>
-	 * In this case : "what .* is (city .*) and .*" this return the two non-named regex
-	 */
-	private final List<String> otherRegex;
+	private final Matcher matcher;
 
 	/**
 	 * Create a new RegexVarsResult instance
 	 * 
-	 * @param namedRegex
-	 *            For each regex name, his value<br>
-	 *            For example : "what the weather like in (city .*) ?" -> (city -> .*)
-	 * @param otherRegex
-	 *            Represent the non-named regex<br>
-	 *            For example : "what .* is .* a .*" -> (List)<br>
-	 *            In this case : "what .* is (city .*) and .*" this return the two non-named regex
+	 * @param matcher
 	 */
-	public RegexVarsResult(final Map<String, String> namedRegex, final List<String> otherRegex) {
-		this.namedRegex = namedRegex;
-		this.otherRegex = otherRegex;
+	public RegexVarsResult(final Matcher matcher) {
+		this.matcher = matcher;
 	}
 
 	/**
 	 * Get the named regex value by his key<br>
-	 * For example : "what the weather like in (city .*)
+	 * For example : "what the weather like in (?<city> (.*))
 	 * 
 	 * @param key
 	 * @return the named regex value by his key
 	 */
 	public String get(final String key) {
-		return namedRegex.get(key);
+		return matcher.group(key);
 	}
 
 	/**
@@ -57,10 +41,13 @@ public class RegexVarsResult {
 	 * @return the non-named regex value by his number
 	 */
 	public String get(final int number) {
-		try {
-			return otherRegex.get(number);
-		} catch (final IndexOutOfBoundsException e) {
-			return null;
-		}
+		return matcher.group(number);
+	}
+
+	/**
+	 * @return the matcher
+	 */
+	public Matcher getMatcher() {
+		return matcher;
 	}
 }
