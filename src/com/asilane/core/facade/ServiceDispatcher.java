@@ -22,6 +22,7 @@ import com.asilane.service.Insult.InsultService;
 import com.asilane.service.Mail.MailService;
 import com.asilane.service.Repeat.RepeatService;
 import com.asilane.service.SaveWhatISay.SaveWhatISayService;
+import com.asilane.service.WeatherForecast.WeatherForecastService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -95,7 +96,7 @@ public class ServiceDispatcher {
 		services.add(new FortyTwoService());
 		// services.add(new YouTubeService());
 		services.add(new AsilaneIdentityService());
-		// services.add(new WeatherForecastService());
+		services.add(new WeatherForecastService());
 		// services.add(new WebBrowserService());
 		services.add(new DateService());
 		// services.add(new WikipediaService());
