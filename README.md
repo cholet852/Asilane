@@ -1,10 +1,6 @@
 ![Asilane](http://walane.net/pic/images/logoasilan.png) Asilane, un "Siri like" libre
 =============================
 
-/!\ Attention
-=============
-Mis à jour en cours, le dépôt ne compile actuellement pas, toutes mes excuses. Retour à la normal très bientôt.
-
 Asinale vous permet d'avoir la liberté d'utiliser un assistant personnel comme vous le souhaitez, sur n'importe quelle plateforme (ou presque).
 
 Installation
