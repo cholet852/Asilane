@@ -20,6 +20,7 @@ import com.asilane.service.FortyTwo.FortyTwoService;
 import com.asilane.service.IP.IPService;
 import com.asilane.service.Insult.InsultService;
 import com.asilane.service.Mail.MailService;
+import com.asilane.service.Repeat.RepeatService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -70,7 +71,7 @@ public class ServiceDispatcher {
 			for (final Object regex : translator.values()) {
 				regexVars = AsilaneUtils.extractRegexVars(regex.toString(), new Question(sentence, lang));
 
-				if (!regex.toString().contains("RECOVERY") && regexVars != null) {
+				if (regexVars != null && !regex.toString().contains("RECOVERY")) {
 					return service;
 				}
 			}
@@ -89,7 +90,7 @@ public class ServiceDispatcher {
 		services.add(new MailService());
 		services.add(new FindPlaceService());
 		// services.add(new SaveWhatSayingService());
-		// services.add(new RepeatService());
+		services.add(new RepeatService());
 		services.add(new FortyTwoService());
 		// services.add(new YouTubeService());
 		services.add(new AsilaneIdentityService());
