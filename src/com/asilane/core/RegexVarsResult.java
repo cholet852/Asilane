@@ -30,7 +30,7 @@ public class RegexVarsResult {
 	 * @return the named regex value by his key
 	 */
 	public String get(final String key) {
-		return matcher.group(key);
+		return matcher.group(key).trim();
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class RegexVarsResult {
 	 * @return the non-named regex value by his number
 	 */
 	public String get(final int number) {
-		return matcher.group(number);
+		return matcher.group(number).trim();
 	}
 
 	/**
