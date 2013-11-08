@@ -104,6 +104,7 @@ public class JSONParser {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Object parse(final Reader in, final ContainerFactory containerFactory) throws IOException, ParseException {
 		reset(in);
 		final LinkedList<Object> statusStack = new LinkedList<Object>();
@@ -265,6 +266,7 @@ public class JSONParser {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private Map createObjectContainer(final ContainerFactory containerFactory) {
 		if (containerFactory == null) {
 			return new JSONObject();
@@ -277,6 +279,7 @@ public class JSONParser {
 		return m;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private List createArrayContainer(final ContainerFactory containerFactory) {
 		if (containerFactory == null) {
 			return new JSONArray();
@@ -293,8 +296,7 @@ public class JSONParser {
 		parse(s, contentHandler, false);
 	}
 
-	public void parse(final String s, final ContentHandler contentHandler, final boolean isResume)
-			throws ParseException {
+	public void parse(final String s, final ContentHandler contentHandler, final boolean isResume) throws ParseException {
 		final StringReader in = new StringReader(s);
 		try {
 			parse(in, contentHandler, isResume);
@@ -325,8 +327,8 @@ public class JSONParser {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public void parse(final Reader in, final ContentHandler contentHandler, boolean isResume) throws IOException,
-			ParseException {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void parse(final Reader in, final ContentHandler contentHandler, boolean isResume) throws IOException, ParseException {
 		if (!isResume) {
 			reset(in);
 			handlerStatusStack = new LinkedList();
