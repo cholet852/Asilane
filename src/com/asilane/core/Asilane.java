@@ -7,8 +7,6 @@ package com.asilane.core;
 
 import java.util.Locale;
 
-import javax.sound.sampled.AudioFileFormat;
-
 import com.asilane.core.facade.Facade;
 import com.asilane.core.facade.NoServiceFoundException;
 import com.asilane.core.facade.Question;
@@ -36,19 +34,6 @@ public class Asilane {
 	public Asilane() {
 		facade = new Facade();
 		lang = Locale.FRANCE;
-	}
-
-	/**
-	 * Start the capture of the microphone
-	 */
-	public void beginRecord() {
-		// Record what is saying
-		try {
-			microphone = new Microphone(AudioFileFormat.Type.WAVE);
-			microphone.captureAudioToFile(SAVED_WAV);
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
