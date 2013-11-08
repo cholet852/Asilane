@@ -24,6 +24,7 @@ import com.asilane.service.Repeat.RepeatService;
 import com.asilane.service.SaveWhatISay.SaveWhatISayService;
 import com.asilane.service.WeatherForecast.WeatherForecastService;
 import com.asilane.service.WebBrowser.WebBrowserService;
+import com.asilane.service.YouTube.YouTubeService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -95,7 +96,7 @@ public class ServiceDispatcher {
 		services.add(new SaveWhatISayService());
 		services.add(new RepeatService());
 		services.add(new FortyTwoService());
-		// services.add(new YouTubeService());
+		services.add(new YouTubeService());
 		services.add(new AsilaneIdentityService());
 		services.add(new WeatherForecastService());
 		services.add(new WebBrowserService());
