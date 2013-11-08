@@ -24,6 +24,7 @@ import com.asilane.service.Repeat.RepeatService;
 import com.asilane.service.SaveWhatISay.SaveWhatISayService;
 import com.asilane.service.WeatherForecast.WeatherForecastService;
 import com.asilane.service.WebBrowser.WebBrowserService;
+import com.asilane.service.Wikipedia.WikipediaService;
 import com.asilane.service.YouTube.YouTubeService;
 
 /**
@@ -101,7 +102,7 @@ public class ServiceDispatcher {
 		services.add(new WeatherForecastService());
 		services.add(new WebBrowserService());
 		services.add(new DateService());
-		// services.add(new WikipediaService());
+		services.add(new WikipediaService());
 		services.add(new IPService());
 		services.add(new AsilaneDialogService());
 		services.add(new InsultService());
