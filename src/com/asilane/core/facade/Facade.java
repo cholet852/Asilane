@@ -1,3 +1,8 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 package com.asilane.core.facade;
 
 import com.asilane.core.facade.history.HistoryNode;
@@ -31,8 +36,7 @@ public class Facade {
 		question.setHistoryTree(historyTree);
 
 		// Try to get the service corresponding to the sentence
-		final IService askedService = ServiceDispatcher.getInstance(question.getLanguage()).getService(
-				question.getQuestion());
+		final IService askedService = ServiceDispatcher.getInstance(question.getLanguage()).getService(question.getQuestion());
 
 		// Return the response of the service if this one is found
 		if (askedService != null) {
