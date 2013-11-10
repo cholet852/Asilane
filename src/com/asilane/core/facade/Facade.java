@@ -6,9 +6,9 @@
 package com.asilane.core.facade;
 
 import com.asilane.core.EnvironmentTools;
+import com.asilane.core.IService;
 import com.asilane.core.facade.history.HistoryNode;
 import com.asilane.core.facade.history.HistoryTree;
-import com.asilane.service.IService;
 
 /**
  * @author walane

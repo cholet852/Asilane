@@ -5,8 +5,12 @@
 
 package com.asilane.core.facade;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,22 +20,8 @@ import java.util.Properties;
 
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.EnvironmentTools;
+import com.asilane.core.IService;
 import com.asilane.core.RegexVarsResult;
-import com.asilane.service.IService;
-import com.asilane.service.AsilaneDialog.AsilaneDialogService;
-import com.asilane.service.AsilaneIdentity.AsilaneIdentityService;
-import com.asilane.service.Date.DateService;
-import com.asilane.service.FindPlace.FindPlaceService;
-import com.asilane.service.FortyTwo.FortyTwoService;
-import com.asilane.service.IP.IPService;
-import com.asilane.service.Insult.InsultService;
-import com.asilane.service.Mail.MailService;
-import com.asilane.service.Repeat.RepeatService;
-import com.asilane.service.SaveWhatISay.SaveWhatISayService;
-import com.asilane.service.WeatherForecast.WeatherForecastService;
-import com.asilane.service.WebBrowser.WebBrowserService;
-import com.asilane.service.Wikipedia.WikipediaService;
-import com.asilane.service.YouTube.YouTubeService;
 
 /**
  * This class find what service have to be called with the sentence <br>
@@ -99,21 +89,22 @@ public class ServiceDispatcher {
 	 */
 	private void initServices() {
 		services = new ArrayList<IService>();
+		try {
+			final URL urlList[];
+			urlList = new URL[] { new File("/home/walane/Documents/dev/Asilane/src/services/AsilaneDialogService.jar").toURL() };
 
-		services.add(new MailService());
-		services.add(new FindPlaceService());
-		services.add(new SaveWhatISayService());
-		services.add(new RepeatService());
-		services.add(new FortyTwoService());
-		services.add(new YouTubeService());
-		services.add(new AsilaneIdentityService());
-		services.add(new WeatherForecastService());
-		services.add(new WebBrowserService());
-		services.add(new DateService());
-		services.add(new WikipediaService());
-		services.add(new IPService());
-		services.add(new AsilaneDialogService());
-		services.add(new InsultService());
+			final ClassLoader loader = new URLClassLoader(urlList);
+
+			services.add((IService) Class.forName("com.asilane.service.AsilaneDialog.AsilaneDialogService", true, loader).newInstance());
+		} catch (final MalformedURLException e) {
+			new RuntimeException(e);
+		} catch (final InstantiationException e) {
+			new RuntimeException(e);
+		} catch (final IllegalAccessException e) {
+			new RuntimeException(e);
+		} catch (final ClassNotFoundException e) {
+			new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -186,5 +177,9 @@ public class ServiceDispatcher {
 	 */
 	public void setEnvironmentTools(final EnvironmentTools environmentTools) {
 		this.environmentTools = environmentTools;
+	}
+
+	public static void main(final String[] args) {
+		ServiceDispatcher.getInstance(Locale.FRENCH);
 	}
 }
