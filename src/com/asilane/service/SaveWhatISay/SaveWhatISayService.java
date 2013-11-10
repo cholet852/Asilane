@@ -6,6 +6,7 @@
 package com.asilane.service.SaveWhatISay;
 
 import com.asilane.core.AsilaneUtils;
+import com.asilane.core.EnvironmentTools;
 import com.asilane.core.RegexVarsResult;
 import com.asilane.core.facade.Question;
 import com.asilane.core.facade.Response;
@@ -35,6 +36,8 @@ public class SaveWhatISayService implements IService {
 	@Override
 	public Response handleService(final Question question) {
 		final Translator translator = ServiceDispatcher.getInstance(question.getLanguage()).getTranslation(this);
+		final EnvironmentTools environmentTools = ServiceDispatcher.getInstance(question.getLanguage()).getEnvironmentTools();
+
 		final RegexVarsResult regexVars = AsilaneUtils.extractRegexVars(translator.getQuestion(dynamicCommands.save_what_i_say), question);
 		final String sentence = regexVars.get("sentence");
 
@@ -42,7 +45,7 @@ public class SaveWhatISayService implements IService {
 			return new Response(translator.getQuestion(errors.error_empty_sentence));
 		}
 
-		AsilaneUtils.setClipboardContents(sentence.trim());
+		environmentTools.setClipboardContents(sentence.trim());
 		return new Response(translator.getAnswer(dynamicCommands.save_what_i_say));
 	}
 

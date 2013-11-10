@@ -21,7 +21,7 @@ public class MailServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		facade = new Facade();
+		facade = new Facade(null);
 	}
 
 	@Test

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.asilane.core.AsilaneUtils;
+import com.asilane.core.EnvironmentTools;
 import com.asilane.core.RegexVarsResult;
 import com.asilane.service.IService;
 import com.asilane.service.AsilaneDialog.AsilaneDialogService;
@@ -39,20 +40,22 @@ import com.asilane.service.YouTube.YouTubeService;
  * @author walane
  * 
  */
-/**
- * @author walane
- * 
- */
 public class ServiceDispatcher {
 	private static ServiceDispatcher INSTANCE;
 	private final Locale lang;
 	private List<IService> services;
 	private final Map<IService, Properties> translationMap;
 
+	/**
+	 * @see EnvironmentTools
+	 */
+	private EnvironmentTools environmentTools;
+
 	private ServiceDispatcher(final Locale lang) {
 		this.lang = lang;
 		initServices();
 		translationMap = new HashMap<IService, Properties>();
+		environmentTools = null;
 	}
 
 	public static ServiceDispatcher getInstance(final Locale lang) {
@@ -162,5 +165,26 @@ public class ServiceDispatcher {
 	 */
 	public void setServices(final List<IService> services) {
 		this.services = services;
+	}
+
+	/**
+	 * Return the environment tools
+	 * 
+	 * @return the environmentTools
+	 * @see EnvironmentTools
+	 */
+	public EnvironmentTools getEnvironmentTools() {
+		return environmentTools;
+	}
+
+	/**
+	 * Set the environment tools
+	 * 
+	 * @param environmentTools
+	 *            the environmentTools to set
+	 * @see EnvironmentTools
+	 */
+	public void setEnvironmentTools(final EnvironmentTools environmentTools) {
+		this.environmentTools = environmentTools;
 	}
 }
