@@ -5,8 +5,10 @@ Asinale vous permet d'avoir la liberté d'utiliser un assistant personnel comme 
 
 Installation
 ------------
-Pour lancer Asilane, **exécutez `Asilane.jar`** ou tapez dans un terminal `java -jar Asilane.jar`.
-<br>Ce programme est créé en Java, il est donc **compatible Windows/Mac/Linux**.
+Ceci est la librairie d'Asilane. Pour utiliser Asilane sur votre appareil, choisissez un client :
+
+- [PC](https://github.com/walane/Asilane-pc-client).
+- [Android](https://github.com/walane/Asilane-android-client).
 
 Utilisation
 -----------
@@ -27,10 +29,6 @@ Si vous installez Asilane sur Android, vous pourrez également faire tout ça :
 - Envoi un sms à Édouard "Quel est le sens de la vie ?"
 - Réveille moi demain à 9h42
 - Et d'autres à venir, pour cela, contribuez !
-
-Application Android
--------------------
-Asilane a été également porté sur Android, [le dépôt GitHub est ici pour plus de détails](https://github.com/walane/Asilane-android).
 
 Licence
 -------
@@ -72,6 +70,3 @@ La classe mère s'appelle `Asilane`, j'ai mis du temps à trouver un nom origina
 6. N'oubliez pas d'ajouter votre service dans la méthode `getAllServices()` du `ServiceDispatcher` ou dans la classe `MainActivity` si vous travaillez sur la version Android. Note : les services sont classés par ordre de priorité, si un autre service prend le dessus sur le votre, placez-le donc au-dessus.
 
 Le dernier point fonctionne grâce à un arbre de recherche disponible dans la méthode `handleSentence()` qui enregistre tout ce qui est dit, quelles sont les derniers services appellés, leur réponse, etc. Pour plus d'informations, consultez les classes `HistoryTree` et `HistoryNode`.
-
-### Tutoriel vidéo
-Un [tutoriel vidéo](https://www.youtube.com/watch?v=JPaPwXzQZHk) est disponible pour comprendre un peu plus en détails le fonctionnement et l'architecture d'Asilane.

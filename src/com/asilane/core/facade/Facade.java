@@ -5,6 +5,7 @@
 
 package com.asilane.core.facade;
 
+import com.asilane.core.EnvironmentTools;
 import com.asilane.core.facade.history.HistoryNode;
 import com.asilane.core.facade.history.HistoryTree;
 import com.asilane.service.IService;
@@ -18,8 +19,14 @@ public class Facade {
 	 */
 	private final HistoryTree historyTree;
 
-	public Facade() {
+	/**
+	 * @see EnvironmentTools
+	 */
+	private final EnvironmentTools environmentTools;
+
+	public Facade(final EnvironmentTools environmentTools) {
 		historyTree = new HistoryTree();
+		this.environmentTools = environmentTools;
 	}
 
 	/**
@@ -35,8 +42,12 @@ public class Facade {
 		question.cleanQuestion();
 		question.setHistoryTree(historyTree);
 
+		// Retrieve the service dispatcher
+		final ServiceDispatcher serviceDispatcher = ServiceDispatcher.getInstance(question.getLanguage());
+		serviceDispatcher.setEnvironmentTools(environmentTools);
+
 		// Try to get the service corresponding to the sentence
-		final IService askedService = ServiceDispatcher.getInstance(question.getLanguage()).getService(question.getQuestion());
+		final IService askedService = serviceDispatcher.getService(question.getQuestion());
 
 		// Return the response of the service if this one is found
 		if (askedService != null) {

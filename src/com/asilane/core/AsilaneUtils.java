@@ -5,11 +5,6 @@
 
 package com.asilane.core;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -120,21 +115,6 @@ public class AsilaneUtils {
 		} catch (final Exception e) {
 			return false;
 		}
-	}
-
-	/**
-	 * Place a String in the clipboard, and make this class the owner of the Clipboard's contents.
-	 * 
-	 * @param aString
-	 */
-	public static void setClipboardContents(final String s) {
-		final StringSelection stringSelection = new StringSelection(s);
-		final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(stringSelection, new ClipboardOwner() {
-			@Override
-			public void lostOwnership(final Clipboard arg0, final Transferable arg1) {
-			}
-		});
 	}
 
 	/**
