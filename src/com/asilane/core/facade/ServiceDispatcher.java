@@ -6,9 +6,10 @@
 package com.asilane.core.facade;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -84,27 +85,45 @@ public class ServiceDispatcher {
 	}
 
 	/**
-	 * Initall services
+	 * Init all services
 	 * 
 	 */
-	private void initServices() {
+	private IService initServices() {
 		services = new ArrayList<IService>();
 		try {
-			final URL urlList[];
-			urlList = new URL[] { new File("/home/walane/Documents/dev/Asilane/src/services/AsilaneDialogService.jar").toURL() };
 
-			final ClassLoader loader = new URLClassLoader(urlList);
+			final Properties servicesToExcept = new Properties();
+			servicesToExcept.load(getClass().getResourceAsStream("/services/services.properties"));
 
-			services.add((IService) Class.forName("com.asilane.service.AsilaneDialog.AsilaneDialogService", true, loader).newInstance());
-		} catch (final MalformedURLException e) {
-			new RuntimeException(e);
+			final File[] jarFiles = searchFiles(".jar");
+
+			// Add each service to the list
+			for (final File jarFile : jarFiles) {
+				final String className = jarFile.getName().replace(".jar", "");
+
+				if (!servicesToExcept.contains(className)) {
+					final URL urlList[] = new URL[] { jarFile.toURI().toURL() };
+
+					final ClassLoader loader = new URLClassLoader(urlList);
+					final IService service = (IService) Class.forName(
+							"com.asilane.service." + className.replace("Service", "") + "." + className, true, loader).newInstance();
+
+					services.add(service);
+					return service;
+				}
+			}
 		} catch (final InstantiationException e) {
 			new RuntimeException(e);
 		} catch (final IllegalAccessException e) {
 			new RuntimeException(e);
 		} catch (final ClassNotFoundException e) {
 			new RuntimeException(e);
+		} catch (final IOException e) {
+			new RuntimeException(e);
+		} catch (final URISyntaxException e) {
+			new RuntimeException(e);
 		}
+		return null;
 	}
 
 	/**
@@ -120,9 +139,12 @@ public class ServiceDispatcher {
 		if (propertyFile == null) {
 			try {
 				final String langParsed = lang.getCountry().isEmpty() ? lang.toString() : lang.getCountry();
-				final InputStream is = service.getClass().getResourceAsStream(
-						"/com/asilane/service/" + service.getClass().getSimpleName().replace("Service", "") + "/i18n/"
-								+ langParsed.toLowerCase() + ".properties");
+				final File[] jarFiles = searchFiles(".jar");
+				final URL urlList[] = new URL[] { jarFiles[0].toURI().toURL() };
+
+				@SuppressWarnings("resource")
+				final ClassLoader loader = new URLClassLoader(urlList);
+				final InputStream is = loader.getResourceAsStream("i18n/" + langParsed.toLowerCase() + ".properties");
 
 				final Properties tmpPropertyFile = new Properties();
 				tmpPropertyFile.load(is);
@@ -133,10 +155,22 @@ public class ServiceDispatcher {
 				propertyFile = tmpPropertyFile;
 			} catch (final IOException ioe) {
 				return null;
+			} catch (final URISyntaxException e) {
+				return null;
 			}
 		}
 
 		return new Translator(propertyFile);
+	}
+
+	private File[] searchFiles(final String filter) throws URISyntaxException {
+		final File[] jarFiles = new File(getClass().getResource("/services/").toURI()).listFiles(new FileFilter() {
+			@Override
+			public boolean accept(final File file) {
+				return file.toString().endsWith(filter);
+			}
+		});
+		return jarFiles;
 	}
 
 	/**
@@ -180,6 +214,7 @@ public class ServiceDispatcher {
 	}
 
 	public static void main(final String[] args) {
-		ServiceDispatcher.getInstance(Locale.FRENCH);
+		System.out.println(ServiceDispatcher.getInstance(Locale.FRENCH).initServices()
+				.handleService(new Question("bonjour", Locale.FRANCE)).getDisplayedResponse());
 	}
 }
