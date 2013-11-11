@@ -212,9 +212,4 @@ public class ServiceDispatcher {
 	public void setEnvironmentTools(final EnvironmentTools environmentTools) {
 		this.environmentTools = environmentTools;
 	}
-
-	public static void main(final String[] args) {
-		System.out.println(ServiceDispatcher.getInstance(Locale.FRENCH).initServices()
-				.handleService(new Question("bonjour", Locale.FRANCE)).getDisplayedResponse());
-	}
 }
