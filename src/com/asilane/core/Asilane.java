@@ -30,7 +30,7 @@ public class Asilane {
 	}
 
 	/**
-	 * Direct sentence handling without voice recognition
+	 * Handle a sentence and return the appropriate answer
 	 * 
 	 * @param sentence
 	 * @return The response of the IA corresponding to the sentence
