@@ -35,13 +35,14 @@ public class Asilane {
 	 * @param sentence
 	 * @return The response of the IA corresponding to the sentence
 	 */
-	public String handleSentence(final String sentence) {
+	public Response handleSentence(final String sentence) {
 		try {
-			final Response iaResponse = facade.handleSentence(new Question(sentence, lang));
-
-			return iaResponse.getDisplayedResponse();
+			return facade.handleSentence(new Question(sentence, lang));
 		} catch (final NoServiceFoundException e) {
-			return e.getMessage();
+			final Response response = new Response(e.getMessage());
+			response.setError(true);
+
+			return response;
 		}
 	}
 

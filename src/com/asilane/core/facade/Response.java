@@ -22,6 +22,11 @@ public class Response {
 	private String displayedResponse;
 
 	/**
+	 * True if the response symbolyze an error
+	 */
+	private boolean error;
+
+	/**
 	 * 
 	 */
 	public Response() {
@@ -87,5 +92,20 @@ public class Response {
 	public void setResponse(final String response) {
 		this.speechedResponse = response;
 		this.displayedResponse = response;
+	}
+
+	/**
+	 * @return true if the response symbolize an error
+	 */
+	public boolean isError() {
+		return error;
+	}
+
+	/**
+	 * @param error
+	 *            the error to set
+	 */
+	public void setError(final boolean error) {
+		this.error = error;
 	}
 }
