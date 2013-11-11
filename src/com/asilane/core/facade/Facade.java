@@ -7,7 +7,6 @@ package com.asilane.core.facade;
 
 import java.net.UnknownServiceException;
 
-import com.asilane.core.Asilane;
 import com.asilane.core.EnvironmentTools;
 import com.asilane.core.IService;
 import com.asilane.core.facade.history.HistoryNode;
@@ -69,7 +68,7 @@ public class Facade {
 		}
 
 		// If normal handling and recovery hangling don't work, exception
-		throw new UnknownServiceException(Asilane.getConfig().getProperty("error_understanding"));
+		throw new UnknownServiceException();
 	}
 
 	/**
