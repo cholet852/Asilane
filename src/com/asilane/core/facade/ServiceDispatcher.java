@@ -138,13 +138,12 @@ public class ServiceDispatcher {
 		// If the property file corresponding to the service doesn't exists, get it
 		if (propertyFile == null) {
 			try {
-				final String langParsed = lang.getCountry().isEmpty() ? lang.toString() : lang.getCountry();
 				final File[] jarFiles = searchFiles(".jar");
 				final URL urlList[] = new URL[] { jarFiles[0].toURI().toURL() };
 
 				@SuppressWarnings("resource")
 				final ClassLoader loader = new URLClassLoader(urlList);
-				final InputStream is = loader.getResourceAsStream("i18n/" + langParsed.toLowerCase() + ".properties");
+				final InputStream is = loader.getResourceAsStream("i18n/" + lang.toLanguageTag() + ".properties");
 
 				final Properties tmpPropertyFile = new Properties();
 				tmpPropertyFile.load(is);
@@ -164,13 +163,13 @@ public class ServiceDispatcher {
 	}
 
 	private File[] searchFiles(final String filter) throws URISyntaxException {
-		final File[] jarFiles = new File(getClass().getResource("/services/").toURI()).listFiles(new FileFilter() {
+		final File[] files = new File(getClass().getResource("/services/").toURI()).listFiles(new FileFilter() {
 			@Override
 			public boolean accept(final File file) {
 				return file.toString().endsWith(filter);
 			}
 		});
-		return jarFiles;
+		return files;
 	}
 
 	/**

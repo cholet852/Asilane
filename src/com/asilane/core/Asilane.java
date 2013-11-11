@@ -6,11 +6,11 @@
 package com.asilane.core;
 
 import java.io.IOException;
+import java.net.UnknownServiceException;
 import java.util.Locale;
 import java.util.Properties;
 
 import com.asilane.core.facade.Facade;
-import com.asilane.core.facade.NoServiceFoundException;
 import com.asilane.core.facade.Question;
 import com.asilane.core.facade.Response;
 
@@ -39,16 +39,11 @@ public class Asilane {
 	 * 
 	 * @param sentence
 	 * @return The response of the IA corresponding to the sentence
+	 * @throws UnknownServiceException
+	 *             if no any answer can be given
 	 */
-	public Response handleSentence(final String sentence) {
-		try {
-			return facade.handleSentence(new Question(sentence, lang));
-		} catch (final NoServiceFoundException e) {
-			final Response response = new Response(e.getMessage());
-			response.setError(true);
-
-			return response;
-		}
+	public Response handleSentence(final String sentence) throws UnknownServiceException {
+		return facade.handleSentence(new Question(sentence, lang));
 	}
 
 	/**
