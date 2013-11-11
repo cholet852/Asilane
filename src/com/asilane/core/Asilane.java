@@ -5,7 +5,9 @@
 
 package com.asilane.core;
 
+import java.io.IOException;
 import java.util.Locale;
+import java.util.Properties;
 
 import com.asilane.core.facade.Facade;
 import com.asilane.core.facade.NoServiceFoundException;
@@ -18,6 +20,9 @@ import com.asilane.core.facade.Response;
  * @author walane
  */
 public class Asilane {
+	private static final String CONFIG_PATH = "/config.properties";
+	private static Properties config;
+
 	private final Facade facade;
 	private Locale lang;
 
@@ -44,6 +49,24 @@ public class Asilane {
 
 			return response;
 		}
+	}
+
+	/**
+	 * Get the global Asilane config
+	 * 
+	 * @return the Asilane config
+	 */
+	public static Properties getConfig() {
+		if (config == null) {
+			config = new Properties();
+			try {
+				config.load(Asilane.class.getResourceAsStream(CONFIG_PATH));
+			} catch (final IOException e) {
+				new RuntimeException(e);
+			}
+		}
+
+		return config;
 	}
 
 	/**
