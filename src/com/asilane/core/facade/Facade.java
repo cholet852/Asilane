@@ -44,7 +44,7 @@ public class Facade {
 		question.cleanQuestion();
 		question.setHistoryTree(historyTree);
 
-		// Retrieve the service dispatcher
+		// Retrieve the service disptacher instance
 		final ServiceDispatcher serviceDispatcher = ServiceDispatcher.getInstance(question.getLanguage());
 		serviceDispatcher.setEnvironmentTools(environmentTools);
 

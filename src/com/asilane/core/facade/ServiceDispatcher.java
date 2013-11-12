@@ -25,8 +25,8 @@ import com.asilane.core.IService;
 import com.asilane.core.RegexVarsResult;
 
 /**
- * This class find what service have to be called with the sentence <br>
- * It implements Singleton pattern for better performances
+ * This class find what service have to be called with the sentence.<br>
+ * It implements Singleton pattern for better performances and simplicity.
  * 
  * @author walane
  * 
@@ -44,9 +44,9 @@ public class ServiceDispatcher {
 
 	private ServiceDispatcher(final Locale lang) {
 		this.lang = lang;
-		initServices();
 		translationMap = new HashMap<IService, Properties>();
 		environmentTools = null;
+		initServices();
 	}
 
 	public static ServiceDispatcher getInstance(final Locale lang) {
@@ -54,6 +54,7 @@ public class ServiceDispatcher {
 		if (INSTANCE == null || INSTANCE.lang != lang) {
 			INSTANCE = new ServiceDispatcher(lang);
 		}
+
 		return INSTANCE;
 	}
 
@@ -86,16 +87,15 @@ public class ServiceDispatcher {
 
 	/**
 	 * Init all services
-	 * 
 	 */
-	private IService initServices() {
+	public void initServices() {
 		services = new ArrayList<IService>();
 		try {
 
 			final Properties servicesToExcept = new Properties();
 			servicesToExcept.load(getClass().getResourceAsStream("/services/services.properties"));
 
-			final File[] jarFiles = searchFiles(".jar");
+			final File[] jarFiles = searchJars();
 
 			// Add each service to the list
 			for (final File jarFile : jarFiles) {
@@ -109,7 +109,6 @@ public class ServiceDispatcher {
 							"com.asilane.service." + className.replace("Service", "") + "." + className, true, loader).newInstance();
 
 					services.add(service);
-					return service;
 				}
 			}
 		} catch (final InstantiationException e) {
@@ -120,10 +119,7 @@ public class ServiceDispatcher {
 			new RuntimeException(e);
 		} catch (final IOException e) {
 			new RuntimeException(e);
-		} catch (final URISyntaxException e) {
-			new RuntimeException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -132,29 +128,31 @@ public class ServiceDispatcher {
 	 * @param service
 	 * @return the translation of the service
 	 */
+	@SuppressWarnings("resource")
 	public Translator getTranslation(final IService service) {
 		Properties propertyFile = translationMap.get(service);
 
 		// If the property file corresponding to the service doesn't exists, get it
 		if (propertyFile == null) {
 			try {
-				final File[] jarFiles = searchFiles(".jar");
-				final URL urlList[] = new URL[] { jarFiles[0].toURI().toURL() };
+				final File[] jarFiles = searchJars();
+				for (final File jarFile : jarFiles) {
+					if (jarFile.getName().replace(".jar", "").equals(service.getClass().getSimpleName())) {
+						final URL urlList[] = new URL[] { jarFile.toURI().toURL() };
 
-				@SuppressWarnings("resource")
-				final ClassLoader loader = new URLClassLoader(urlList);
-				final InputStream is = loader.getResourceAsStream("i18n/" + lang.toLanguageTag() + ".properties");
+						final ClassLoader loader = new URLClassLoader(urlList);
+						final InputStream is = loader.getResourceAsStream("i18n/" + lang.toLanguageTag() + ".properties");
 
-				final Properties tmpPropertyFile = new Properties();
-				tmpPropertyFile.load(is);
-				is.close();
+						final Properties tmpPropertyFile = new Properties();
+						tmpPropertyFile.load(is);
+						is.close();
 
-				// Add the properties file to the translation map
-				translationMap.put(service, tmpPropertyFile);
-				propertyFile = tmpPropertyFile;
+						// Add the properties file to the translation map
+						translationMap.put(service, tmpPropertyFile);
+						propertyFile = tmpPropertyFile;
+					}
+				}
 			} catch (final IOException ioe) {
-				return null;
-			} catch (final URISyntaxException e) {
 				return null;
 			}
 		}
@@ -162,13 +160,28 @@ public class ServiceDispatcher {
 		return new Translator(propertyFile);
 	}
 
-	private File[] searchFiles(final String filter) throws URISyntaxException {
-		final File[] files = new File(getClass().getResource("/services/").toURI()).listFiles(new FileFilter() {
+	/**
+	 * Looking for the jars services
+	 * 
+	 * @param filter
+	 * @return File[]
+	 * @throws URISyntaxException
+	 */
+	private File[] searchJars() {
+		URL ressource = getClass().getResource("/src/services/");
+		ressource = (ressource != null) ? ressource : getClass().getResource("/services/");
+
+		if (ressource == null) {
+			throw new RuntimeException("Cannot find services at /src/services/ or /services/");
+		}
+
+		final File[] files = new File(ressource.getFile()).listFiles(new FileFilter() {
 			@Override
 			public boolean accept(final File file) {
-				return file.toString().endsWith(filter);
+				return file.toString().endsWith(".jar");
 			}
 		});
+
 		return files;
 	}
 
