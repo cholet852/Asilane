@@ -5,10 +5,12 @@
 
 package com.asilane.core.facade;
 
+import java.net.UnknownServiceException;
+
 import com.asilane.core.EnvironmentTools;
+import com.asilane.core.IService;
 import com.asilane.core.facade.history.HistoryNode;
 import com.asilane.core.facade.history.HistoryTree;
-import com.asilane.service.IService;
 
 /**
  * @author walane
@@ -37,12 +39,12 @@ public class Facade {
 	 * @return the response
 	 * @throws NoServiceFoundException
 	 */
-	public Response handleSentence(final Question question) throws NoServiceFoundException {
+	public Response handleSentence(final Question question) throws UnknownServiceException {
 		// Preparation of sentence
 		question.cleanQuestion();
 		question.setHistoryTree(historyTree);
 
-		// Retrieve the service dispatcher
+		// Retrieve the service disptacher instance
 		final ServiceDispatcher serviceDispatcher = ServiceDispatcher.getInstance(question.getLanguage());
 		serviceDispatcher.setEnvironmentTools(environmentTools);
 
@@ -66,7 +68,7 @@ public class Facade {
 		}
 
 		// If normal handling and recovery hangling don't work, exception
-		throw new NoServiceFoundException(question.getLanguage());
+		throw new UnknownServiceException();
 	}
 
 	/**

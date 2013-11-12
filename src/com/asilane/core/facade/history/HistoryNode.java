@@ -5,9 +5,9 @@
 
 package com.asilane.core.facade.history;
 
+import com.asilane.core.IService;
 import com.asilane.core.facade.Question;
 import com.asilane.core.facade.Response;
-import com.asilane.service.IService;
 
 /**
  * A node of the history tree which save every question asked during the session

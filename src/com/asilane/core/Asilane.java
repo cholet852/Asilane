@@ -5,10 +5,12 @@
 
 package com.asilane.core;
 
+import java.io.IOException;
+import java.net.UnknownServiceException;
 import java.util.Locale;
+import java.util.Properties;
 
 import com.asilane.core.facade.Facade;
-import com.asilane.core.facade.NoServiceFoundException;
 import com.asilane.core.facade.Question;
 import com.asilane.core.facade.Response;
 
@@ -18,6 +20,9 @@ import com.asilane.core.facade.Response;
  * @author walane
  */
 public class Asilane {
+	private static final String CONFIG_PATH = "/config.properties";
+	private static Properties config;
+
 	private final Facade facade;
 	private Locale lang;
 
@@ -30,19 +35,33 @@ public class Asilane {
 	}
 
 	/**
-	 * Direct sentence handling without voice recognition
+	 * Handle a sentence and return the appropriate answer
 	 * 
 	 * @param sentence
 	 * @return The response of the IA corresponding to the sentence
+	 * @throws UnknownServiceException
+	 *             if no any answer can be given
 	 */
-	public String handleSentence(final String sentence) {
-		try {
-			final Response iaResponse = facade.handleSentence(new Question(sentence, lang));
+	public Response handleSentence(final String sentence) throws UnknownServiceException {
+		return facade.handleSentence(new Question(sentence, lang));
+	}
 
-			return iaResponse.getDisplayedResponse();
-		} catch (final NoServiceFoundException e) {
-			return e.getMessage();
+	/**
+	 * Get the global Asilane config
+	 * 
+	 * @return the Asilane config
+	 */
+	public static Properties getConfig() {
+		if (config == null) {
+			config = new Properties();
+			try {
+				config.load(Asilane.class.getResourceAsStream(CONFIG_PATH));
+			} catch (final IOException e) {
+				new RuntimeException(e);
+			}
 		}
+
+		return config;
 	}
 
 	/**

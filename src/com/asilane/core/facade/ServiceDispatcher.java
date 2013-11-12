@@ -5,8 +5,13 @@
 
 package com.asilane.core.facade;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,26 +21,12 @@ import java.util.Properties;
 
 import com.asilane.core.AsilaneUtils;
 import com.asilane.core.EnvironmentTools;
+import com.asilane.core.IService;
 import com.asilane.core.RegexVarsResult;
-import com.asilane.service.IService;
-import com.asilane.service.AsilaneDialog.AsilaneDialogService;
-import com.asilane.service.AsilaneIdentity.AsilaneIdentityService;
-import com.asilane.service.Date.DateService;
-import com.asilane.service.FindPlace.FindPlaceService;
-import com.asilane.service.FortyTwo.FortyTwoService;
-import com.asilane.service.IP.IPService;
-import com.asilane.service.Insult.InsultService;
-import com.asilane.service.Mail.MailService;
-import com.asilane.service.Repeat.RepeatService;
-import com.asilane.service.SaveWhatISay.SaveWhatISayService;
-import com.asilane.service.WeatherForecast.WeatherForecastService;
-import com.asilane.service.WebBrowser.WebBrowserService;
-import com.asilane.service.Wikipedia.WikipediaService;
-import com.asilane.service.YouTube.YouTubeService;
 
 /**
- * This class find what service have to be called with the sentence <br>
- * It implements Singleton pattern for better performances
+ * This class find what service have to be called with the sentence.<br>
+ * It implements Singleton pattern for better performances and simplicity.
  * 
  * @author walane
  * 
@@ -53,9 +44,9 @@ public class ServiceDispatcher {
 
 	private ServiceDispatcher(final Locale lang) {
 		this.lang = lang;
-		initServices();
 		translationMap = new HashMap<IService, Properties>();
 		environmentTools = null;
+		initServices();
 	}
 
 	public static ServiceDispatcher getInstance(final Locale lang) {
@@ -63,6 +54,7 @@ public class ServiceDispatcher {
 		if (INSTANCE == null || INSTANCE.lang != lang) {
 			INSTANCE = new ServiceDispatcher(lang);
 		}
+
 		return INSTANCE;
 	}
 
@@ -94,26 +86,40 @@ public class ServiceDispatcher {
 	}
 
 	/**
-	 * Initall services
-	 * 
+	 * Init all services
 	 */
-	private void initServices() {
+	public void initServices() {
 		services = new ArrayList<IService>();
+		try {
 
-		services.add(new MailService());
-		services.add(new FindPlaceService());
-		services.add(new SaveWhatISayService());
-		services.add(new RepeatService());
-		services.add(new FortyTwoService());
-		services.add(new YouTubeService());
-		services.add(new AsilaneIdentityService());
-		services.add(new WeatherForecastService());
-		services.add(new WebBrowserService());
-		services.add(new DateService());
-		services.add(new WikipediaService());
-		services.add(new IPService());
-		services.add(new AsilaneDialogService());
-		services.add(new InsultService());
+			final Properties servicesToExcept = new Properties();
+			servicesToExcept.load(getClass().getResourceAsStream("/services/services.properties"));
+
+			final File[] jarFiles = searchJars();
+
+			// Add each service to the list
+			for (final File jarFile : jarFiles) {
+				final String className = jarFile.getName().replace(".jar", "");
+
+				if (!servicesToExcept.contains(className)) {
+					final URL urlList[] = new URL[] { jarFile.toURI().toURL() };
+
+					final ClassLoader loader = new URLClassLoader(urlList);
+					final IService service = (IService) Class.forName(
+							"com.asilane.service." + className.replace("Service", "") + "." + className, true, loader).newInstance();
+
+					services.add(service);
+				}
+			}
+		} catch (final InstantiationException e) {
+			new RuntimeException(e);
+		} catch (final IllegalAccessException e) {
+			new RuntimeException(e);
+		} catch (final ClassNotFoundException e) {
+			new RuntimeException(e);
+		} catch (final IOException e) {
+			new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -122,30 +128,61 @@ public class ServiceDispatcher {
 	 * @param service
 	 * @return the translation of the service
 	 */
+	@SuppressWarnings("resource")
 	public Translator getTranslation(final IService service) {
 		Properties propertyFile = translationMap.get(service);
 
 		// If the property file corresponding to the service doesn't exists, get it
 		if (propertyFile == null) {
 			try {
-				final String langParsed = lang.getCountry().isEmpty() ? lang.toString() : lang.getCountry();
-				final InputStream is = service.getClass().getResourceAsStream(
-						"/com/asilane/service/" + service.getClass().getSimpleName().replace("Service", "") + "/i18n/"
-								+ langParsed.toLowerCase() + ".properties");
+				final File[] jarFiles = searchJars();
+				for (final File jarFile : jarFiles) {
+					if (jarFile.getName().replace(".jar", "").equals(service.getClass().getSimpleName())) {
+						final URL urlList[] = new URL[] { jarFile.toURI().toURL() };
 
-				final Properties tmpPropertyFile = new Properties();
-				tmpPropertyFile.load(is);
-				is.close();
+						final ClassLoader loader = new URLClassLoader(urlList);
+						final InputStream is = loader.getResourceAsStream("i18n/" + lang.toLanguageTag() + ".properties");
 
-				// Add the properties file to the translation map
-				translationMap.put(service, tmpPropertyFile);
-				propertyFile = tmpPropertyFile;
+						final Properties tmpPropertyFile = new Properties();
+						tmpPropertyFile.load(is);
+						is.close();
+
+						// Add the properties file to the translation map
+						translationMap.put(service, tmpPropertyFile);
+						propertyFile = tmpPropertyFile;
+					}
+				}
 			} catch (final IOException ioe) {
 				return null;
 			}
 		}
 
 		return new Translator(propertyFile);
+	}
+
+	/**
+	 * Looking for the jars services
+	 * 
+	 * @param filter
+	 * @return File[]
+	 * @throws URISyntaxException
+	 */
+	private File[] searchJars() {
+		URL ressource = getClass().getResource("/src/services/");
+		ressource = (ressource != null) ? ressource : getClass().getResource("/services/");
+
+		if (ressource == null) {
+			throw new RuntimeException("Cannot find services at /src/services/ or /services/");
+		}
+
+		final File[] files = new File(ressource.getFile()).listFiles(new FileFilter() {
+			@Override
+			public boolean accept(final File file) {
+				return file.toString().endsWith(".jar");
+			}
+		});
+
+		return files;
 	}
 
 	/**
