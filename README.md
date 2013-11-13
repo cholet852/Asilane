@@ -7,8 +7,8 @@ Installation
 ------------
 Ceci est la librairie d'Asilane. Pour utiliser Asilane sur votre appareil, choisissez un client :
 
-- [PC](https://github.com/walane/Asilane-pc-client).
-- [Android](https://github.com/walane/Asilane-android-client).
+- [PC](https://github.com/Asilane/Asilane-PC-Client).
+- [Android](https://github.com/Asilane/Asilane-Android-Client).
 
 Utilisation
 -----------
