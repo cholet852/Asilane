@@ -168,11 +168,10 @@ public class ServiceDispatcher {
 	 * @throws URISyntaxException
 	 */
 	private File[] searchJars() {
-		URL ressource = getClass().getResource("/src/services/");
-		ressource = (ressource != null) ? ressource : getClass().getResource("/services/");
+		final URL ressource = getClass().getResource("/services/");
 
 		if (ressource == null) {
-			throw new RuntimeException("Cannot find services at /src/services/ or /services/");
+			throw new RuntimeException("Cannot find \"services\" folder. Make sure you have this folder in the same path than your .jar.");
 		}
 
 		final File[] files = new File(ressource.getFile()).listFiles(new FileFilter() {
