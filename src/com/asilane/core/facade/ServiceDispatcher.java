@@ -93,8 +93,14 @@ public class ServiceDispatcher {
 		try {
 
 			final Properties servicesToExcept = new Properties();
-			servicesToExcept.load(getClass().getResourceAsStream("/services/services.properties"));
+			final URL ressource = getClass().getResource("/services/services.properties");
 
+			if (ressource == null) {
+				throw new RuntimeException(
+						"Cannot find \"services/services.properties\" file. Make sure you have the \"services\" folder in the same path than your .jar.");
+			}
+
+			servicesToExcept.load(ressource.openStream());
 			final File[] jarFiles = searchJars();
 
 			// Add each service to the list
