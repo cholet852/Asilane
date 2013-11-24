@@ -31,4 +31,17 @@ public interface EnvironmentTools {
 	 * @return true if the browser can be launched, false if not
 	 */
 	boolean browse(final URI uri);
+
+	/**
+	 * Send a mail
+	 * 
+	 * @param dest
+	 *            - the destinataire of the mail
+	 * @param subject
+	 *            - the mail subject
+	 * @param message
+	 *            - the message
+	 * @return true if the mail client can be launched, false if not
+	 */
+	boolean mail(final String dest, final String subject, final String message);
 }
