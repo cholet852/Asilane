@@ -107,7 +107,7 @@ public class ServiceDispatcher {
 			for (final File jarFile : jarFiles) {
 				final String className = jarFile.getName().replace(".jar", "");
 
-				if (!servicesToExcept.contains(className)) {
+				if (!servicesToExcept.values().toString().contains(className)) {
 					final URL urlList[] = new URL[] { jarFile.toURI().toURL() };
 
 					final ClassLoader loader = new URLClassLoader(urlList);
@@ -147,7 +147,7 @@ public class ServiceDispatcher {
 						final URL urlList[] = new URL[] { jarFile.toURI().toURL() };
 
 						final ClassLoader loader = new URLClassLoader(urlList);
-						final InputStream is = loader.getResourceAsStream("i18n/" + lang.toLanguageTag() + ".properties");
+						final InputStream is = loader.getResourceAsStream("i18n/" + lang.toString() + ".properties");
 
 						final Properties tmpPropertyFile = new Properties();
 						tmpPropertyFile.load(is);
